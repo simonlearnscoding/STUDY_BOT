@@ -7,6 +7,8 @@ import datetime
 import asyncio
 import re
 
+import sys
+sys.path.append('/.../')
 import vc
 import mydb
 from mydb import db
@@ -34,7 +36,7 @@ class goals(commands.Cog):
         for i in (range(len(list(result)))):
             
             #get user total
-            sql = "SELECT total FROM users.daily WHERE ID = %s"
+            sql = "SELECT total FROM users.Daily WHERE ID = %s"
             val = (result[i][0], )
             totaltime=db.fetchone(sql, val)
             totaltime = int(totaltime[0])
@@ -47,7 +49,7 @@ class goals(commands.Cog):
                         totaltime = totaltime + extratime                    
             
             #get user OldCurrent
-            sql = "SELECT Current FROM users.goal WHERE ID = %s"
+            sql = "SELECT Current FROM users.Goal WHERE ID = %s"
             val = (result[i][0], )
             OldCurrent=db.fetchone(sql, val)
             OldCurrent = int(OldCurrent[0])
@@ -55,20 +57,20 @@ class goals(commands.Cog):
             if OldCurrent != NewCurrent:
                 UserId = result[i][0]
                 #set user measuredmin, user current
-                sql = "UPDATE users.goal SET Current = %s, measuredMin = %s WHERE ID = %s"
+                sql = "UPDATE users.Goal SET Current = %s, measuredMin = %s WHERE ID = %s"
                 val = (NewCurrent, totaltime, UserId)
                 db.cur.execute(sql, val)
                 db.mydb.commit()
                 guild = client.get_guild(vc.guild_id)
                 member = guild.get_member(UserId)
                 
-                sql= "SELECT NickName FROM users.goal WHERE ID = %s"
+                sql= "SELECT NickName FROM users.Goal WHERE ID = %s"
                 val = (UserId, )
                 db.cur.execute(sql, val)
                 Nick=db.cur.fetchone()
                 Nick = str(Nick[0])
 
-                sql= "SELECT Goal FROM users.goal WHERE ID = %s"
+                sql= "SELECT Goal FROM users.Goal WHERE ID = %s"
                 val = (UserId, )
                 db.cur.execute(sql, val)
                 Goal=db.cur.fetchone()    
@@ -78,12 +80,12 @@ class goals(commands.Cog):
                     await channel.send(f"good job on reaching your daily goal, {Nick}")
                     
                     # Set Won to true 
-                    sql = "UPDATE users.goal SET Won = True WHERE ID = %s"
+                    sql = "UPDATE users.Goal SET Won = True WHERE ID = %s"
                     val = (member.id, )
                     db.cur.execute(sql, val)
                     db.mydb.commit()
                     
-                    sql= "UPDATE users.achievements SET Won = Won + 1 WHERE ID = %s"
+                    sql= "UPDATE users.Achievements SET Won = Won + 1 WHERE ID = %s"
                     val = (member.id, )
                     db.cur.execute(sql, val)
                     db.mydb.commit()
@@ -136,7 +138,7 @@ class goals(commands.Cog):
 
             #get current minutes
             try:
-                sql = "SELECT Total FROM users.daily WHERE ID = %s"
+                sql = "SELECT Total FROM users.Daily WHERE ID = %s"
                 print(after.id)
                 val = (after.id, )
                 db.cur.execute(sql, val)
@@ -152,7 +154,7 @@ class goals(commands.Cog):
 
             #see if id in datenbank    
             try:
-                sql = "SELECT * FROM users.goal WHERE ID = %s"
+                sql = "SELECT * FROM users.Goal WHERE ID = %s"
                 val = (ID, )
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
@@ -185,7 +187,7 @@ class goals(commands.Cog):
                 else: 
                     print("User in Database")
                     #is won it true?
-                    sql = "SELECT Won FROM users.goal WHERE ID = %s"
+                    sql = "SELECT Won FROM users.Goal WHERE ID = %s"
                     val = (after.id, )
                     db.cur.execute(sql, val)
                     result = db.cur.fetchone()
@@ -198,7 +200,7 @@ class goals(commands.Cog):
 
                     if result == 0:
                         
-                        sql = "SELECT Goal FROM users.goal WHERE ID = %s"
+                        sql = "SELECT Goal FROM users.Goal WHERE ID = %s"
                         val = (after.id, )
                         db.cur.execute(sql, val)
                         result = db.cur.fetchone()
