@@ -3,9 +3,9 @@ import pymysql
 
 class db():
     mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="unknown072",
+    host="134.122.105.194",
+    user="simon",
+    password="12345678",
     database="users",
     auth_plugin='mysql_native_password')
     cur = mydb.cursor(buffered=True)   
