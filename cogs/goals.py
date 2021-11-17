@@ -29,7 +29,7 @@ class goals(commands.Cog):
         global NameCheck
         #for rows in goals:
 
-        sql= "SELECT * FROM users.goal WHERE Won is False"
+        sql= "SELECT * FROM users.Goal WHERE Won is False"
         db.cur.execute(sql, )
         result=db.cur.fetchall()
         result=list(result)       
