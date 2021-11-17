@@ -1,13 +1,25 @@
 import mysql.connector
 import pymysql
-
+"""
 class db():
     mydb = mysql.connector.connect(
     host="134.122.105.194",
-    user="simon",
+    user="sinon",
     password="12345678",
-    database="users",
-    auth_plugin='mysql_native_password')
+    #database="test",
+    #auth_plugin='mysql_native_password'
+    )
+    #cur = mydb.cursor(buffered=True)   
+    #def drop_tables():
+     #   drop_tables()  
+"""
+
+class db():
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="unknown072",
+    database="users")
     cur = mydb.cursor(buffered=True)   
     def drop_tables():
         drop_tables()  
