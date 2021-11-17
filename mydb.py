@@ -6,7 +6,8 @@ class db():
     host="localhost",
     user="root",
     password="unknown072",
-    database="users")
+    database="users",
+    auth_plugin='mysql_native_password')
     cur = mydb.cursor(buffered=True)   
     def drop_tables():
         drop_tables()  
