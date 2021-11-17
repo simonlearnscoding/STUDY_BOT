@@ -18,7 +18,7 @@ class db():
     mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="unknown072",
+    password="12345678",
     database="users")
     cur = mydb.cursor(buffered=True)   
     def drop_tables():
