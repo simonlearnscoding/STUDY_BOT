@@ -285,7 +285,6 @@ class tracking(commands.Cog):
             x.StartStudy = None
             x.EndStudy = None                   
             return
-
     async def quitYoga(self, member, x):
         if x.yoga == True:
             x.yoga = False
@@ -429,7 +428,6 @@ class tracking(commands.Cog):
             x.StartStudy = None
             x.EndStudy = None                      
             return
-
     async def quitCreative(self, member, x):
         if x.creative == True:
             x.creative = False
@@ -548,7 +546,7 @@ class tracking(commands.Cog):
                     if x.StartStudy is not None:
                         extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds() ))
                         extratime = extratimesec / 60
-                        break                 
+                        break
             ThingsDone = ["Study", "Workout", "Yoga", "Reading", "Meditation", "Chores", "Creative", "Total"]
             CurrentlyIn = ""
             for i in range (len(L1)):
@@ -561,30 +559,30 @@ class tracking(commands.Cog):
                         if x.workout == True:
                             L1[i] = L1[i] + extratime
                             CurrentlyIn = "Workout"
-                    if i == 2:                 
+                    if i == 2:
                         if x.yoga == True:
                                 L1[i] = L1[i] + extratime
                                 CurrentlyIn = "Yoga"
-                    if i == 3:                 
+                    if i == 3:
                         if x.reading == True:
                                 L1[i] = L1[i] + extratime
                                 CurrentlyIn = "Reading"
-                    if i == 4:                 
+                    if i == 4:
                         if x.meditation == True:
                                 L1[i] = L1[i] + extratime
                                 CurrentlyIn = "Meditation"
-                    if i == 5:                 
+                    if i == 5:
                         if x.chores == True:
                                 L1[i] = L1[i] + extratime
                                 CurrentlyIn = "Chores"
-                    if i == 6:                 
+                    if i == 6:
                         if x.creative == True:
                                 L1[i] = L1[i] + extratime
                                 CurrentlyIn = "Creative"
                     if i == 7:
                         L1[i] = L1[i] + extratime
                 if L1[i] > 0:
-                #TODO mache embed schöner    
+                #TODO mache embed schöner
                     Results.append(f" {ThingsDone[i]}: {await self.ToHours(L1[i])}")
                 print(Results)
             Total = int(L1[-1])
@@ -593,13 +591,13 @@ class tracking(commands.Cog):
             for i in range (len(Results)):
                 Message = Message + f"{Results[i]}\n"
             try:
-                embedVar.add_field(name=f"Currently in {CurrentlyIn}", value=f"{int(extratimesec / 60)}m {extratimesec % 60}s", inline=False)   
+                embedVar.add_field(name=f"Currently in {CurrentlyIn}", value=f"{int(extratimesec / 60)}m {extratimesec % 60}s", inline=False)
             except:
                 print("currently nowhere")
             try:
-                embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)     
+                embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)
             except:
-                embedVar.add_field(name="Stats Today: ", value=f"start your day now", inline=False)      
+                embedVar.add_field(name="Stats Today: ", value=f"start your day now", inline=False)
             #Fetch user result
             sql = "SELECT (@row_number:=@row_number + 1) AS row_num, Total, ID  FROM users.daily, (SELECT @row_number:=0) AS temp ORDER BY Total DESC;"
             db.cur.execute(sql)
@@ -607,10 +605,10 @@ class tracking(commands.Cog):
             print(result)
             k = 0
             for row in result:
-                k += 1  
+                k += 1
                 if row[2] == message.author.id:
-                    guild = self.client.get_guild(vc.guild_id)                
-                    
+                    guild = self.client.get_guild(vc.guild_id)
+
                     rank = int(row[0])
 
                     # Checking the close Ranking
@@ -621,21 +619,133 @@ class tracking(commands.Cog):
                         Rank1 = f"{rank - 1} - {infrontuser.name} - {await self.ToHours(infrontminutes)} \n"
                     except:
                         Rank1 = "You're the first!\n"
-                    
-                    Rank2 = f"{rank} - {message.author.name} - {await self.ToHours(Total)} \n"                
-                    
-                    try: 
+
+                    Rank2 = f"{rank} - {message.author.name} - {await self.ToHours(Total)} \n"
+
+                    try:
                         behinduser = result[k]
                         behindminutes = (behinduser[1])
-                        behinduser = guild.get_member(behinduser[2]) 
+                        behinduser = guild.get_member(behinduser[2])
                         Rank3 = f"{rank + 1} - {behinduser.name} - {await self.ToHours(behindminutes)}"
-                    except: 
+                    except:
                         Rank3 = "You are currently the last"
-                    
+
                     Ranking = f"{Rank1} **{Rank2}** {Rank3} "
             embedVar.add_field(name="Your ranking", value=f"{Ranking}", inline=False)
-            await message.channel.send(embed=embedVar) 
+            await message.channel.send(embed=embedVar)
             return
+
+    async def ranking(self):
+
+        sql = "SELECT ID, TOTAL FROM users.daily"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        print(result)
+
+        sql = "SELECT ID, NAME FROM users.daily"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        print(result)
+
+        Results = []
+        extratime = None
+        #print(L1)
+        #print(L2)
+        """
+        for x in User.Users:
+
+            if x.StartStudy is not None:
+                extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
+                extratime = extratimesec / 60
+                break
+        ThingsDone = ["Study", "Workout", "Yoga", "Reading", "Meditation", "Chores", "Creative", "Total"]
+        CurrentlyIn = ""
+        for i in range(len(L1)):
+            if extratime is not None:
+                if i == 0:
+                    if x.studying == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Study"
+                if i == 1:
+                    if x.workout == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Workout"
+                if i == 2:
+                    if x.yoga == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Yoga"
+                if i == 3:
+                    if x.reading == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Reading"
+                if i == 4:
+                    if x.meditation == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Meditation"
+                if i == 5:
+                    if x.chores == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Chores"
+                if i == 6:
+                    if x.creative == True:
+                        L1[i] = L1[i] + extratime
+                        CurrentlyIn = "Creative"
+                if i == 7:
+                    L1[i] = L1[i] + extratime
+            if L1[i] > 0:
+                # TODO mache embed schöner
+                Results.append(f" {ThingsDone[i]}: {await self.ToHours(L1[i])}")
+            print(Results)
+        Total = int(L1[-1])
+        embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
+        Message = ""
+        for i in range(len(Results)):
+            Message = Message + f"{Results[i]}\n"
+        try:
+            embedVar.add_field(name=f"Currently in {CurrentlyIn}",
+                               value=f"{int(extratimesec / 60)}m {extratimesec % 60}s", inline=False)
+        except:
+            print("currently nowhere")
+        try:
+            embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)
+        except:
+            embedVar.add_field(name="Stats Today: ", value=f"start your day now", inline=False)
+            # Fetch user result
+        sql = "SELECT (@row_number:=@row_number + 1) AS row_num, Total, ID  FROM users.daily, (SELECT @row_number:=0) AS temp ORDER BY Total DESC;"
+        db.cur.execute(sql)
+        result = db.cur.fetchall()
+        print(result)
+        k = 0
+        for row in result:
+            k += 1
+            if row[2] == message.author.id:
+                guild = self.client.get_guild(vc.guild_id)
+
+                rank = int(row[0])
+
+                # Checking the close Ranking
+                try:
+                    infrontuser = result[k - 2]
+                    infrontminutes = int(infrontuser[1])
+                    infrontuser = guild.get_member(infrontuser[2])
+                    Rank1 = f"{rank - 1} - {infrontuser.name} - {await self.ToHours(infrontminutes)} \n"
+                except:
+                    Rank1 = "You're the first!\n"
+
+                Rank2 = f"{rank} - {message.author.name} - {await self.ToHours(Total)} \n"
+
+                try:
+                    behinduser = result[k]
+                    behindminutes = (behinduser[1])
+                    behinduser = guild.get_member(behinduser[2])
+                    Rank3 = f"{rank + 1} - {behinduser.name} - {await self.ToHours(behindminutes)}"
+                except:
+                    Rank3 = "You are currently the last"
+
+                Ranking = f"{Rank1} **{Rank2}** {Rank3} "
+        embedVar.add_field(name="Your ranking", value=f"{Ranking}", inline=False)
+        await message.channel.send(embed=embedVar)
+        return"""
 
 
 #TODO

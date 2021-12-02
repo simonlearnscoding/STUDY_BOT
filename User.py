@@ -21,10 +21,24 @@ class User:
     self.EndStudy = EndStudy
     self.StudyIntervall = StudyIntervall
 
+
+async def addUser(member):
+    # add member in python object list
+    Nome = member.name
+    Nome = User(member.name, member.id)
+    Users.insert(0, Nome)
+    print(Users[0].name)
+
+
 class userfunction():
 
 # Reset the users in the python user dictionary
     async def ResetUsers(client):
+        guild = client.get_guild(vc.guild_id)
+        memberlist = guild.members
+        for member in memberlist:
+
+            await addUser(member)
         if (len(Users)) > 1:        
             for i in Users:
                 i.studying = False
@@ -38,6 +52,7 @@ class userfunction():
                 i.StartStudy = None
                 i.Endstudy = None
                 i.StudyIntervall = 0
+                print(i)
         else:
             guild = client.get_guild(vc.guild_id)
             memberlist = guild.members
@@ -45,6 +60,8 @@ class userfunction():
                 await userfunction.AddMember(client, memberlist[i])
 
 # ADD A NEW MEMBER TO THE DATABASE
+
+
     async def AddMember(self, member):
         if await userfunction.GetUser(self, member):
             return
@@ -88,23 +105,19 @@ class userfunction():
         val = (member.id, 0, 0, 0)
         db.cur.execute(sql, val)
         db.mydb.commit()
+        await addUser(member)
 
-        #add member in python object list
-        Nome = member.name
-        Nome = User(member.name, member.id)
-        Users.insert(0,Nome)
-        print(Users[0].name)
 
 
 # CHECK IF THE USER IS ALREADY IN THE DATABASE
     async def GetUser(self, member):
         try:
-            sql = f"SELECT * FROM users.user WHERE ID = {member.id}"
-            result = db.fetch(db, sql)           
-            #sql = "SELECT * FROM users.user WHERE ID = %s"
-            #val = (member.id, )
-            #db.cur.execute(sql, val)
-            #result = db.cur.fetchone()
+            #sql = f"SELECT * FROM users.user WHERE ID = {member.id}"
+            #result = db.fetch(db, sql)
+            sql = "SELECT * FROM users.user WHERE ID = %s"
+            val = (member.id, )
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
             if not result:
                 print(f"user does not exist: {member.id}")
             else: 

@@ -21,8 +21,8 @@ class db():
     password="12345678",
     database="users")
     cur = mydb.cursor(buffered=True)   
-    def drop_tables():
-        drop_tables()  
+    def drop_tables(self):
+        drop_tables(self)
 
 # class db():
 
@@ -60,7 +60,7 @@ class db():
  
 
 
-def drop_tables():
+def drop_tables(self):
         sql = ("DROP TABLE IF EXISTS User;")
         db.cur.execute(sql, )
         sql = ("DROP TABLE IF EXISTS Goal;")

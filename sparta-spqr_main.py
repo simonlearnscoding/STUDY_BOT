@@ -4,8 +4,7 @@ from discord.channel import VoiceChannel
 from discord.client import Client
 from giphy_client.rest import ApiException
 
-
-
+from cogs import tracking
 from mydb import db
 from cogs.goals import goals
 import cogs.timer
@@ -32,10 +31,11 @@ async def on_ready():
     print("bot is ready.")#
     #await runschedule()
    #making the tables and add every member
-    db.drop_tables()
+    #db.drop_tables()
     checkem.start()
     await userfunction.ResetUsers(client)
     checkupdate.start(client)
+    checkrank.start()
 
 @tasks.loop(seconds=1)
 async def checkupdate(client):
@@ -44,6 +44,10 @@ async def checkupdate(client):
 @tasks.loop(seconds=60) #change the intervall here
 async def checkem():
     await goals.check_goals()
+
+@tasks.loop(seconds=10) #change the intervall here
+async def checkrank():
+    await tracking.ranking()
 
 
 

@@ -33,32 +33,30 @@ class update(commands.Cog):
 
         #daily update
         #if hour == 4:
-        if second % 20 == 0:
+        if hour == 4:
             if switch is True:
                 switch = False
                 await update.updateTables("daily", "weekly")
-        if second  == 6:
+        if hour == 5:
             switch = True
 
         #weekly update
-        #if weekday == 0:    
-        if second == 7 and hour == 21:
+        if weekday == 0 and hour == 6:
             if switch2 is True:
                 switch2 = False
-                print("two")
+                await update.updateTables("weekly", "monthly")
 
-        if second  == 8:
+        if weekday == 0 and hour == 7:
             switch2 = True
 
-        #TODO weekly switch
-        #if monthday == 1:
-        if second == 15:
+        #TODO monthly switch
+        if monthday == 1 and hour == 7:
             if switch3 is True:
                 switch3 = False                
-                print("three")
+                print("monthly switch")
 
                 #TODO monthly switch
-        if second  == 16:
+        if monthday == 1 and hour == 8:
             switch3 = True                
 
     async def updateTables(time1, time2):
@@ -86,30 +84,6 @@ class update(commands.Cog):
                 db.mydb.commit()
 
 
-            #daily switch
-            # if second  == 6:
-            #     switch = True
-            #     switch2 = True
-            #     switch3 = True
-            
-            #weekly update
-            
-
-
-
-# async def startroutines():
-#     updates.start()
-
-# async def daily():
-#     #TODO
-
-
-# async def weekly():
-#     #TODO
-
-
-# async def daily():
-#     #TODO
 
 def setup(client):
     client.add_cog(update(client))
