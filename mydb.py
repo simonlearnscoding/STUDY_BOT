@@ -22,7 +22,8 @@ class db():
     database="users")
     cur = mydb.cursor(buffered=True)   
     def drop_tables(self):
-        drop_tables(self)
+        pass
+        #drop_tables(self)
 
 # class db():
 
@@ -58,7 +59,7 @@ class db():
 #         self.cur.execute(sql)
 #         self.__disconnect__(self)
  
-
+"""
 
 def drop_tables(self):
         sql = ("DROP TABLE IF EXISTS User;")
@@ -83,9 +84,9 @@ def drop_tables(self):
         db.cur.execute(sql, )
         sql = ("CREATE TABLE IF NOT EXISTS Goal (ID bigint, Goal int, Current int, NickName varchar(50), measuredMin int, Won Bool);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Daily (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
+        sql = ("CREATE TABLE IF NOT EXISTS Daily (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")CREATE TABLE IF NOT EXISTS Goal (ID bigint, Goal int, Current int, NickName varchar(50), measuredMin int, Won Bool);
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Weekly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
+        sql = ("CREATE lsTABLE IF NOT EXISTS Weekly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
         db.cur.execute(sql, )
         sql = ("CREATE TABLE IF NOT EXISTS Monthly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
         db.cur.execute(sql, )
@@ -96,7 +97,7 @@ def drop_tables(self):
         sql = ("CREATE TABLE IF NOT EXISTS Achievements (ID bigint, Cage int, Won int, Lost int);")
         db.cur.execute(sql, )
 
-
+"""
 
 #cur = db.cursor()
 
