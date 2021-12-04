@@ -274,10 +274,11 @@ class goals(commands.Cog):
                         await member.edit(nick=Nick)
                         # rename user
                     else:
-                        await channel.send(f"you already won, {name} you can set a new goal tomorrow")
-                        await asyncio.sleep(5)
-                        Nick = after.name
-                        await after.edit(nick=Nick)
+                        #await channel.send(f"you already won, {name} you can set a new goal tomorrow")
+                        #await asyncio.sleep(5)
+                        #Nick = after.name
+                        #await after.edit(nick=Nick)
+                        pass
                     # return result
             except Exception as e:
                 print("Error looking up userid %s", (e))
