@@ -64,10 +64,10 @@ class goals(commands.Cog):
         embed.set_image(url="https://c4.wallpaperflare.com/wallpaper/10/477/184/vaporwave-statue-sculpture-wallpaper-thumb.jpg")
         for i in range(10):
             online = ""
-            if list[i][3] == 0:
+            """if list[i][3] == 0:
                 online = ""
             else:
-                online = ":tennis:"
+                online = ":tennis:" """
             embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
         Message = channel.get_partial_message(916518831676071946)
         await Message.edit(embed=embed)

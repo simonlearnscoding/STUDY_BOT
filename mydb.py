@@ -80,21 +80,21 @@ def drop_tables(self):
         db.cur.execute(sql, )
         
             # Create every Table
-        sql = ("CREATE TABLE IF NOT EXISTS User (ID bigint, Bot Bool, Name varchar(50), NickName varchar(50), XP int);")
+        sql = ("CREATE TABLE IF NOT EXISTS user (ID bigint, Bot Bool, Name varchar(50), NickName varchar(50), XP int);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Goal (ID bigint, Goal int, Current int, NickName varchar(50), measuredMin int, Won Bool);")
+        sql = ("CREATE TABLE IF NOT EXISTS goal (ID bigint, Goal int, Current int, NickName varchar(50), measuredMin int, Won Bool);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Daily (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")CREATE TABLE IF NOT EXISTS Goal (ID bigint, Goal int, Current int, NickName varchar(50), measuredMin int, Won Bool);
+        sql = ("CREATE TABLE IF NOT EXISTS daily (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
         db.cur.execute(sql, )
-        sql = ("CREATE lsTABLE IF NOT EXISTS Weekly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
+        sql = ("CREATE TABLE IF NOT EXISTS weekly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Monthly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
+        sql = ("CREATE TABLE IF NOT EXISTS monthly (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Total int);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Streaks (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Boots int, LongestSession int);")
+        sql = ("CREATE TABLE IF NOT EXISTS streaks (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Chores int, Creative int, Boots int, LongestSession int);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Week (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Creative int, Chores int);")
+        sql = ("CREATE TABLE IF NOT EXISTS week (ID bigint, Study int, Workout int, Yoga int, Reading int, Meditation int, Creative int, Chores int);")
         db.cur.execute(sql, )
-        sql = ("CREATE TABLE IF NOT EXISTS Achievements (ID bigint, Cage int, Won int, Lost int);")
+        sql = ("CREATE TABLE IF NOT EXISTS achievements (ID bigint, Cage int, Won int, Lost int);")
         db.cur.execute(sql, )
 
 """

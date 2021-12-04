@@ -144,12 +144,14 @@ class tracking(commands.Cog):
                 Time = x.StudyIntervall
 
                 # Check if it's a new
+
+                """
                 sql = "SELECT LongestSession FROM users.streaks WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                if Time > int(result[0]) and Time > 20:
+                #if Time > int(result[0]) and Time > 20:
                     print("new record")
                     channel = self.client.get_channel(vc.chores_vc_id)
                     await channel.send(f"Congratulations on your new record of studying for {int(Time)} minutes!")
@@ -158,6 +160,7 @@ class tracking(commands.Cog):
                 val = (Time, member.id)
                 db.cur.execute(sql, val)
                 db.mydb.commit()
+                """
 
                 # update new Study Time
                 sql = "SELECT Study FROM users.daily WHERE ID = %s"
