@@ -1,4 +1,5 @@
 import discord
+
 from discord.ext import commands, tasks
 from discord.channel import VoiceChannel
 from discord.client import Client
@@ -12,11 +13,9 @@ from User import user, userfunction
 from User import User
 from cogs.update import update
 
-intents = discord.Intents.default()
-intents.members = True
-client = discord.Client()
-client = commands.Bot(command_prefix = "*", intents=intents)
-channel = None
+
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix = "*", intents = intents)
 
 extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update"]
 if __name__ == '__main__':
@@ -32,22 +31,28 @@ async def on_ready():
     #await runschedule()
    #making the tables and add every member
     #db.drop_tables()
-    checkem.start()
     await userfunction.ResetUsers(client)
+    checkem.start(client)
     checkupdate.start(client)
-    checkrank.start()
+    checkrank.start(client)
+    await goals.ranking(client)
 
-@tasks.loop(seconds=1)
+@tasks.loop(seconds=40)
 async def checkupdate(client):
     await update.update(client)
 
 @tasks.loop(seconds=60) #change the intervall here
-async def checkem():
-    await goals.check_goals()
+async def checkem(client):
+    await goals.check_goals(client)
 
 @tasks.loop(seconds=10) #change the intervall here
-async def checkrank():
-    await tracking.ranking()
+async def checkrank(client):
+    RankList = await goals.ranking(client)
+    await goals.displayranking(client, RankList)
+    print(RankList)
+
+
+
 
 
 

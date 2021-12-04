@@ -84,6 +84,7 @@ class boot(commands.Cog):
         if before.name.startswith("-- Break") and after.name.startswith("-- Sesh:"): 
             
             # EMPTY THE ARRAY OF PEOPLE WHO MESSAGED
+            # EMPTY THE ARRAY OF PEOPLE WHO MESSAGED
             print("the Array has been emptied")
             print(Array)
             Array = []
@@ -107,7 +108,7 @@ class boot(commands.Cog):
                 print("LOL")        
                 await self.wait_then_kick(member)
 
-    @commands.Cog.listener()
+"""  @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return
@@ -201,7 +202,7 @@ class boot(commands.Cog):
                 else: 
                     Array.append(message.author.id)
                     print(Array)
-      
+      """
 
 
 

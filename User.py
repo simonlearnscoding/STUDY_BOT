@@ -120,6 +120,12 @@ class userfunction():
             result = db.cur.fetchone()
             if not result:
                 print(f"user does not exist: {member.id}")
+                user.AddMember(self, member)
+                sql = "SELECT * FROM users.user WHERE ID = %s"
+                val = (member.id, )
+                db.cur.execute(sql, val)
+                result = db.cur.fetchone()
+                return result
             else: 
                 return result
         except Exception as e:

@@ -45,7 +45,7 @@ class timer(commands.Cog):
     async def displayembed(self, message, timer):
         embed = discord.Embed(
             title="Time left: ", description=timer,
-            color = discord.Colour.blue(),                        
+            color = discord.Colour.blue(),
         )
 
         embed.set_image(url="https://cdn.discordapp.com/attachments/827601223317585991/843290053107253288/1292603.jpg") 
@@ -62,7 +62,6 @@ class timer(commands.Cog):
                 running = False
                 return False
         return True
-
 
     # THE TIMER FUNCTION IS HERE
     async def RunTimer(self, message, member, SessionTime, SessionBreak):
@@ -210,7 +209,6 @@ class timer(commands.Cog):
                     InLoop = False
                     return
 
-
     async def StoicQuote(self, message):
         resp = requests.get('https://stoicquotesapi.com/v1/api/quotes/random')
         channel = self.client.get_channel(vc.chores_vc_id)
@@ -231,7 +229,6 @@ class timer(commands.Cog):
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/827601223317585991/843639567897591838/2d6e937af91e39fbbd8072a7059d96db.jpg") 
         await message.channel.send(embed=embed)
         return
-
 
     @commands.Cog.listener()
     async def on_message(self, message):
