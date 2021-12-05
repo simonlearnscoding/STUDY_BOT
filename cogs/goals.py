@@ -64,10 +64,10 @@ class goals(commands.Cog):
         embed.set_image(url="https://c4.wallpaperflare.com/wallpaper/10/477/184/vaporwave-statue-sculpture-wallpaper-thumb.jpg")
         for i in range(10):
             online = ""
-            """if list[i][3] == 0:
+            if list[i][3] == 0:
                 online = ""
             else:
-                online = ":tennis:" """
+                online = ":tennis:"
             embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
         Message = channel.get_partial_message(916518831676071946)
         await Message.edit(embed=embed)
@@ -267,7 +267,7 @@ class goals(commands.Cog):
                         db.cur.execute(sql, val)
                         result = db.cur.fetchone()
                         Goal = int(result[0])
-                        await channel.send(f"You're already on the list, {name}")
+                        #await channel.send(f"You're already on the list, {name}")
                         Nick = f"{name} {current}/{Goal}"
                         ID = after.id
                         member = guild.get_member(after.id)
