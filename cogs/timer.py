@@ -276,17 +276,17 @@ class timer(commands.Cog):
                 await message.channel.send(f'there is no timer going on')
             else: 
                 
-                await message.channel.send(f'{chores_vc.mention} this function is still broken lol just leave VC and come back later (sorry)')
-                #await message.channel.send(f'{chores_vc.mention} I will stop the timer now. the Voicechannel will be renamed in in 5 minutes')
-                #global InLoop            
+                #await message.channel.send(f'{chores_vc.mention} this function is still broken lol just leave VC and come back later (sorry)')
+                await message.channel.send(f'{chores_vc.mention} I will stop the timer now. the Voicechannel will be renamed in in 5 minutes')
+                global InLoop            
                 InLoop = False
                 running = False
                 Leave = False
-                #try: 
-                #   if Message is not None:
-                #      await Message.delete()
-                #except:
-                #   pass
+                try: 
+                   if Message is not None:
+                      await Message.delete()
+                except:
+                   pass
 
 
 
