@@ -140,10 +140,6 @@ class goals(commands.Cog):
                     db.cur.execute(sql, val)
                     db.mydb.commit()
 
-                    # kann ich vl löschen
-                    # GoalCount = cur.fetchone()
-                    # GoalCount = int(GoalCount[0])
-                    # GoalCount = GoalCount + 1
 
                     Nick = f"{Nick} done"
                     await asyncio.sleep(5)
@@ -157,6 +153,12 @@ class goals(commands.Cog):
                     await asyncio.sleep(5)
                     await member.add_roles(role)
                     # TODO EXP
+
+                    #REMOVE HIM FROM DB
+                    sql = "DELETE users.goal WHERE ID = %s"
+                    val = (member.id,)
+                    db.cur.execute(sql, val)
+                    db.mydb.commit()
 
                 NameCheck = True
                 Nick = f"{Nick} {NewCurrent}/{Goal}"
@@ -237,6 +239,11 @@ class goals(commands.Cog):
 
                     guild = self.client.get_guild(vc.guild_id)
                     member = guild.get_member(ID)
+
+                    role = discord.utils.get(member.guild.roles, name="winner")
+                    await asyncio.sleep(5)
+                    await member.remove_roles(role)
+
                     role = discord.utils.get(member.guild.roles, id=vc.challenge_role_id)
                     await asyncio.sleep(5)
                     await member.add_roles(role)

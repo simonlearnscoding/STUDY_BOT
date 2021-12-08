@@ -37,12 +37,13 @@ class update(commands.Cog):
 
         # daily update
         # if hour == 4:
-        if hour == 0 and minute == 54:
+        if hour == 1 and minute == 00:
             if switch is True:
                 switch = False
                 await update.updateTables("daily", "weekly")
                 sql = "DELETE FROM users.goal"
                 db.cur.execute(sql, )
+
 
         if hour == 0 and minute == 55:
             switch = True
