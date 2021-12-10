@@ -1,4 +1,7 @@
 class vc():
+
+    # REAL
+    """
     general_id = 797837772005179433
     guild_id = 789814373434654731
     sparta_id = 834144065133740102
@@ -22,3 +25,29 @@ class vc():
     bots_id = 827601223317585991
     gestapo = 842832674543501353
     leaderboard = 916484382091513917
+
+    """
+    # TESTING
+    general_id = 917547601753178207
+    guild_id = 917547601539264623
+    sparta_id = 917547601753178213
+    study_id = 917547601753178212
+    producing_id = 917547602076135483
+    challenge_role_id = 917547601564426297
+
+    #TODO: change with this when done:  826514598709690388
+    bot_id = 827601223317585991
+    lions_cage_id = 834118898836045894
+    lions_cage_text_id = 917547602277453864
+    chores_vc_id = 917547601753178211
+    workout_id = 917547601904148526
+    timer_id = 917547601753178205
+    yoga_id = 917547601904148527
+    reading_id = 917547601904148521
+    chores_id = 917547601904148522
+    meditation_id = 917547601904148520
+    doing_drugs_id = 917547602420064297
+    creative_id = 917547602076135479
+    bots_id = 917547602277453857
+    gestapo = 917547602277453859
+    leaderboard = 917547601753178209
