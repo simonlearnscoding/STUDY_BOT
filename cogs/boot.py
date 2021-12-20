@@ -49,6 +49,8 @@ class boot(commands.Cog):
                 return
             elif Channel.name.startswith("Sesh:"):  # if channel rename = Break
                 # Move member into Lions Cage
+                if member.id == "744545219260842014":
+                    pass
                 channel = self.client.get_channel(vc.lions_cage_id)
                 text_channel = self.client.get_channel(vc.lions_cage_text_id)
                 DaChannel = self.client.get_channel(vc.chores_vc_id)
