@@ -76,11 +76,12 @@ class goals(commands.Cog):
 
     async def displayranking(client, list, week):
 
-
+        """
         # SEND MSG
         channel = client.get_channel(vc.leaderboard)
         await channel.send(".")
-
+        """
+        
         Embed = discord.Embed()
         embed = discord.Embed(
         
