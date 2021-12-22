@@ -16,6 +16,7 @@ from mydb import db
 
 
 running = False
+global InLoop
 InLoop = False
 InBreak = False
 
@@ -270,7 +271,7 @@ class timer(commands.Cog):
             global InLoop
             guild = discord.utils.find(lambda g: g.id == vc.guild_id, self.client.guilds)
             chores_vc = discord.utils.get(guild.roles, name="VC-Chores")
-            channel = self.client.get_channel(vc.chores_vc_id)     
+            channel = self.client.get_channel(vc.chore_vc_id)
             
             if InLoop == False:
                 await message.channel.send(f'there is no timer going on')
@@ -278,7 +279,7 @@ class timer(commands.Cog):
                 
                 #await message.channel.send(f'{chores_vc.mention} this function is still broken lol just leave VC and come back later (sorry)')
                 await message.channel.send(f'{chores_vc.mention} I will stop the timer now. the Voicechannel will be renamed in in 5 minutes')
-                global InLoop            
+                #global InLoop
                 InLoop = False
                 running = False
                 Leave = False
