@@ -36,31 +36,56 @@ class goals(commands.Cog):
         sql = "SELECT ID, NAME FROM users.user"
         db.cur.execute(sql, )
         result2 = db.cur.fetchall()
+        sql = "SELECT ID, TOTAL FROM users.weekly"
+        db.cur.execute(sql, )
+        result3 = db.cur.fetchall()
+
         RankingList = []
+        RankingWeek = []
         for i, j in result:
             for x, y in result2:
                 if i == x:
                     RankingList.append([y, j, x, 0])
+        for i, j in result3:
+            for x, y in result2:
+                if i == x:
+                    RankingWeek.append([y, j, x])
+
         for x in Users:
             # add current study time
             if x.StartStudy is not None:
                 extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
                 extratime = extratimesec / 60
-                print(itertools.product(RankingList))
                 for i in range(len(RankingList)):
                     for j in range(len(RankingList[i])):
                         if RankingList[i][j] == x.id:
                             RankingList[i][1] = int(RankingList[i][1] + extratime)
                             RankingList[i][3] = 1
+
+        for i in range(len(RankingWeek)):
+            for j in range(len(RankingList)):
+                if RankingWeek[i][2] == RankingList[j][2]:
+                    RankingWeek[i][1] += RankingList[j][1]
+                    RankingWeek[i][1] =round((RankingWeek[i][1] / 60), 1)
+
         minutes = lambda RankingList: RankingList[1]
+        hours =  lambda RankingWeek: RankingWeek[1]
         RankingList.sort(key=minutes, reverse=True)
-        return RankingList
+        RankingWeek.sort(key=minutes, reverse=True)
+        return RankingList, RankingWeek
 
-    async def displayranking(client, list):
+    async def displayranking(client, list, week):
+
+
+        # SEND MSG
+        channel = client.get_channel(vc.leaderboard)
+        await channel.send(".")
+
+        Embed = discord.Embed()
         embed = discord.Embed(
-
+        
         )
-        channel = client.get_channel(916484382091513917)
+        channel = client.get_channel(vc.leaderboard)
         embed.set_image(url="https://c4.wallpaperflare.com/wallpaper/10/477/184/vaporwave-statue-sculpture-wallpaper-thumb.jpg")
         for i in range(10):
             online = ""
@@ -69,9 +94,24 @@ class goals(commands.Cog):
             else:
                 online = ":tennis:"
             embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
-        Message = channel.get_partial_message(916518831676071946)
-        await Message.edit(embed=embed)
+        embed.add_field(name="..",
+                        value="..",
+                        inline=False)
 
+        Embed.add_field(name="Weekly Rank:",
+                        value="..",
+                        inline=False)
+
+
+        for i in range(10):
+            Embed.add_field(name=f"{i + 1} {week[i][0]} - {week[i][1]}h",
+                            value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ",
+                            inline=False)
+
+        Message = channel.get_partial_message(923131822999736340)
+        Messsage = channel.get_partial_message(923155569932664842)
+        await Message.edit(embed=embed)
+        await Messsage.edit(embed=Embed)
     # add their current time
     async def check_goals(client):
         global NameCheck

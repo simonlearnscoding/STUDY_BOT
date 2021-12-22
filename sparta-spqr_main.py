@@ -48,7 +48,7 @@ async def checkem(client):
 @tasks.loop(seconds=10) #change the intervall here
 async def checkrank(client):
     RankList = await goals.ranking(client)
-    await goals.displayranking(client, RankList)
+    await goals.displayranking(client, RankList[0], RankList[1])
     print(RankList)
 
 
