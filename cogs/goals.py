@@ -81,7 +81,7 @@ class goals(commands.Cog):
         channel = client.get_channel(vc.leaderboard)
         await channel.send(".")
         """
-        
+
         Embed = discord.Embed()
         embed = discord.Embed(
         
@@ -95,9 +95,7 @@ class goals(commands.Cog):
             else:
                 online = ":tennis:"
             embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
-        embed.add_field(name="..",
-                        value="..",
-                        inline=False)
+
 
         Embed.add_field(name="Weekly Rank:",
                         value="..",
@@ -111,8 +109,8 @@ class goals(commands.Cog):
 
         Message = channel.get_partial_message(916518831676071946)
         Messsage = channel.get_partial_message(923159773464121354)
-        await Message.edit(embed=embed)
-        await Messsage.edit(embed=Embed)
+        await Message.edit(embed=Embed)
+        await Messsage.edit(embed=embed)
     # add their current time
     async def check_goals(client):
         global NameCheck

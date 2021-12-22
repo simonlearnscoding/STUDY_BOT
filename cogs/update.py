@@ -49,23 +49,23 @@ class update(commands.Cog):
             switch = True
             print("switch back on")
         # weekly update
-        if weekday == 0 and minute == 12:
+        if weekday == 0 and hour == 1 and minute == 12:
             if switch2 is True:
                 switch2 = False
                 await update.updateTables("weekly", "monthly")
 
-        if weekday == 0 and minute == 15:
+        if weekday == 0 and hour == 1 and minute == 15:
             switch2 = True
 
         # TODO monthly switch
         # TODO monthly switch
-        if monthday == 1 and minute == 20:
+        if monthday == 1 and hour == 2 and  minute == 20:
             if switch3 is True:
                 switch3 = False
                 print("monthly switch")
 
                 # TODO monthly switch
-        if monthday == 1 and minute == 26:
+        if monthday == 1 and hour == 2  and minute == 26:
             switch3 = True
 
     async def updateTables(time1, time2):
