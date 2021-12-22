@@ -108,8 +108,8 @@ class goals(commands.Cog):
                             value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ",
                             inline=False)
 
-        Message = channel.get_partial_message(923131822999736340)
-        Messsage = channel.get_partial_message(923155569932664842)
+        Message = channel.get_partial_message(916518831676071946)
+        Messsage = channel.get_partial_message(923159773464121354)
         await Message.edit(embed=embed)
         await Messsage.edit(embed=Embed)
     # add their current time
