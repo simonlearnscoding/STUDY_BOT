@@ -94,7 +94,7 @@ class goals(commands.Cog):
                 online = ""
             else:
                 online = ":tennis:"
-            if int(list[i][0]) == 0:
+            if int(list[i][1]) == 0:
                 pass
             else:
                 embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
