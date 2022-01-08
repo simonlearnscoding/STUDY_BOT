@@ -17,7 +17,7 @@ from cogs.update import update
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks"]
 if __name__ == '__main__':
     for ext in extensions:
         client.load_extension(ext)
