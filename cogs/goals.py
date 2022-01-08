@@ -94,9 +94,12 @@ class goals(commands.Cog):
                 online = ""
             else:
                 online = ":tennis:"
-            rankInHours = int(list[i][1] / 60)
-            rankInMinutes = int(list[i][1] % 60)
-            embed.add_field(name=f"{i + 1} {list[i][0]} - {rankInHours}:{rankInMinutes}  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
+            if list[i][1] == 0:
+                pass
+            else:
+                rankInHours = int(list[i][1] / 60)
+                rankInMinutes = int(list[i][1] % 60)
+                embed.add_field(name=f"{i + 1} {list[i][0]} - {rankInHours}:{rankInMinutes}  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
 
 
         Embed.add_field(name="Weekly Rank:",
