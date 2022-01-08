@@ -99,6 +99,9 @@ class goals(commands.Cog):
             else:
                 rankInHours = int(list[i][1] / 60)
                 rankInMinutes = int(list[i][1] % 60)
+                if (rankInMinutes < 10):
+                    rankInMinutes = "0" + str(rankInMinutes)
+
                 embed.add_field(name=f"{i + 1} {list[i][0]} - {rankInHours}:{rankInMinutes}  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
 
 
