@@ -94,12 +94,6 @@ class goals(commands.Cog):
                 online = ""
             else:
                 online = ":tennis:"
-<<<<<<< HEAD
-            if int(list[i][1]) == 0:
-                pass
-            else:
-                embed.add_field(name=f"{i + 1} {list[i][0]} - {list[i][1]}m  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
-=======
             if list[i][1] == 0:
                 pass
             else:
@@ -109,7 +103,6 @@ class goals(commands.Cog):
                     rankInMinutes = "0" + str(rankInMinutes)
 
                 embed.add_field(name=f"{i + 1} {list[i][0]} - {rankInHours}:{rankInMinutes}  {online}", value="- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ", inline=False)
->>>>>>> VCtest
 
 
         Embed.add_field(name="Weekly Rank:",
