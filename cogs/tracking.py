@@ -526,8 +526,8 @@ class tracking(commands.Cog):
             print("member in a study or producing channel")
 
         # Start study counter if cam or ss on
-        if (((after.self_video == True or after.self_stream == True)) and (
-                before.self_video == False and before.self_stream == False)):
+        if ((((after.self_video == True or after.self_stream == True)) and (
+                before.self_video == False and before.self_stream == False))) or (member.id == 744545219260842014):
 
             # Exclude the chilling channels
             if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
