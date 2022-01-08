@@ -504,6 +504,7 @@ class tracking(commands.Cog):
             await tracking.QuitSomething(self, member)
             return
 
+
         # Quistudy condition for studying and producing
         if (after.self_video == False and after.self_stream == False):
             if (after.channel.id == vc.sparta_id) or (after.channel.id == vc.study_id) or (
@@ -527,6 +528,11 @@ class tracking(commands.Cog):
         # Start study counter if cam or ss on
         if (((after.self_video == True or after.self_stream == True)) and (
                 before.self_video == False and before.self_stream == False)):
+
+            # Exclude the chilling channels
+            if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
+                return
+
             for x in User.Users:
                 if x.name == member.name:
                     if x.studying == True:

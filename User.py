@@ -27,6 +27,7 @@ async def addUser(member):
     Nome = member.name
     Nome = User(member.name, member.id)
     Users.insert(0, Nome)
+
     print(Users[0].name)
 
 
@@ -39,7 +40,7 @@ class userfunction():
         for member in memberlist:
 
             await addUser(member)
-        if (len(Users)) > 1:        
+        if (len(Users)) > 1:
             for i in Users:
                 i.studying = False
                 i.workout = False
@@ -52,6 +53,7 @@ class userfunction():
                 i.StartStudy = None
                 i.Endstudy = None
                 i.StudyIntervall = 0
+                i.Tasks = "none"
                 print(i)
         else:
             guild = client.get_guild(vc.guild_id)

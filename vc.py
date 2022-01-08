@@ -9,6 +9,9 @@ class vc():
         study_id = 819680519063207966
         producing_id = 825827777671593994
         challenge_role_id = 882603261910204416
+        tasks_id = 915180477269299201
+        weekly_message = 923159773464121354
+        daily_message = 916518831676071946
 
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
@@ -26,15 +29,20 @@ class vc():
         bots_id = 827601223317585991
         gestapo = 842832674543501353
         leaderboard = 916484382091513917
+        vibing_id = 789814373870075932
 
     else:
         # TESTING
         general_id = 917547601753178207
         guild_id = 917547601539264623
+        tasks_id = 917547601753178210
         sparta_id = 917547601753178213
         study_id = 917547601753178212
         producing_id = 917547602076135483
         challenge_role_id = 917547601564426297
+        weekly_message = 923155569932664842
+        daily_message = 923131822999736340
+
 
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
@@ -52,3 +60,4 @@ class vc():
         bots_id = 917547602277453857
         gestapo = 917547602277453859
         leaderboard = 917547601753178209
+        vibing_id = 917547602076135478
