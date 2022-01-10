@@ -205,7 +205,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been working out for {int(Time)} minutes!")
+                await channel.send(f"good job, {x.name}! you've been working out for {int(Time)} minutes!")
 
                 sql = "SELECT Workout FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -254,7 +254,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been Reading for {int(Time)} minutes!")
+                await channel.send(f"keep it up, {x.name}! you've been Reading for {int(Time)} minutes!")
 
                 sql = "SELECT Reading FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -303,7 +303,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been doing Yoga for {int(Time)} minutes!")
+                await channel.send(f"nice, {x.name}!you've been doing Yoga for {int(Time)} minutes!")
 
                 sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -401,7 +401,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"you've been doing chores for {int(Time)} minutes!")
+                await channel.send(f"well done, {x.name}!you've been doing chores for {int(Time)} minutes!")
                 sql = "SELECT Chores FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
@@ -448,7 +448,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"you've been producing for {int(Time)} minutes!")
+                await channel.send(f"yeeeah, {x.name}!you've been producing for {int(Time)} minutes!")
 
                 sql = "SELECT Creative FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -551,6 +551,8 @@ class tracking(commands.Cog):
         if message.author.bot:
             return
         if message.content.startswith('!day'):
+
+            #get stats of users day from DB
             sql = "SELECT * FROM users.daily WHERE ID = %s"
             val = (message.author.id,)
             db.cur.execute(sql, val)
@@ -558,6 +560,8 @@ class tracking(commands.Cog):
             L1 = list(result)
             L1.pop(0)
             Results = []
+
+            #add Extra time if currently somewhere
             extratime = None
             for x in User.Users:
                 if x.id == message.author.id:
@@ -566,6 +570,8 @@ class tracking(commands.Cog):
                         extratime = extratimesec / 60
                         break
             ThingsDone = ["Study", "Workout", "Yoga", "Reading", "Meditation", "Chores", "Creative", "Total"]
+
+            #check if currently in a vc
             CurrentlyIn = ""
             for i in range(len(L1)):
                 if extratime is not None:
@@ -603,8 +609,23 @@ class tracking(commands.Cog):
                     # TODO mache embed schöner
                     Results.append(f" {ThingsDone[i]}: {await self.ToHours(L1[i])}")
                 print(Results)
+
+            # Total Time
             Total = int(L1[-1])
+
+            # Title
             embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
+
+            #load the message with content of Total ---
+
+            MessageEmoji = {"Study": "- :book: ", "Workout" : "- :muscle:  ", "Yoga" : "- :sunny: ", "Reading " : "- :green_book: ", "Meditation" : "- :cyclone: ", "Chores" : "- :gem: ", "Creative" : "- :art: "}
+            messageTodayDone = ""
+            for i in Results:
+                for j in MessageEmoji:
+                    if j in i:
+                        print("fuck")
+                        messageTodayDone = messageTodayDone + MessageEmoji[j]
+            embedVar.add_field(name="Things Done Today", value=f"{messageTodayDone}", inline=False)
             Message = ""
             for i in range(len(Results)):
                 Message = Message + f"{Results[i]}\n"
@@ -613,6 +634,7 @@ class tracking(commands.Cog):
                                    value=f"{int(extratimesec / 60)}m {extratimesec % 60}s", inline=False)
             except:
                 print("currently nowhere")
+
             try:
                 embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)
             except:
@@ -622,55 +644,10 @@ class tracking(commands.Cog):
             db.cur.execute(sql)
             result = db.cur.fetchall()
             print(result)
-            k = 0
-            """for i in goals.RankingList:
-                if goals.Rankinglist[i][1] == message.author.id:
-                    guild = self.client.get_guild(vc.guild_id)
-                    rank = i + 1
 
-                    # Checking the close Ranking
-                    try:
-                        infrontuser = goals.Rankinglist[i - 1][0]
-                        infrontminutes = goals.Rankinglist[i - 1][1]
-                        Rank1 = f"{rank - 1}. - {infrontuser} - {await self.ToHours(infrontminutes)} \n"
-                    except:
-                        Rank1 = "You're the first!\n"
-
-                    Rank2 = f"{rank} - {message.author.name} - {await self.ToHours(Total)} \n"
-
-                    try:
-                        behinduser = goals.Rankinglist[i - 1][0]
-                        infrontminutes = goals.Rankinglist[i - 1][1]
-                        Rank1 = f"{rank - 1}. - {infrontuser} - {await self.ToHours(infrontminutes)} \n"
-                        Rank3 = f"{rank + 1} - {behinduser.name} - {await self.ToHours(behindminutes)}"
-                    except:
-                        Rank3 = "You are currently the last"
-
-                    Ranking = f"{Rank1} **{Rank2}** {Rank3} """
-            #embedVar.add_field(name="Your ranking", value=f"{Ranking}", inline=False)
             await message.channel.send(embed=embedVar)
             return
 
-# TODO
-# @tasks.loop(seconds=1) #change the intervall here
-# async def restart_day():
-# if time of day = 2am:
-# for rows in daily:
-# user week = user day + user week
-# user day = 0
-# if user has won day role:
-# role = discord.utils.get(member.server.roles, name="winner")
-# await asyncio.sleep(5)
-# await client.remove_roles(member, role1, role2, role3)
-# if user has
-# TODO
-# @tasks.loop(seconds=1) #change the intervall here
-# async def restart_week():
-# if time of week = monday:
-# if time of day = 3am
-# for rows in weekly:
-# user month = user month + user week
-# user week = 0
 
 
 def setup(client):
