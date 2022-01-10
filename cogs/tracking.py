@@ -8,7 +8,7 @@ import datetime
 import User
 from vc import vc
 from cogs.boot import boot
-
+from cogs.levels import levels
 
 # client.load_extension("cogs.boot")
 
@@ -177,6 +177,11 @@ class tracking(commands.Cog):
                 db.cur.execute(sql, val)
                 db.mydb.commit()
 
+                #add xp
+                xp = int(round(Time / 5.0) * 5.0)
+                if (xp < 5):
+                    xp = 5
+                levels.addXP(self.client, member, xp)
                 await tracking.UpdateTotal(self, member, Time)
 
                 sql = "SELECT Study FROM users.daily WHERE ID = %s"
@@ -205,13 +210,21 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"good job, {x.name}! you've been working out for {int(Time)} minutes!")
+
+                #add xp
+                xp = 50
+                if (xp < 5):
+                    xp = 5
+                levels.addXP(self.client, member, xp)
 
                 sql = "SELECT Workout FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
+
                 print(result)
+                if result = 0:
+                    await channel.send(f"good job, {x.name}! you've been working out for {int(Time)} minutes! +50xp")
                 newID = result[0] + 1
                 print(newID)
                 # TODO Turn result into int

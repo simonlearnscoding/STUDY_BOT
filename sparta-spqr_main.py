@@ -8,6 +8,7 @@ from giphy_client.rest import ApiException
 from cogs import tracking
 from mydb import db
 from cogs.goals import goals
+from cogs.levels import levels
 import cogs.timer
 from User import user, userfunction
 from User import User
@@ -17,7 +18,7 @@ from cogs.update import update
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks", "cogs.levels"]
 if __name__ == '__main__':
     for ext in extensions:
         client.load_extension(ext)
@@ -36,6 +37,7 @@ async def on_ready():
     checkupdate.start(client)
     checkrank.start(client)
     await goals.ranking(client)
+
 
 @tasks.loop(seconds=40)
 async def checkupdate(client):
