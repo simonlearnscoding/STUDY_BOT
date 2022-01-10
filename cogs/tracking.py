@@ -205,7 +205,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been working out for {int(Time)} minutes!")
+                await channel.send(f"good job, {x.name}! you've been working out for {int(Time)} minutes!")
 
                 sql = "SELECT Workout FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -254,7 +254,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been Reading for {int(Time)} minutes!")
+                await channel.send(f"keep it up, {x.name}! you've been Reading for {int(Time)} minutes!")
 
                 sql = "SELECT Reading FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -303,7 +303,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"you've been doing Yoga for {int(Time)} minutes!")
+                await channel.send(f"nice, {x.name}!you've been doing Yoga for {int(Time)} minutes!")
 
                 sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
                 val = (Id,)
@@ -401,7 +401,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"you've been doing chores for {int(Time)} minutes!")
+                await channel.send(f"well done, {x.name}!you've been doing chores for {int(Time)} minutes!")
                 sql = "SELECT Chores FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
@@ -448,7 +448,7 @@ class tracking(commands.Cog):
                 Id = member.id
                 Time = x.StudyIntervall
                 channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"you've been producing for {int(Time)} minutes!")
+                await channel.send(f"yeeeah, {x.name}!you've been producing for {int(Time)} minutes!")
 
                 sql = "SELECT Creative FROM users.daily WHERE ID = %s"
                 val = (Id,)
