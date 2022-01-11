@@ -1,6 +1,6 @@
 class vc():
 
-    Testing = False
+    Testing = True
 
     if Testing is False:
         general_id = 797837772005179433
