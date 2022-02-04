@@ -37,7 +37,7 @@ class update(commands.Cog):
 
         # daily update
         # if hour == 4:
-        if hour == 1 and minute == 00:
+        if hour == 1 and minute == 52:
             if switch is True:
                 switch = False
                 await update.updateTables("daily", "weekly")
@@ -45,16 +45,16 @@ class update(commands.Cog):
                 db.cur.execute(sql, )
 
 
-        if hour == 0 and minute == 55:
+        if hour == 1 and minute == 55:
             switch = True
             print("switch back on")
         # weekly update
-        if weekday == 0 and hour == 1 and minute == 12:
+        if weekday == 0 and hour == 1 and minute == 57:
             if switch2 is True:
                 switch2 = False
                 await update.updateTables("weekly", "monthly")
 
-        if weekday == 0 and hour == 1 and minute == 15:
+        if weekday == 0 and hour == 1 and minute == 59:
             switch2 = True
 
         # TODO monthly switch

@@ -117,8 +117,11 @@ class goals(commands.Cog):
 
         Message = channel.get_partial_message(vc.daily_message)
         Messsage = channel.get_partial_message(vc.weekly_message)
-        await Message.edit(embed=Embed)
-        await Messsage.edit(embed=embed)
+        try:
+            await Message.edit(embed=Embed)
+            await Messsage.edit(embed=embed)
+        except:
+            print('didnt work again...')
     # add their current time
     async def check_goals(client):
         global NameCheck
