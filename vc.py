@@ -26,10 +26,15 @@ class vc():
         meditation_id = 790609301911502908
         doing_drugs_id = 840346309470322738
         creative_id = 824040394761306192
-        bots_id = 827601223317585991
         gestapo = 842832674543501353
         leaderboard = 916484382091513917
         vibing_id = 789814373870075932
+        challenge_1 = 937645950695010315
+        challenge_2 = 937646602527588352
+
+        challenge_role_1 = 939465581936144405
+        challenge_role_2 = 939465659211984936
+
 
     else:
         # TESTING
@@ -42,7 +47,8 @@ class vc():
         challenge_role_id = 917547601564426297
         weekly_message = 923155569932664842
         daily_message = 923131822999736340
-
+        challenge_1 = 939252150385655838
+        challenge_2 = 939252226118013019
 
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
@@ -61,3 +67,5 @@ class vc():
         gestapo = 917547602277453859
         leaderboard = 917547601753178209
         vibing_id = 917547602076135478
+        challenge_role_1 = 939464453357994014
+        challenge_role_2 = 939464510425665606

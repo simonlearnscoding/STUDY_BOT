@@ -1,19 +1,16 @@
-from asyncio.tasks import wait
-import discord
+
 from discord.ext import commands, tasks
-from discord.channel import VoiceChannel
-from discord.client import Client
-from giphy_client.rest import ApiException
-import asyncio
-import datetime
-from datetime import date
+from cogs.challenge import challenge
+from cogs.tracking import tracking
+
 import time
 
 import sys
 
+
 sys.path.append('/.../')
 from mydb import db
-
+from vc import vc
 
 class update(commands.Cog):
     def __init__(self, client):
@@ -30,6 +27,7 @@ class update(commands.Cog):
         switch = True
         switch2 = True
         switch3 = True
+        switch4 = True
         minute = time.localtime().tm_min
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
@@ -37,35 +35,41 @@ class update(commands.Cog):
 
         # daily update
         # if hour == 4:
-        if hour == 1 and minute == 00:
+        guild = self.get_guild(vc.guild_id)
+        if hour == 1 and minute == 40:
             if switch is True:
                 switch = False
+                await tracking.reboot1(self, guild)
                 await update.updateTables("daily", "weekly")
                 sql = "DELETE FROM users.goal"
                 db.cur.execute(sql, )
-
-
-        if hour == 0 and minute == 55:
+                await tracking.reboot2(self, guild)
+        if hour == 1 and minute == 42:
             switch = True
             print("switch back on")
+
+
+
+
         # weekly update
         if weekday == 0 and hour == 1 and minute == 12:
             if switch2 is True:
                 switch2 = False
+                await tracking.reboot1(self, guild)
                 await update.updateTables("weekly", "monthly")
-
-        if weekday == 0 and hour == 1 and minute == 15:
+                await tracking.reboot2(self, guild)
+        if weekday == 0 and hour == 1 and minute == 13:
             switch2 = True
 
-        # TODO monthly switch
         # TODO monthly switch
         if monthday == 1 and hour == 2 and  minute == 20:
             if switch3 is True:
                 switch3 = False
+                await tracking.reboot1(self, guild)
                 print("monthly switch")
-
+                await tracking.reboot2(self, guild)
                 # TODO monthly switch
-        if monthday == 1 and hour == 2  and minute == 26:
+        if monthday == 1 and hour == 2  and minute == 21:
             switch3 = True
 
     async def updateTables(time1, time2):

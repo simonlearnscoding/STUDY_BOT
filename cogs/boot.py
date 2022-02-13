@@ -27,6 +27,8 @@ class boot(commands.Cog):
         self.client = client
     
     async def InSparta(self, member):
+        if member.voice is None:
+            return False
         if member.voice.channel.id == vc.sparta_id:
             return True
 

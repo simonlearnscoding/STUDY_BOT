@@ -3,9 +3,13 @@ from discord import client
 from mydb import db
 from discord.ext import commands, tasks
 import sys
-
+import asyncio
 import time
 from cogs.levels import levels
+
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix = "*", intents = intents)
+
 
 sys.path.append('/.../')
 from vc import vc
@@ -24,36 +28,23 @@ class challenge(commands.Cog):
     new_line = '\n'
     emoji = '\N{RAISED HAND}'
     switch = True
+
     def __init__(self, client):
         self.client = client
 
 
-    async def checktimes(client):
-        guild = client.get_guild(vc.guild_id)
-        channel = guild.get_channel(917547602277453857)
 
-        if challenge.hour == 20 and challenge.minute == 30:
-            if challenge.switch is True:
-                challenge.switch = False
-                # reminder
-                await channel.send("!reminder")
 
-        if challenge.hour == 20 and challenge.minute == 31:
-            switch = True
-            print("switch back on")
 
-        if challenge.hour == 0 and challenge.minute == 56:
-            if challenge.switch2 is True:
-                challenge.switch2 = False
-                # reminder
-                await channel.send("!newday")
 
-        if challenge.hour == 0 and challenge.minute == 57:
-            switch2 = True
-            print("switch back on")
-
-    async def removeRole(userID, challengeID):
+    async def removeRole(self, userID, challengeID):
             guild = client.get_guild(vc.guild_id)
+
+            if guild is None:
+                try:
+                    guild = self.get_guild(vc.guild_id)
+                except:
+                    guild = self.client.get_guild(vc.guild_id)
             member = guild.get_member(userID)
             if challengeID == 1:
                 role = discord.utils.get(member.guild.roles, id=vc.challenge_role_1)
@@ -63,16 +54,16 @@ class challenge(commands.Cog):
                 await member.remove_roles(role)
             else:
                 print("type that from a challenge channel pls")
-    def SetToMissing(client):
+    def SetToMissing(self):
         sql = "UPDATE users.challenge SET donetoday = 0;"
         db.cur.execute(sql)
         db.mydb.commit()
-    def emptyArrays(client):
+    def emptyArrays(self):
         challenge.done1 = []
         challenge.done2 = []
         challenge.missing1 = []
         challenge.missing2 = []
-    def FillEmptyArrays(client):
+    def FillEmptyArrays(self):
         sql = "SELECT username, challengeId FROM users.challenge WHERE donetoday = 0"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
@@ -83,7 +74,7 @@ class challenge(commands.Cog):
                 challenge.missing2.append(result[i][0])
         print(challenge.missing1)
         print(challenge.missing2)
-    def FillDoneArrays(client):
+    def FillDoneArrays(self):
         sql = "SELECT username, challengeId FROM users.challenge WHERE donetoday = 1"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
@@ -94,33 +85,29 @@ class challenge(commands.Cog):
                 challenge.done2.append(result[i][0])
         print(challenge.done1)
         print(challenge.done2)
-    def updateArrays(client):
-        challenge.emptyArrays(client)
-        challenge.FillEmptyArrays(client)
-        challenge.FillDoneArrays(client)
+    def updateArrays(self):
+        challenge.emptyArrays(self)
+        challenge.FillEmptyArrays(self)
+        challenge.FillDoneArrays(self)
 
-    def SetToDone(int):
-        pass
-        #on User React Hand To Message
-        #update  donetoday = 1 where id = userid and challengeid = int
-    def startDay(client):
-        challenge.SetToMissing(client)
-        challenge.updateArrays(client)
-    async def reminder(client):
+
+    def startDay(self):
+        challenge.SetToMissing(self)
+        challenge.updateArrays(self)
+    async def reminder(self, guild):
 
         sql = "SELECT * from users.challenge WHERE username is not NULL AND donetoday != 1"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
-        guild = client.get_guild(vc.guild_id)
         for i in range(len(result)):
             member = guild.get_member(result[i][0])
             if result[i][4] == 1:
                 channel = guild.get_channel(vc.challenge_1)
-                message = await challenge.fillMessages(3)
+                message = await challenge.fillMessages(self, 3)
             elif result[i][4] == 2:
                 channel = guild.get_channel(vc.challenge_2)
-                message = await challenge.fillMessages(4)
-            content = f"don't forget to complete your challenge {channel.name} today! you can go to this message and react with {challenge.emoji} when you did it! {message.jump_url}"
+                message = await challenge.fillMessages(self, 4)
+            content = f"Don't forget to complete your challenge {channel.name} today! {challenge.new_line}You can go to this message and react with {challenge.emoji} when you did it! {message.jump_url}"
             channel = await member.create_dm()
             await channel.send(content)
 
@@ -141,11 +128,11 @@ class challenge(commands.Cog):
             Embed.add_field(name="Missing: ", value=f"{challenge.missing2}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
             challenge.Message2 = await channel.send(embed=Embed)
-            challenge.MessageGetId(challenge.Message2, 4)
-            challenge.Message2 = await challenge.fillMessages(4)
+            challenge.MessageGetId(self, challenge.Message2, 4)
+            challenge.Message2 = await challenge.fillMessages(self, 4)
             await challenge.Message2.add_reaction(challenge.emoji)
 
-    async def updateMessage(channel):
+    async def updateMessage(self, channel):
 
         if channel.id == vc.challenge_1:
             Embed = discord.Embed()
@@ -154,7 +141,7 @@ class challenge(commands.Cog):
             Embed.add_field(name="Done: ", value=f"{challenge.done1}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing1}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
-            challenge.Message1 = await challenge.fillMessages(3)
+            challenge.Message1 = await challenge.fillMessages(self, 3)
             await challenge.Message1.edit(embed=Embed)
 
         elif channel.id == vc.challenge_2:
@@ -164,10 +151,10 @@ class challenge(commands.Cog):
             Embed.add_field(name="Done: ", value=f"{challenge.done2}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing2}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
-            challenge.Message2 = await challenge.fillMessages(4)
+            challenge.Message2 = await challenge.fillMessages(self, 4)
             await challenge.Message2.edit(embed=Embed)
 
-    def MessageGetId(message, id):
+    def MessageGetId(self, message, id):
 
         sql = "DELETE FROM challenge WHERE challengeId = %s"
         val = (id, )
@@ -179,25 +166,36 @@ class challenge(commands.Cog):
         db.cur.execute(sql, val)
         db.mydb.commit()
 
+
     async def SendMessage(self):
         challenge.updateArrays(self)
-        channel = discord.Client.get_channel(self, vc.challenge_1)
-        await challenge.MakeMessage(channel)
-        channel = discord.Client.get_channel(self, vc.challenge_2)
-        await challenge.MakeMessage(channel)
+        channel = client.get_channel(vc.challenge_1)
+        if channel is None:
+            try:
+                channel = self.get_channel(vc.challenge_1)
+            except:
+                channel = self.client.get_channel(vc.challenge_1)
+        await challenge.MakeMessage(self, channel)
+
+        channel = client.get_channel(vc.challenge_2)
+        if channel is None:
+            try:
+                channel = self.get_channel(vc.challenge_2)
+            except:
+                channel = self.client.get_channel(vc.challenge_2)
+        await challenge.MakeMessage(self, channel)
         #for every member where failed is false and challenge is 1:
             #get member name by id
             #put member name in missing list
 
         #send message in server
 
-    async def NewDay(client):
+    async def NewDay(self, guild):
         #get all users
         sql = "SELECT * from users.challenge WHERE username is not NULL"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
-        guild = discord.Client.get_guild(client, vc.guild_id)
-
+        guild = guild
         for i in range(len(result)):
             #if user missed the day
             if result[i][6] == 0:
@@ -210,11 +208,12 @@ class challenge(commands.Cog):
                 db.cur.execute(sql, val)
                 db.mydb.commit()
                 if result[i][2] >= 5:
-                    await challenge.removeRole(result[i][0], result[i][4])
+                    await challenge.removeRole(self, result[i][0], result[i][4])
                     val = (result[i][0], result[i][4])
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
+
                     member = guild.get_member(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
@@ -225,7 +224,7 @@ class challenge(commands.Cog):
                     await channel.send(content)
                 # IF member misses more than 2 days in a row
                 if result[i][3] >= 2:
-                    await challenge.removeRole(result[i][0], result[i][4])
+                    await challenge.removeRole(self, result[i][0], result[i][4])
                     val = (result[i][0], result[i][4])
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
@@ -247,7 +246,7 @@ class challenge(commands.Cog):
                 sql = "UPDATE users.challenge SET streak = streak + 1 WHERE userID = %s AND challengeId = %s;"
                 db.cur.execute(sql, val)
                 db.mydb.commit()
-            await client.AddToUndone(result[i][0], result[i][4])
+            await challenge.AddToUndone(self, result[i][0], result[i][4])
 
         if challenge.monthday == 1:
             for i in range(len(result)):
@@ -270,7 +269,7 @@ class challenge(commands.Cog):
             db.mydb.commit()
 
 
-        await challenge.SendMessage(client)
+        await challenge.SendMessage(self)
     # ADD NEW MEMBER
     def checkifNewMember(member, challengeId):
         sql = "SELECT * FROM challenge WHERE (userID, challengeId) = (%s, %s)"
@@ -304,21 +303,42 @@ class challenge(commands.Cog):
             else:
                 print("type that from a challenge channel pls")
 
-    async def AddToDone(essage, memberid, inter):
+    async def AddToDone(self, message, memberid, inter):
         sql = "UPDATE users.challenge SET donetoday = 1 WHERE userID = %s AND challengeId = %s;"
         val = (memberid, inter)
         db.cur.execute(sql, val)
         db.mydb.commit()
-    async def AddToUndone(memberid, inter):
+
+        #give user +25xp
+        xp = 25
+        Embed = discord.Embed()
+        Embed = discord.Embed()
+        Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+        Embed.add_field(name=f"{message.author.name},did the daily Challenge!",
+                        value="+ 25xp",
+                        inline=False)
+
+        Message = await message.channel.send(embed=Embed)
+
+        await asyncio.sleep(5)
+        await Message.delete()
+        levels.addXP(self.client, message.author, xp)
+
+    async def AddToUndone(self, memberid, inter):
         sql = "UPDATE users.challenge SET donetoday = 0 WHERE userID = %s AND challengeId = %s;"
         val = (memberid, inter)
         db.cur.execute(sql, val)
         db.mydb.commit()
 
     def fillMessages(self, integ):
-
+        guild = client.get_guild(vc.guild_id)
+        if guild is None:
+            try:
+                guild = self.get_guild(vc.guild_id)
+            except:
+                guild = self.client.get_guild(vc.guild_id)
         if integ == 3:
-            guild = discord.Client.get_guild(self, vc.guild_id)
+
             sql = "SELECT userID FROM challenge WHERE challengeId = 3"
             db.cur.execute(sql, )
             result = db.cur.fetchone()
@@ -326,7 +346,6 @@ class challenge(commands.Cog):
             return channel.fetch_message(result[0])
 
         elif integ == 4:
-            guild = discord.Client.get_guild(vc.guild_id)
             sql = "SELECT userID FROM challenge WHERE challengeId = 4"
             db.cur.execute(sql, )
             result = db.cur.fetchone()
@@ -336,53 +355,75 @@ class challenge(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.content.startswith("!message"):
-            await challenge.SendMessage()
+            await challenge.SendMessage(self)
         if message.content.startswith("!add"):
             await challenge.giveRole(message)
-        if message.content.startswith("!starter"):
-            challenge.startDay()
         if message.content.startswith("!newday"):
-            if message.author.bot is False:
-                return
-            await challenge.NewDay(challenge)
+            guild = client.get_guild(vc.guild_id)
+            await challenge.NewDay(self, guild)
         if message.content.startswith("!reminder"):
-            await challenge.reminder(challenge)
+            guild = client.get_guild(vc.guild_id)
+            if guild is None:
+                try:
+                    guild = self.get_guild(vc.guild_id)
+                except:
+                    guild = self.client.get_guild(vc.guild_id)
+            await challenge.reminder(self, guild)
     @commands.Cog.listener()
-    async def on_raw_reaction_add(payload):
+    async def on_raw_reaction_add(self, payload):
         print(payload.member)
-        challenge.Message1 = await challenge.fillMessages(3)
-        challenge.Message2 = await challenge.fillMessages(4)
+        challenge.Message1 = await challenge.fillMessages(self, 3)
+        challenge.Message2 = await challenge.fillMessages(self, 4)
         if payload.member.bot:
             print("the N word")
             return
         if payload.message_id == challenge.Message1.id:
             #add user
             challenge.addUser(payload.member, 1)
-            await challenge.AddToDone(challenge.Message1, payload.user_id, 1)
-            await challenge.updateMessage(channel=client.client.get_channel(vc.challenge_1))
+            await challenge.AddToDone(self, challenge.Message1, payload.user_id, 1)
+            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
         elif payload.message_id == challenge.Message2.id:
             challenge.addUser(payload.member, 2)
-            await challenge.AddToDone(challenge.Message2, payload.user_id, 2)
-            await challenge.updateMessage(channel=client.get_channel(vc.challenge_2))
+            await challenge.AddToDone(self, challenge.Message2, payload.user_id, 2)
+            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
     @commands.Cog.listener()
-    async def on_raw_reaction_remove(payload):
-        challenge.Message1 = await challenge.fillMessages(3)
-        challenge.Message2 = await challenge.fillMessages(4)
+    async def on_raw_reaction_remove(self, payload):
+        challenge.Message1 = await challenge.fillMessages(self, 3)
+        challenge.Message2 = await challenge.fillMessages(self, 4)
 
         if payload.message_id == challenge.Message1.id:
             print("In challenge 1")
-            await challenge.AddToUndone(payload.user_id, 1)
-            await challenge.updateMessage(channel=client.get_channel(vc.challenge_1))
+            await challenge.AddToUndone(self, payload.user_id, 1)
+            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
         elif payload.message_id == challenge.Message2.id:
             print("challenge 2")
-            await challenge.AddToUndone(payload.user_id, 2)
-            await challenge.updateMessage(channel=client.get_channel(vc.challenge_2))
-    def end():
-        pass
-        #for row in db:
-         #if failed is false:
-            #give user 2000xp
+            await challenge.AddToUndone(self, payload.user_id, 2)
+            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
 
+    async def checktimes(self):
+        guild = client.get_guild(vc.guild_id)
+        if guild is None:
+            try:
+                guild = self.get_guild(vc.guild_id)
+            except:
+                guild = self.client.get_guild(vc.guild_id)
+        if challenge.hour == 1 and challenge.minute == 40:
+            if challenge.switch is True:
+                challenge.switch = False
+                await challenge.NewDay(self, guild)
+        if challenge.hour == 1 and challenge.minute == 41:
+            challenge.switch = True
+
+        if challenge.hour == 20 and challenge.minute == 30:
+            if challenge.switch2 is True:
+                challenge.switch2 = False
+                await challenge.reminder(self, guild)
+        if challenge.hour == 20 and challenge.minute == 31:
+            challenge.switch2 = True
+
+    """    if hour == 1 and minute == 42:
+        switch = True
+        print("switch back on")"""
 
 def setup(client):
     client.add_cog(challenge(client))
