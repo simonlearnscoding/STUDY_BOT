@@ -107,7 +107,7 @@ class boot(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         if member.bot:
             return    
-        channel = self.client.get_channel(id=vc.sparta_id)
+        channel = self.client.get_channel(vc.sparta_id)
         if (after.self_video == False and after.self_stream == False):
             if (await self.InSparta(member)):
                 print("LOL")        

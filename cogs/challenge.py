@@ -309,20 +309,7 @@ class challenge(commands.Cog):
         db.cur.execute(sql, val)
         db.mydb.commit()
 
-        #give user +25xp
-        xp = 25
-        Embed = discord.Embed()
-        Embed = discord.Embed()
-        Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
-        Embed.add_field(name=f"{message.author.name},did the daily Challenge!",
-                        value="+ 25xp",
-                        inline=False)
 
-        Message = await message.channel.send(embed=Embed)
-
-        await asyncio.sleep(5)
-        await Message.delete()
-        levels.addXP(self.client, message.author, xp)
 
     async def AddToUndone(self, memberid, inter):
         sql = "UPDATE users.challenge SET donetoday = 0 WHERE userID = %s AND challengeId = %s;"
