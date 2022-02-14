@@ -52,7 +52,7 @@ class update(commands.Cog):
 
 
         # weekly update
-        if weekday == 0 and hour == 1 and minute == 12:
+        if weekday == 0 and hour == 1 and minute == 57:
             if switch2 is True:
                 switch2 = False
                 await tracking.reboot1(self, guild)
