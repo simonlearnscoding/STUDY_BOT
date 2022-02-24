@@ -160,6 +160,7 @@ class tracking(commands.Cog):
                 print(newID)
                 # TODO Turn result into int
                 NewResult = newID + int(Time)
+
                 sql = "UPDATE users.daily SET Study = %s WHERE ID = %s"
                 val = (NewResult, member.id)
                 db.cur.execute(sql, val)
@@ -170,7 +171,7 @@ class tracking(commands.Cog):
                 if (xp < 5):
                     xp = 5
                 await levels.addXP(self.client, member, xp)
-                await tracking.UpdateTotal(self, member, Time)
+
                 #if xp > 20:
                 channel = self.client.get_channel(vc.chores_vc_id)
                 Embed = discord.Embed()
@@ -217,13 +218,14 @@ class tracking(commands.Cog):
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-
+                if Time > 120:
+                    Time = 120
                 # Give User XP
                 if result[0] == 0 and Time > 5:
-                    xp = 30 + (int(round(Time / 5.0) * 5.0))
+                    xp = 20 + (int(round(Time / 5.0) * 5.0))
                     Embed = discord.Embed()
                     Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
-                    Embed.add_field(name=f"{member.name}, Working out for {int(Time)} minutes! +30 xp bonus for doing it today!",
+                    Embed.add_field(name=f"{member.name}, Working out for {int(Time)} minutes! +20 xp bonus for doing it today!",
                                     value=f"+ {xp}xp",
                                     inline=False)
                     message = await channel.send(embed=Embed)
@@ -286,13 +288,14 @@ class tracking(commands.Cog):
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-
+                if Time > 120:
+                    Time = 120
                 # Give User XP
                 if result[0] == 0 and Time > 5:
-                    xp = 25 + (int(round(Time / 5.0) * 5.0))
+                    xp = 15 + (int(round(Time / 5.0) * 5.0))
                     Embed = discord.Embed()
                     Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
-                    Embed.add_field(name=f"{member.name}, Reading for {int(Time)} minutes! +25 xp bonus for doing it today!",
+                    Embed.add_field(name=f"{member.name}, Reading for {int(Time)} minutes! +15 xp bonus for doing it today!",
                                     value=f"+ {xp}xp",
                                     inline=False)
                     message = await channel.send(embed=Embed)
@@ -361,14 +364,15 @@ class tracking(commands.Cog):
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
 
-
+                if Time > 60:
+                    Time = 60
                 # Give User XP
                 if result[0] == 0 and Time > 5:
-                    xp = 25 + (int(round(Time / 5.0) * 5.0))
+                    xp = 15 + (int(round(Time / 5.0) * 5.0))
                     channel = self.client.get_channel(vc.chores_vc_id)
                     Embed = discord.Embed()
                     Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
-                    Embed.add_field(name=f"{member.name}, Doing Yoga for {int(Time)} minutes! +25 xp bonus for doing it today!",
+                    Embed.add_field(name=f"{member.name}, Doing Yoga for {int(Time)} minutes! +15 xp bonus for doing it today!",
                                     value=f"+ {xp}xp",
                                     inline=False)
                     message = await channel.send(embed=Embed)
@@ -432,14 +436,15 @@ class tracking(commands.Cog):
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-
+                if Time > 30:
+                    Time = 30
                 if result[0] == 0 and Time > 5:
-                    xp = 25 + (int(round(Time / 5.0) * 5.0) * 2)
+                    xp = 15 + (int(round(Time / 5.0) * 5.0) * 2)
                     await levels.addXP(self.client, member, xp)
                     channel = self.client.get_channel(vc.chores_vc_id)
                     Embed = discord.Embed()
                     Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
-                    Embed.add_field(name=f"{member.name}, Meditating for {int(Time)} minutes! +25 xp bonus for doing it today!",
+                    Embed.add_field(name=f"{member.name}, Meditating for {int(Time)} minutes! +15 xp bonus for doing it today!",
                                     value=f"+ {xp}xp",
                                     inline=False)
                     message = await channel.send(embed=Embed)
@@ -511,7 +516,8 @@ class tracking(commands.Cog):
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 Time = x.StudyIntervall
-
+                if Time > 90:
+                    Time = 90
                 if result[0] == 0:
                     channel = self.client.get_channel(vc.chores_vc_id)
                     Embed = discord.Embed()
@@ -663,6 +669,12 @@ class tracking(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         # ALL THE START AND STOP STATEMENTS
 
+        # Exclude the chilling channels
+        try:
+            if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
+                return
+        except:
+            pass
         if member.bot:
             return
         channel = self.client.get_channel(vc.sparta_id)
@@ -700,9 +712,7 @@ class tracking(commands.Cog):
         if ((((after.self_video == True or after.self_stream == True)) and (
                 before.self_video == False and before.self_stream == False))) or (member.id == 744545219260842014):
 
-            # Exclude the chilling channels
-            if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
-                return
+
 
             for x in User.Users:
                 await tracking.startStudy(self, x, member)
@@ -828,10 +838,10 @@ class tracking(commands.Cog):
             await message.delete()
 
             if result[0] == 0:
-                xp = 25 + (int(round(Time / 5.0) * 5.0))
+                xp = 20 + (int(round(Time / 5.0) * 5.0))
                 Embed = discord.Embed()
                 Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
-                Embed.add_field(name=f"{message.author.name}, Working out for {int(Time)} minutes! 25xp bonus for doing it today!",
+                Embed.add_field(name=f"{message.author.name}, Working out for {int(Time)} minutes! 20xp bonus for doing it today!",
                                 value=f"+ {xp}xp",
                                 inline=False)
                 message = await channel.send(embed=Embed)
@@ -901,7 +911,7 @@ class tracking(commands.Cog):
                 Embed = discord.Embed()
                 Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
                 Embed.add_field(
-                    name=f"{member.name}, Meditating for {int(Time)} minutes! +30 xp bonus for doing it today!",
+                    name=f"{member.name}, Meditating for {int(Time)} minutes! +15 xp bonus for doing it today!",
                     value=f"+ {xp}xp",
                     inline=False)
                 message = await message.channel.send(embed=Embed)
@@ -963,11 +973,11 @@ class tracking(commands.Cog):
             await message.delete()
 
             if result[0] == 0 and Time > 5:
-                xp = 25 + (int(round(Time / 5.0) * 5.0))
+                xp = 15 + (int(round(Time / 5.0) * 5.0))
                 Embed = discord.Embed()
                 Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
                 Embed.add_field(
-                    name=f"{member.name}, Reading for {int(Time)} minutes! +25 xp bonus for doing it today!",
+                    name=f"{member.name}, Reading for {int(Time)} minutes! +15 xp bonus for doing it today!",
                     value=f"+ {xp}xp",
                     inline=False)
                 message = await channel.send(embed=Embed)
@@ -1022,7 +1032,7 @@ class tracking(commands.Cog):
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
             Embed.add_field(name="setting a goal for the day!",
-                            value="+25xp",
+                            value="+20xp",
                             inline=False)
             Message = await message.channel.send(embed=Embed)
             await asyncio.sleep(3)

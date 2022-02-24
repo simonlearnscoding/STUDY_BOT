@@ -2,21 +2,21 @@ import discord
 from discord.ext import commands, tasks
 import asyncio
 import sys
-
-from easy_pil import Editor, Canvas, Font, load_image_async
 sys.path.append('/.../')
 from vc import vc
 from mydb import db
 
-from easy_pil import Editor, load_image_async
+from easy_pil import Editor, load_image_async, Font, Canvas
 
 from discord import File
+
 
 
 class levels(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+
 
 
     # Calculates the level the user is currently on
@@ -45,8 +45,11 @@ class levels(commands.Cog):
 
         if UserLevel > currentLevel:
             # message to user
-            channel = discord.Client.get_channel(self, vc.chores_vc_id)
-            message = await channel.send(f"good job, {member.mention}! you just reached level {UserLevel}!")
+            #  try:
+            #      channel = await member.create_dm()
+            #       message = await channel.send(f"good job, {member.mention}! you just reached level {UserLevel}!")
+            #   except:
+            #      pass
 
             # update user.lvl
             sql = "UPDATE users.user SET LVL = %s WHERE ID = %s"
@@ -95,13 +98,13 @@ class levels(commands.Cog):
     async def displayMessage(self, message, xp, lvl, nextlvlxp, percentage):
 
         #Chosen Fonts
-        Augustus = Font("C:/Code/SPQR_VPS/assets/font/Augustus.ttf", size=28)
-        SmallFont = Font("C:/Code/SPQR_VPS/assets/font/Romanica.ttf", size=24)
-        SmallerFont = Font("C:/Code/SPQR_VPS/assets/font/Romanica.ttf", size=16)
+        Augustus = Font("C:/Code/14_11_21/assets/font/Augustus.ttf", size=28)
+        SmallFont = Font("C:/Code/14_11_21/assets/font/Romanica.ttf", size=24)
+        SmallerFont = Font("C:/Code/14_11_21/assets/font/Romanica.ttf", size=16)
 
         canvas = Canvas((900, 300), color="black")
-
-        profile = await load_image_async(str(message.author.avatar))
+        print(message.author.avatar_url)
+        profile = await load_image_async(str(message.author.avatar_url))
         profile = Editor(profile).resize((140, 140)).circle_image()
         editor = Editor(canvas)
         pic = await load_image_async("https://c4.wallpaperflare.com/wallpaper/193/219/663/black-background-marcus-aurelius-statue-hd-wallpaper-preview.jpg")
@@ -113,7 +116,7 @@ class levels(commands.Cog):
         background.paste(profile.image, (16, 16))
 
         background.rectangle((30, 240), width=490, height=35, fill="white", radius=9)
-        background.bar((30, 240), max_width=490, height=35, percentage=percentage, fill="#adf7b6", radius=9)  # a9cef4
+        background.bar((30, 240), max_width=490, height=35, percentage=percentage, fill="#84DCCF", radius=9)   #353a47
         background.text((200, 25), str(f"{message.author.name}"), font=Augustus, color="white")
         background.rectangle((200, 60), width=220, height=1, fill="#adf7b6", )
 
@@ -129,7 +132,8 @@ class levels(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.content.startswith('!level'):
+        if message.content.startswith('!day'):
+
             xp, lvl = await self.selectXPLVL(message.author.id)
             #message = await message.channel.send(f"xp: {xp}! Level: {lvl}!")
 
@@ -151,11 +155,14 @@ class levels(commands.Cog):
             if percentage < 0:
                 percentage = 0
 
-            print(f"current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
+            print(f" {message.author.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
             print(f"{percentage}%")
             await self.displayMessage(message, xp, lvl, nextlvlxp, percentage)
-            await message.delete()
-
+            try:
+                await message.delete()
+            except:
+                print("someone wants to know it lol")
+                pass
 
 
 

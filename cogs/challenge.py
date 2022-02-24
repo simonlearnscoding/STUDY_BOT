@@ -51,7 +51,15 @@ class challenge(commands.Cog):
                 await member.remove_roles(role)
             elif challengeID == 2:
                 role = discord.utils.get(member.guild.roles, id=vc.challenge_role_2)
-                await member.remove_roles(role)
+                try:
+                    await member.remove_roles(role)
+                except:
+                    name = member.name
+                    member = guild.get_member(366276958566481920)
+                    content = f"{name} lost the challenge {challengeID}"
+                    channel = await member.create_dm()
+
+                    await channel.send(content)
             else:
                 print("type that from a challenge channel pls")
     def SetToMissing(self):
@@ -107,9 +115,12 @@ class challenge(commands.Cog):
             elif result[i][4] == 2:
                 channel = guild.get_channel(vc.challenge_2)
                 message = await challenge.fillMessages(self, 4)
-            content = f"Don't forget to complete your challenge {channel.name} today! {challenge.new_line}You can go to this message and react with {challenge.emoji} when you did it! {message.jump_url}"
-            channel = await member.create_dm()
-            await channel.send(content)
+            try:
+                content = f"Don't forget to complete your challenge {channel.name} today! {challenge.new_line}You can go to this message and react with {challenge.emoji} when you did it! {message.jump_url}"
+                channel = await member.create_dm()
+                await channel.send(content)
+            except:
+                pass
 
     async def MakeMessage(self, channel):
         Embed = discord.Embed()
@@ -195,7 +206,6 @@ class challenge(commands.Cog):
         sql = "SELECT * from users.challenge WHERE username is not NULL"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
-        guild = guild
         for i in range(len(result)):
             #if user missed the day
             if result[i][6] == 0:
@@ -213,15 +223,18 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
-
+                    guild = client.get_guild(vc.guild_id)
                     member = guild.get_member(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
                         channel = guild.get_channel(vc.challenge_2)
                     content = f"unfortunately, you lost the challenge {channel.name} because you have missed it for more than 5 days in total. better luck next time"
-                    channel = await member.create_dm()
-                    await channel.send(content)
+                    try:
+                        channel = await member.create_dm()
+                        await channel.send(content)
+                    except:
+                        pass
                 # IF member misses more than 2 days in a row
                 if result[i][3] >= 2:
                     await challenge.removeRole(self, result[i][0], result[i][4])
@@ -229,7 +242,7 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
-
+                    guild = client.get_guild(vc.guild_id)
                     member = guild.get_member(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
@@ -394,18 +407,18 @@ class challenge(commands.Cog):
                 guild = self.get_guild(vc.guild_id)
             except:
                 guild = self.client.get_guild(vc.guild_id)
-        if challenge.hour == 1 and challenge.minute == 40:
+        if challenge.hour == 8 and challenge.minute == 16:
             if challenge.switch is True:
                 challenge.switch = False
                 await challenge.NewDay(self, guild)
-        if challenge.hour == 1 and challenge.minute == 41:
+        if challenge.hour == 8 and challenge.minute == 18:
             challenge.switch = True
 
-        if challenge.hour == 20 and challenge.minute == 30:
+        if challenge.hour == 22 and challenge.minute == 20:
             if challenge.switch2 is True:
                 challenge.switch2 = False
                 await challenge.reminder(self, guild)
-        if challenge.hour == 20 and challenge.minute == 31:
+        if challenge.hour == 20 and challenge.minute == 21:
             challenge.switch2 = True
 
     """    if hour == 1 and minute == 42:
