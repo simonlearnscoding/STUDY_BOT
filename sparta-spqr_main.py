@@ -49,11 +49,11 @@ async def checkupdate(client):
 async def checkchallenge(client):
     await challenge.checktimes(client)
 
-@tasks.loop(seconds=60) #change the intervall here
+@tasks.loop(seconds=10) #change the intervall here
 async def checkem(client):
     await goals.check_goals(client)
 
-@tasks.loop(seconds=10) #change the intervall here
+@tasks.loop(seconds=30) #change the intervall here
 async def checkrank(client):
     RankList = await goals.ranking(client)
     await goals.displayranking(client, RankList[0], RankList[1])

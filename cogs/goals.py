@@ -7,13 +7,12 @@ import datetime
 import asyncio
 import re
 import sys
-import User
-import emoji
+from cogs.levels import levels
 sys.path.append('/.../')
 from vc import vc
 from mydb import db
 from User import userfunction, user, User, Users
-import itertools
+
 
 
 NameCheck = False
@@ -127,7 +126,7 @@ class goals(commands.Cog):
         global NameCheck
         # for rows in goals:
 
-        sql = "SELECT * FROM users.goal WHERE Won is False"
+        sql = "SELECT * FROM users.goal"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
         result = list(result)
@@ -139,7 +138,6 @@ class goals(commands.Cog):
             db.cur.execute(sql, val)
             totaltime = db.cur.fetchone()
             totaltime = int(totaltime[0])
-            print(totaltime)
             for x in Users:
                 if x.id == val:
                     # add current study time
@@ -148,7 +146,8 @@ class goals(commands.Cog):
                         extratime = extratimesec / 60
                         totaltime = totaltime + extratime
                         print("totaltime")
-                        # get user OldCurrent
+
+            # get user OldCurrent
             sql = "SELECT Current FROM users.goal WHERE ID = %s"
             db.cur.execute(sql, val)
             OldCurrent = db.cur.fetchone()
@@ -179,38 +178,35 @@ class goals(commands.Cog):
                     channel = client.get_channel(vc.chores_vc_id)
                     await channel.send(f"good job on reaching your daily goal, {Nick}")
 
-                    # Set Won to true 
-                    sql = "UPDATE users.goal SET Won = True WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
-
                     sql = "UPDATE users.achievements SET Won = Won + 1 WHERE ID = %s"
                     val = (member.id,)
                     db.cur.execute(sql, val)
                     db.mydb.commit()
 
 
-                    Nick = f"{Nick} done"
+                    Nick = f"{member.name}"
                     await asyncio.sleep(5)
-                    NameCheck = True
                     await member.edit(nick=Nick)
-
-                    role = discord.utils.get(member.guild.roles, id=vc.challenge_role_id)
-                    await asyncio.sleep(5)
-                    await member.remove_roles(role)
-                    role = discord.utils.get(member.guild.roles, name="winner")
-                    await asyncio.sleep(5)
-                    await member.add_roles(role)
-                    # TODO EXP
+                    xp = 50
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+                    Embed.add_field(
+                        name=f"{Nick} Sticking to your Goals! +50xp!",
+                        value=f"+ {xp}xp",
+                        inline=False)
+                    message = await channel.send(embed=Embed)
+                    await asyncio.sleep(4)
+                    await message.delete()
+                    # add xp
+                    await levels.addXP(client, member, xp)
 
                     #REMOVE HIM FROM DB
-                    sql = "DELETE users.goal WHERE ID = %s"
+                    sql = "DELETE FROM users.goal WHERE ID = %s"
                     val = (member.id,)
                     db.cur.execute(sql, val)
                     db.mydb.commit()
 
-                NameCheck = True
+
                 Nick = f"{Nick} {NewCurrent}/{Goal}"
                 await asyncio.sleep(5)
                 try:
@@ -225,27 +221,21 @@ class goals(commands.Cog):
     # CHECK IF MEMBER CHANGED NAME
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        global NameCheck
-        if NameCheck == True:
-            NameCheck = False
-            return
         print("user update")
         if before.display_name != after.display_name:
             print(f"{after.name} changed name")
             Nick = after.display_name
             txt = str.split(Nick)
             name = txt[0]
-            print(name)
             ID = after.id
 
             # get current minutes
             try:
                 sql = "SELECT Total FROM users.daily WHERE ID = %s"
-                print(after.id)
                 val = (ID,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                if result is None:
+                if result is None:      #Add member if not in goals DB
                     guild = self.client.get_guild(vc.guild_id)
                     member = guild.get_member(ID)
                     await userfunction.AddMember(self, member)
@@ -271,7 +261,6 @@ class goals(commands.Cog):
                 val = (ID,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-
                 if not result:
                     print("user not in goal db yet: %s", ID)
                     # add row if user not in db
@@ -290,13 +279,7 @@ class goals(commands.Cog):
                     guild = self.client.get_guild(vc.guild_id)
                     member = guild.get_member(ID)
 
-                    role = discord.utils.get(member.guild.roles, name="winner")
-                    await asyncio.sleep(5)
-                    await member.remove_roles(role)
 
-                    role = discord.utils.get(member.guild.roles, id=vc.challenge_role_id)
-                    await asyncio.sleep(5)
-                    await member.add_roles(role)
 
                     channel = self.client.get_channel(vc.chores_vc_id)
                     await channel.send(f"{name} you've set your goal of the day to be {Goal} hours, good luck")
@@ -312,7 +295,6 @@ class goals(commands.Cog):
                     result = db.cur.fetchone()
                     result = int(result[0])
                     print(result)
-                    # TODO change channel into after.channel or whatever it is
 
                     channel = self.client.get_channel(vc.chores_vc_id)
                     guild = self.client.get_guild(vc.guild_id)
