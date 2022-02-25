@@ -57,11 +57,16 @@ class levels(commands.Cog):
             db.cur.execute(sql, val)
             db.mydb.commit()
 
-            socialRank = ["Slave", "Freedman", "Plebeian", "Equestrian", "Patrician", "Senator", "Emperor"]
+            socialRank = ["Gladiator", "Freedman", "Plebeian", "Equestrian", "Patrician", "Senator", "Emperor"]
             levelNum = [2, 5, 10, 20, 30, 40, 50]
             #check if new Rank
             for i in range(UserLevel):
                 if UserLevel == levelNum[i]:
+                    try:
+                        role = discord.utils.get(member.guild.roles, name=socialRank[i - 1])
+                        await member.remove_roles(role)
+                    except:
+                        pass
                     role = discord.utils.get(member.guild.roles, name=socialRank[i])
                     await member.add_roles(role)
 
