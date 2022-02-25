@@ -170,7 +170,6 @@ class tracking(commands.Cog):
                 xp = int(round(Time / 5.0) * 5.0)
                 if (xp < 5):
                     xp = 5
-                await levels.addXP(self.client, member, xp)
 
                 #if xp > 20:
                 channel = self.client.get_channel(vc.chores_vc_id)
