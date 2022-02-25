@@ -57,6 +57,15 @@ class levels(commands.Cog):
             db.cur.execute(sql, val)
             db.mydb.commit()
 
+            socialRank = ["Slave", "Freedman", "Plebeian", "Equestrian", "Patrician", "Senator", "Emperor"]
+            levelNum = [2, 5, 10, 20, 30, 40, 50]
+            #check if new Rank
+            for i in range(UserLevel):
+                if UserLevel == levelNum[i]:
+                    role = discord.utils.get(member.guild.roles, name=socialRank[i])
+                    await member.add_roles(role)
+
+
     async def selectXPLVL(self, id):
         sql = "SELECT XP, LVL FROM users.user WHERE ID = %s"
         val = (id, )
