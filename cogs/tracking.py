@@ -815,7 +815,10 @@ class tracking(commands.Cog):
             result = db.cur.fetchall()
             print(result)
 
-            await message.channel.send(embed=embedVar)
+            Messsage = await message.channel.send(embed=embedVar)
+
+            await asyncio.sleep(7)
+            await Messsage.delete()
             return
 
         if message.content.startswith('!workout'):

@@ -44,12 +44,12 @@ class levels(commands.Cog):
 
 
         if UserLevel > currentLevel:
-            # message to user
-            #  try:
-            #      channel = await member.create_dm()
-            #       message = await channel.send(f"good job, {member.mention}! you just reached level {UserLevel}!")
-            #   except:
-            #      pass
+
+            try:
+                  channel = await member.create_dm()
+                  message = await channel.send(f"good job, {member.mention}! you just reached level {UserLevel}!")
+            except:
+                pass
 
             # update user.lvl
             sql = "UPDATE users.user SET LVL = %s WHERE ID = %s"
