@@ -24,10 +24,11 @@ class challenge(commands.Cog):
     done1 = []
     missing2 = []
     done2 = []
-    switch2 = True
+
     new_line = '\n'
     emoji = '\N{RAISED HAND}'
     switch = True
+    switch2 = True
 
     def __init__(self, client):
         self.client = client
@@ -223,8 +224,7 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
-                    guild = client.get_guild(vc.guild_id)
-                    member = guild.get_member(result[i][0])
+                    member = client.get_user(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
@@ -242,8 +242,7 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
-                    guild = client.get_guild(vc.guild_id)
-                    member = guild.get_member(result[i][0])
+                    member = client.get_user(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
@@ -407,18 +406,18 @@ class challenge(commands.Cog):
                 guild = self.get_guild(vc.guild_id)
             except:
                 guild = self.client.get_guild(vc.guild_id)
-        if challenge.hour == 8 and challenge.minute == 16:
+        if challenge.hour == 0 and challenge.minute == 36:
             if challenge.switch is True:
                 challenge.switch = False
                 await challenge.NewDay(self, guild)
-        if challenge.hour == 8 and challenge.minute == 18:
+        if challenge.hour == 0 and challenge.minute == 38:
             challenge.switch = True
 
         if challenge.hour == 22 and challenge.minute == 20:
             if challenge.switch2 is True:
                 challenge.switch2 = False
                 await challenge.reminder(self, guild)
-        if challenge.hour == 20 and challenge.minute == 21:
+        if challenge.hour == 20 and challenge.minute == 23:
             challenge.switch2 = True
 
     """    if hour == 1 and minute == 42:

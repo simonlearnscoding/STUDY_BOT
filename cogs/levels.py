@@ -59,8 +59,9 @@ class levels(commands.Cog):
 
             socialRank = ["Gladiator", "Freedman", "Plebeian", "Equestrian", "Patrician", "Senator", "Emperor"]
             levelNum = [2, 5, 10, 20, 30, 40, 50]
+
             #check if new Rank
-            for i in range(UserLevel):
+            for i in range(levelNum):
                 if UserLevel == levelNum[i]:
                     try:
                         role = discord.utils.get(member.guild.roles, name=socialRank[i - 1])

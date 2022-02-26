@@ -186,7 +186,10 @@ class goals(commands.Cog):
 
                     Nick = f"{member.name}"
                     await asyncio.sleep(5)
-                    await member.edit(nick=Nick)
+                    try:
+                        await member.edit(nick=Nick)
+                    except:
+                        pass
                     xp = 50
                     Embed = discord.Embed()
                     Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
