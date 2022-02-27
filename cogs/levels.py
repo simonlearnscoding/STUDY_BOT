@@ -61,7 +61,7 @@ class levels(commands.Cog):
             levelNum = [2, 5, 10, 20, 30, 40, 50]
 
             #check if new Rank
-            for i in range(levelNum):
+            for i in range(len(levelNum)):
                 if UserLevel == levelNum[i]:
                     try:
                         role = discord.utils.get(member.guild.roles, name=socialRank[i - 1])

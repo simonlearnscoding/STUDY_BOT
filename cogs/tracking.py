@@ -668,12 +668,7 @@ class tracking(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         # ALL THE START AND STOP STATEMENTS
 
-        # Exclude the chilling channels
-        try:
-            if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
-                return
-        except:
-            pass
+
         if member.bot:
             return
         channel = self.client.get_channel(vc.sparta_id)
@@ -692,6 +687,7 @@ class tracking(commands.Cog):
             if (after.channel.id == vc.sparta_id) or (after.channel.id == vc.study_id) or (
                     after.channel.id == vc.producing_id):
                 await tracking.QuitSomething(self, member)
+
 
         # If the member just joined a channel
         if (before.channel is not None) and (before.channel.id != after.channel.id):
@@ -1029,8 +1025,6 @@ class tracking(commands.Cog):
 
         if message.channel.id == vc.tasks_id:
             # add xp
-            xp = 25
-            await levels.addXP(self.client, message.author, xp)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
             Embed.add_field(name="setting a goal for the day!",
@@ -1039,6 +1033,8 @@ class tracking(commands.Cog):
             Message = await message.channel.send(embed=Embed)
             await asyncio.sleep(3)
             await Message.delete()
+            xp = 25
+            await levels.addXP(self.client, message.author, xp)
 
 def setup(client):
     client.add_cog(tracking(client))

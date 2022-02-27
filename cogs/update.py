@@ -42,6 +42,9 @@ class update(commands.Cog):
                 #await tracking.reboot1(self, guild)
                 try:
                     update.rewardDailyWinner(client=self)
+                except:
+                    print("theres been an error with the daily winner")
+                try:
                     update.rewardTopFour(client=self)
                 except:
                     print("theres been an error with the daily winner")
