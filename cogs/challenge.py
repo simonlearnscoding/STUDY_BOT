@@ -359,6 +359,11 @@ class challenge(commands.Cog):
             await challenge.giveRole(message)
         if message.content.startswith("!newday"):
             guild = client.get_guild(vc.guild_id)
+            if guild is None:
+                try:
+                    guild = self.get_guild(vc.guild_id)
+                except:
+                    guild = self.client.get_guild(vc.guild_id)
             await challenge.NewDay(self, guild)
         if message.content.startswith("!reminder"):
             guild = client.get_guild(vc.guild_id)
