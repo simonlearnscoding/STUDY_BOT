@@ -265,9 +265,11 @@ class challenge(commands.Cog):
 
         if challenge.monthday == 1:
             for i in range(len(result)):
-                # Give user +2000xp
+                # Give user +500xp
                 member = guild.get_member(result[i][0])
-                levels.addXP(member, 2000)
+                if member is None:
+                    member = self.client.get_user(result[i][0])
+                levels.addXP(member, 500)
 
                 if result[i][4] == 1:
                     channel = guild.get_channel(vc.challenge_1)
@@ -275,11 +277,14 @@ class challenge(commands.Cog):
                     channel = guild.get_channel(vc.challenge_2)
                 # let user know
                 content = f"Congratulations on completing the challenge {channel.name}! {challenge.new_line} +2000xp Social Credit points have been added to your account!"
-                channel = await member.create_dm()
-                await channel.send(content)
+                try:
+                    channel = await member.create_dm()
+                    await channel.send(content)
+                except:
+                    pass
                 # Delete all users
 
-            sql = "DELETE FROM challenge WHERE challengeId = 1 OR 2"
+            sql = "DELETE FROM users.challenge WHERE challengeId = 1 OR 2"
             db.cur.execute(sql)
             db.mydb.commit()
 
