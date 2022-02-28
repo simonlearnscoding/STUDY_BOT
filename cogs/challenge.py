@@ -242,7 +242,10 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
+
                     member = client.get_user(result[i][0])
+                    if member is None:
+                        member = self.client.get_user(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
