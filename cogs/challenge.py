@@ -265,18 +265,18 @@ class challenge(commands.Cog):
 
         if challenge.monthday == 1:
             for i in range(len(result)):
-                # Give user +500xp
+                # Give user +1000xp
                 member = guild.get_member(result[i][0])
                 if member is None:
                     member = self.client.get_user(result[i][0])
-                levels.addXP(member, 500)
+                await levels.addXP(client, member, 1000)
 
                 if result[i][4] == 1:
                     channel = guild.get_channel(vc.challenge_1)
                 elif result[i][4] == 2:
                     channel = guild.get_channel(vc.challenge_2)
                 # let user know
-                content = f"Congratulations on completing the challenge {channel.name}! {challenge.new_line} +2000xp Social Credit points have been added to your account!"
+                content = f"Congratulations on completing the challenge {channel.name}! {challenge.new_line} +1000xp Social Credit points have been added to your account!"
                 try:
                     channel = await member.create_dm()
                     await channel.send(content)
@@ -394,10 +394,38 @@ class challenge(commands.Cog):
             challenge.addUser(payload.member, 1)
             await challenge.AddToDone(self, challenge.Message1, payload.user_id, 1)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
+            channel = self.client.get_channel(vc.challenge_1)
+
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
+                            value=f"+ 10xp",
+                            inline=False)
+            message = await channel.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+            # add xp
+            await levels.addXP(self.client, payload.member, 10)
+
+
         elif payload.message_id == challenge.Message2.id:
             challenge.addUser(payload.member, 2)
             await challenge.AddToDone(self, challenge.Message2, payload.user_id, 2)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
+
+            channel = self.client.get_channel(vc.challenge_2)
+
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
+                            value=f"+ 10xp",
+                            inline=False)
+            message = await channel.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+            # add xp
+            await levels.addXP(self.client, payload.member, 10)
+
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         challenge.Message1 = await challenge.fillMessages(self, 3)

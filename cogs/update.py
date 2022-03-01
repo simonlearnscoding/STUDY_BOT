@@ -53,7 +53,7 @@ class update(commands.Cog):
                 await update.updateTables("daily", "weekly")
                 sql = "DELETE FROM users.goal"
                 db.cur.execute(sql, )
-                await tracking.reboot2(self, guild)
+                #await tracking.reboot2(self, guild)
         if hour == 2 and minute == 12:
             switch = True
             print("switch back on")
@@ -64,7 +64,7 @@ class update(commands.Cog):
                 switch2 = False
                 #await tracking.reboot1(self, guild)
                 await update.updateTables("weekly", "monthly")
-                await tracking.reboot2(self, guild)
+                #await tracking.reboot2(self, guild)
         if weekday == 0 and hour == 3 and minute == 45:
             switch2 = True
 
@@ -74,7 +74,7 @@ class update(commands.Cog):
                 switch3 = False
                 #await tracking.reboot1(self, guild)
                 print("monthly switch")
-                await tracking.reboot2(self, guild)
+                #await tracking.reboot2(self, guild)
                 # TODO monthly switch
         if monthday == 1 and hour == 3  and minute == 55:
             switch3 = True
