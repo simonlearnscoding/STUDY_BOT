@@ -113,9 +113,9 @@ class levels(commands.Cog):
     async def displayMessage(self, message, xp, lvl, nextlvlxp, percentage):
 
         #Chosen Fonts
-        Augustus = Font("C:/Code/14_11_21/assets/font/Augustus.ttf", size=28)
-        SmallFont = Font("C:/Code/14_11_21/assets/font/Romanica.ttf", size=24)
-        SmallerFont = Font("C:/Code/14_11_21/assets/font/Romanica.ttf", size=16)
+        Augustus = Font(vc.Augustus, size=28)
+        SmallFont = Font(vc.SmallFont, size=24)
+        SmallerFont = Font(vc.SmallerFont, size=16)
 
         canvas = Canvas((900, 300), color="black")
         print(message.author.avatar_url)

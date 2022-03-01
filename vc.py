@@ -1,6 +1,6 @@
 class vc():
 
-    Testing = True
+    Testing = False
 
     if Testing is False:
         general_id = 797837772005179433
@@ -35,9 +35,15 @@ class vc():
         challenge_role_1 = 939465581936144405
         challenge_role_2 = 939465659211984936
 
+        Augustus = "C:/Code/14_11_21/assets/font/Augustus.ttf"
+        SmallFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
+        SmallerFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
 
     else:
         # TESTING
+        Augustus = "C:/Code/SPQR_VPS/assets/font/Augustus.ttf"
+        SmallFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        SmallerFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
         general_id = 917547601753178207
         guild_id = 917547601539264623
         tasks_id = 917547601753178210
@@ -53,7 +59,7 @@ class vc():
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
         lions_cage_id = 834118898836045894
-        lions_cage_text_id = 917547602277453864
+        lions_cage_text_id = 917547602277453862
         chores_vc_id = 917547601753178211
         workout_id = 917547601904148526
         timer_id = 917547601753178205
@@ -69,3 +75,5 @@ class vc():
         vibing_id = 917547602076135478
         challenge_role_1 = 939464453357994014
         challenge_role_2 = 939464510425665606
+
+

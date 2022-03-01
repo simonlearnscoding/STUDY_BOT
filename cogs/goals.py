@@ -1,7 +1,4 @@
 import discord
-from discord import client
-from discord.ext import commands
-from discord.ext.commands import bot
 from discord.ext import commands, tasks
 import datetime
 import asyncio

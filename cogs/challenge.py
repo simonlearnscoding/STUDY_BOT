@@ -6,6 +6,7 @@ import sys
 import asyncio
 import time
 from cogs.levels import levels
+from cogs.heatmap import heatmap
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
@@ -331,6 +332,7 @@ class challenge(commands.Cog):
 
 
 
+
     async def AddToUndone(self, memberid, inter):
         sql = "UPDATE users.challenge SET donetoday = 0 WHERE userID = %s AND challengeId = %s;"
         val = (memberid, inter)
@@ -395,7 +397,7 @@ class challenge(commands.Cog):
             await challenge.AddToDone(self, challenge.Message1, payload.user_id, 1)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
             channel = self.client.get_channel(vc.challenge_1)
-
+            await heatmap.commandHeatmap(self, "CHALLENGE1", channel)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
             Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
@@ -404,8 +406,8 @@ class challenge(commands.Cog):
             message = await channel.send(embed=Embed)
             await asyncio.sleep(4)
             await message.delete()
-            # add xp
-            await levels.addXP(self.client, payload.member, 10)
+
+            await levels.addXP(self.client, payload.member, 10) # add xp
 
 
         elif payload.message_id == challenge.Message2.id:
@@ -414,7 +416,7 @@ class challenge(commands.Cog):
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
 
             channel = self.client.get_channel(vc.challenge_2)
-
+            await heatmap.commandHeatmap(self, "CHALLENGE2", channel)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
             Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
@@ -423,9 +425,10 @@ class challenge(commands.Cog):
             message = await channel.send(embed=Embed)
             await asyncio.sleep(4)
             await message.delete()
-            # add xp
-            await levels.addXP(self.client, payload.member, 10)
 
+            # add xp
+
+            await levels.addXP(self.client, payload.member, 10)
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         challenge.Message1 = await challenge.fillMessages(self, 3)
