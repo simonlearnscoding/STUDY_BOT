@@ -12,12 +12,13 @@ import cogs.timer
 from User import user, userfunction
 from cogs.challenge import challenge
 from cogs.update import update
+from cogs.heatmap import heatmap
 from vc import vc
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks", "cogs.levels", "cogs.challenge"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks", "cogs.levels", "cogs.heatmap", "cogs.challenge"]
 if __name__ == '__main__':
     for ext in extensions:
         client.load_extension(ext)
@@ -38,7 +39,9 @@ async def on_ready():
     checkupdate.start(client)
     checkchallenge.start(client)
     checkrank.start(client)
+    checkheatmap.start(client)
     await goals.ranking(client)
+
 
 
 @tasks.loop(seconds=40)
@@ -48,6 +51,10 @@ async def checkupdate(client):
 @tasks.loop(seconds=40)
 async def checkchallenge(client):
     await challenge.checktimes(client)
+
+@tasks.loop(seconds=40)
+async def checkheatmap(client):
+    await heatmap.checkAdder(client)
 
 @tasks.loop(seconds=10) #change the intervall here
 async def checkem(client):
