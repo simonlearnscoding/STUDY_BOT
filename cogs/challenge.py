@@ -6,6 +6,7 @@ import sys
 import asyncio
 import time
 from cogs.levels import levels
+from cogs.heatmap import heatmap
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
@@ -215,9 +216,19 @@ class challenge(commands.Cog):
                 db.cur.execute(sql, val)
                 db.mydb.commit()
                 sql = "UPDATE users.challenge SET missedstreak = missedstreak + 1 WHERE userID = %s AND challengeId = %s;"
-
                 db.cur.execute(sql, val)
                 db.mydb.commit()
+
+                Activity = str(f"CHALLENGE{result[i][4]}")
+                Minutes = 0
+                now = datetime.datetime.now()
+                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+                id = str(result[i][0])
+                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+                val = (id, formatted_date, Minutes, Activity)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
                 if result[i][2] >= 5:
                     await challenge.removeRole(self, result[i][0], result[i][4])
                     val = (result[i][0], result[i][4])
@@ -242,7 +253,10 @@ class challenge(commands.Cog):
                     sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
                     db.cur.execute(sql, val)
                     db.mydb.commit()
+
                     member = client.get_user(result[i][0])
+                    if member is None:
+                        member = self.client.get_user(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
@@ -258,25 +272,42 @@ class challenge(commands.Cog):
                 sql = "UPDATE users.challenge SET streak = streak + 1 WHERE userID = %s AND challengeId = %s;"
                 db.cur.execute(sql, val)
                 db.mydb.commit()
+
+                Activity = str(f"CHALLENGE{result[i][4]}")
+                Minutes = 1
+                now = datetime.datetime.now()
+                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+                id = str(result[i][0])
+                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+                val = (id, formatted_date, Minutes, Activity)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+
             await challenge.AddToUndone(self, result[i][0], result[i][4])
 
         if challenge.monthday == 1:
             for i in range(len(result)):
-                # Give user +2000xp
+                # Give user +1000xp
                 member = guild.get_member(result[i][0])
-                levels.addXP(member, 2000)
+                if member is None:
+                    member = self.client.get_user(result[i][0])
+                await levels.addXP(client, member, 1000)
 
                 if result[i][4] == 1:
                     channel = guild.get_channel(vc.challenge_1)
                 elif result[i][4] == 2:
                     channel = guild.get_channel(vc.challenge_2)
                 # let user know
-                content = f"Congratulations on completing the challenge {channel.name}! {challenge.new_line} +2000xp Social Credit points have been added to your account!"
-                channel = await member.create_dm()
-                await channel.send(content)
+                content = f"Congratulations on completing the challenge {channel.name}! {challenge.new_line} +1000xp Social Credit points have been added to your account!"
+                try:
+                    channel = await member.create_dm()
+                    await channel.send(content)
+                except:
+                    pass
                 # Delete all users
 
-            sql = "DELETE FROM challenge WHERE challengeId = 1 OR 2"
+            sql = "DELETE FROM users.challenge WHERE challengeId = 1 OR 2"
             db.cur.execute(sql)
             db.mydb.commit()
 
@@ -320,6 +351,7 @@ class challenge(commands.Cog):
         val = (memberid, inter)
         db.cur.execute(sql, val)
         db.mydb.commit()
+
 
 
 
@@ -386,10 +418,39 @@ class challenge(commands.Cog):
             challenge.addUser(payload.member, 1)
             await challenge.AddToDone(self, challenge.Message1, payload.user_id, 1)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
+            channel = self.client.get_channel(vc.challenge_1)
+            await heatmap.commandHeatmap(self, "CHALLENGE1", channel)
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
+                            value=f"+ 10xp",
+                            inline=False)
+            message = await channel.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+
+            await levels.addXP(self.client, payload.member, 10) # add xp
+
+
         elif payload.message_id == challenge.Message2.id:
             challenge.addUser(payload.member, 2)
             await challenge.AddToDone(self, challenge.Message2, payload.user_id, 2)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
+
+            channel = self.client.get_channel(vc.challenge_2)
+            await heatmap.commandHeatmap(self, "CHALLENGE2", channel)
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
+                            value=f"+ 10xp",
+                            inline=False)
+            message = await channel.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+
+            # add xp
+
+            await levels.addXP(self.client, payload.member, 10)
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         challenge.Message1 = await challenge.fillMessages(self, 3)
