@@ -93,7 +93,7 @@ class heatmap(commands.Cog):
 
 
 
-    async def DisplayHeatmap(self, data, activity, Today, channel):
+    async def DisplayHeatmap(self, data, activity, Today, channel, member):
 
         background = Editor(Canvas((840, 516), "#2C2F33"))
         background.rectangle(position=(0,0), width=840, height=516, color="#262727", radius=11)
@@ -174,7 +174,7 @@ class heatmap(commands.Cog):
 
             width = width + Decrease
             height = initialHeight
-        background.text((68, 40), str(f"Simon {activity}"), font=Augustus, color="white")
+        background.text((68, 40), str(f" {member.name} {activity}"), font=Augustus, color="white")
 
 
         initialPos=[(64, 460), (249, 462), (450, 459),(635, 458)]
@@ -231,8 +231,8 @@ class heatmap(commands.Cog):
             resultToday = db.cur.fetchone()
             Today = resultToday[0]
 
-        await heatmap.DisplayHeatmap(self, result, activity, Today, channel)
-        #DisplayHeatmap(result)
+        await heatmap.DisplayHeatmap(self, result, activity, Today, channel, member)
+
     #for i in range(len(result)):
 
 
