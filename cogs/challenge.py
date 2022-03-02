@@ -216,9 +216,19 @@ class challenge(commands.Cog):
                 db.cur.execute(sql, val)
                 db.mydb.commit()
                 sql = "UPDATE users.challenge SET missedstreak = missedstreak + 1 WHERE userID = %s AND challengeId = %s;"
-
                 db.cur.execute(sql, val)
                 db.mydb.commit()
+
+                Activity = str(f"CHALLENGE{result[i][4]}")
+                Minutes = 0
+                now = datetime.datetime.now()
+                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+                id = str(result[i][0])
+                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+                val = (id, formatted_date, Minutes, Activity)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
                 if result[i][2] >= 5:
                     await challenge.removeRole(self, result[i][0], result[i][4])
                     val = (result[i][0], result[i][4])
@@ -262,6 +272,18 @@ class challenge(commands.Cog):
                 sql = "UPDATE users.challenge SET streak = streak + 1 WHERE userID = %s AND challengeId = %s;"
                 db.cur.execute(sql, val)
                 db.mydb.commit()
+
+                Activity = str(f"CHALLENGE{result[i][4]}")
+                Minutes = 1
+                now = datetime.datetime.now()
+                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+                id = str(result[i][0])
+                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+                val = (id, formatted_date, Minutes, Activity)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+
             await challenge.AddToUndone(self, result[i][0], result[i][4])
 
         if challenge.monthday == 1:

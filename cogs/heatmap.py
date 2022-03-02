@@ -16,6 +16,7 @@ SmallerFont = Font(vc.SmallerFont, size=21)
 
 class heatmap(commands.Cog):
     hour = time.localtime().tm_hour
+    minute = time.localtime().tm_min
     switch = True
     def __init__(self, client):
         self.client = client
@@ -52,11 +53,11 @@ class heatmap(commands.Cog):
             heatmap.addRow(self, result[i])
 
     async def checkAdder(self):
-        if heatmap.hour == 0:
+        if heatmap.hour == 0 and heatmap.minute == 2:
             if heatmap.switch is True:
                 heatmap.switch = False
                 heatmap.addDataDaily(self)
-        if heatmap.hour == 1:
+        if heatmap.hour == 1 and heatmap.minute == 4:
             heatmap.switch = True
     def pickColor(self, Tresholds, Colors, Time):
         for i in range(len(Tresholds)):
@@ -200,9 +201,9 @@ class heatmap(commands.Cog):
 
 
 
-    async def commandHeatmap(self, activity, channel):
+    async def commandHeatmap(self, activity, channel, member):
         sql="select Minutes from users.log where ID =%s and Activity = %s"
-        val=(819523319358816286, activity)
+        val=(member.id, activity)
         db.cur.execute(sql, val)
         result = db.cur.fetchall()
 
@@ -211,21 +212,21 @@ class heatmap(commands.Cog):
             Activity = activity.title()
 
             sql= f"select {Activity} from users.daily where ID =%s"
-            val=(819523319358816286, )
+            val=(member.id, )
             db.cur.execute(sql, val)
             resultToday = db.cur.fetchone()
             Today = resultToday[0]
 
         if (activity == "CHALLENGE1"):
             sql= f"select donetoday from users.challenge where userID =%s AND challengeID = 1"
-            val=(819523319358816286, )
+            val=(member.id, )
             db.cur.execute(sql, val)
             resultToday = db.cur.fetchone()
             Today = resultToday[0]
 
         elif (activity == "CHALLENGE2"):
             sql= f"select donetoday from users.challenge where userID =%s AND challengeID = 2"
-            val=(819523319358816286, )
+            val=(member.id, )
             db.cur.execute(sql, val)
             resultToday = db.cur.fetchone()
             Today = resultToday[0]
@@ -254,7 +255,7 @@ class heatmap(commands.Cog):
             result = message.content.split(" ")
             try:
                 activity = str(result[1]).upper()
-                await heatmap.commandHeatmap(self, activity, channel)
+                await heatmap.commandHeatmap(self, activity, channel, member)
             except:
                 if channel.id != (vc.lions_cage_text_id):
                     await message.delete()
@@ -263,7 +264,7 @@ class heatmap(commands.Cog):
                 for i in range(len(vcs)):
                     if message.channel.id == vcs[i]:
                         activity = activities[i]
-                        await heatmap.commandHeatmap(self, activity, channel)
+                        await heatmap.commandHeatmap(self, activity, channel, member)
                         return
                 vcs= [vc.study_id, vc.sparta_id, vc.meditation_id, vc.reading_id, vc.chores_id, vc.workout_id, vc.yoga_id, vc.creative_id, vc.producing_id]
                 activities=["STUDY", "STUDY", "MEDITATION", "READING", "CHORES", "WORKOUT", "YOGA", "CREATIVE", "CREATIVE", ]
@@ -271,11 +272,11 @@ class heatmap(commands.Cog):
                     for i in range(len(vcs)):
                         if message.author.voice.channel.id == vcs[i]:
                             activity = activities[i]
-                            await heatmap.commandHeatmap(self, activity, channel)
+                            await heatmap.commandHeatmap(self, activity, channel, member)
                             return
                 else:
                     activity = "TOTAL"
-                    await heatmap.commandHeatmap(self, activity, channel)
+                    await heatmap.commandHeatmap(self, activity, channel, member)
 
             try:
                 if channel.id != (vc.lions_cage_text_id):
@@ -284,10 +285,10 @@ class heatmap(commands.Cog):
                 pass
 
 
-    async def launchHeatmap(self, activity):
+    async def launchHeatmap(self, activity, member):
         channel = self.client.get_channel(vc.chores_vc_id)
         Message = await channel.send(f"View your Study Stats, type !track (when in vc) or !track {activity}")
-        await heatmap.commandHeatmap(self, f"{activity.upper()}", channel)
+        await heatmap.commandHeatmap(self, f"{activity.upper()}", channel, member)
         await Message.delete()
 
     @commands.Cog.listener()
@@ -306,31 +307,31 @@ class heatmap(commands.Cog):
             result = db.cur.fetchall()
             if ((after.channel.id==vc.study_id) or (after.channel.id==vc.sparta_id)):
                 if (int(result[0][1]) == 0):
-                    await heatmap.launchHeatmap(self, "study")
+                    await heatmap.launchHeatmap(self, "study", member)
 
             if (after.channel.id==vc.workout_id):
                 if (int(result[0][2]) == 0):
-                    await heatmap.launchHeatmap(self, "workout")
+                    await heatmap.launchHeatmap(self, "workout", member)
 
             if (after.channel.id==vc.yoga_id):
                 if (int(result[0][3]) == 0):
-                    await heatmap.launchHeatmap(self, "yoga")
+                    await heatmap.launchHeatmap(self, "yoga", member)
 
             if (after.channel.id==vc.reading_id):
                 if (int(result[0][4]) == 0):
-                    await heatmap.launchHeatmap(self, "reading")
+                    await heatmap.launchHeatmap(self, "reading", member)
 
             if (after.channel.id==vc.meditation_id):
                 if (int(result[0][5]) == 0):
-                    await heatmap.launchHeatmap(self, "meditation")
+                    await heatmap.launchHeatmap(self, "meditation", member)
 
             if (after.channel.id==vc.chores_id):
                 if (int(result[0][6]) == 0):
-                    await heatmap.launchHeatmap(self, "chores")
+                    await heatmap.launchHeatmap(self, "chores", member)
 
             if ((after.channel.id==vc.creative_id) or (after.channel.id==vc.producing_id)):
                 if (int(result[0][7]) == 0):
-                    await heatmap.launchHeatmap(self, "creative")
+                    await heatmap.launchHeatmap(self, "creative", member)
 
 
 def setup(client):

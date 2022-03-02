@@ -36,7 +36,7 @@ class update(commands.Cog):
 
         # daily update
         guild = self.get_guild(vc.guild_id)
-        if hour == 0:
+        if hour == 0 and minute == 5:
             print("tried to update")
             if update.switch is True:
                 update.switch = False
@@ -55,7 +55,7 @@ class update(commands.Cog):
                 sql = "DELETE FROM users.goal"
                 db.cur.execute(sql, )
                 #await tracking.reboot2(self, guild)
-        if hour == 1:
+        if hour == 1 and minute == 7:
             update.switch = True
             print("switch back on")
 
