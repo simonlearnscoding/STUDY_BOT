@@ -127,8 +127,14 @@ class heatmap(commands.Cog):
         if longestSreak == 0:
             longestSreak = currentstreak
         daysDoneSum = daysDone + daysNotDone
-        daysDone = round(((daysDone / daysDoneSum ) * 100),1)
-        dailyAverage = int(dailySum / len(data))
+        try:
+            daysDone = round(((daysDone / daysDoneSum ) * 100),1)
+        except:
+            daysDone = "/"
+        try:
+            dailyAverage = int(dailySum / len(data))
+        except:
+            dailyAverage = 0
 
         if dailyAverage > 60:
             dailyAverage = dailyAverage / 60

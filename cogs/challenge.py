@@ -419,7 +419,7 @@ class challenge(commands.Cog):
             await challenge.AddToDone(self, challenge.Message1, payload.user_id, 1)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
             channel = self.client.get_channel(vc.challenge_1)
-            await heatmap.commandHeatmap(self, "CHALLENGE1", channel)
+            await heatmap.commandHeatmap(self, "CHALLENGE1", channel, payload.member)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
             Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
@@ -438,7 +438,7 @@ class challenge(commands.Cog):
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
 
             channel = self.client.get_channel(vc.challenge_2)
-            await heatmap.commandHeatmap(self, "CHALLENGE2", channel)
+            await heatmap.commandHeatmap(self, "CHALLENGE2", channel, payload.member)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
             Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",
