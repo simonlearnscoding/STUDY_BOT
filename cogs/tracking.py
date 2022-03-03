@@ -968,7 +968,10 @@ class tracking(commands.Cog):
             val = (Id,)
             db.cur.execute(sql, val)
             result = db.cur.fetchone()
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
 
             if result[0] == 0 and Time > 5:
                 xp = 15 + (int(round(Time / 5.0) * 5.0))

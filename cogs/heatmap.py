@@ -53,11 +53,11 @@ class heatmap(commands.Cog):
             heatmap.addRow(self, result[i])
 
     async def checkAdder(self):
-        if heatmap.hour == 0 and heatmap.minute == 2:
+        if heatmap.hour == 0 and heatmap.minute < 30:
             if heatmap.switch is True:
                 heatmap.switch = False
                 heatmap.addDataDaily(self)
-        if heatmap.hour == 1 and heatmap.minute == 4:
+        if heatmap.hour == 1 and heatmap.minute > 40:
             heatmap.switch = True
     def pickColor(self, Tresholds, Colors, Time):
         for i in range(len(Tresholds)):
@@ -127,8 +127,14 @@ class heatmap(commands.Cog):
         if longestSreak == 0:
             longestSreak = currentstreak
         daysDoneSum = daysDone + daysNotDone
-        daysDone = round(((daysDone / daysDoneSum ) * 100),1)
-        dailyAverage = int(dailySum / len(data))
+        try:
+            daysDone = round(((daysDone / daysDoneSum ) * 100),1)
+        except:
+            daysDone = "/"
+        try:
+            dailyAverage = int(dailySum / len(data))
+        except:
+            dailyAverage = 0
 
         if dailyAverage > 60:
             dailyAverage = dailyAverage / 60
@@ -276,7 +282,8 @@ class heatmap(commands.Cog):
                             return
                 else:
                     activity = "TOTAL"
-                    await heatmap.commandHeatmap(self, activity, channel, member)
+                    #await heatmap.commandHeatmap(self, activity, channel, member)
+                    pass
 
             try:
                 if channel.id != (vc.lions_cage_text_id):
