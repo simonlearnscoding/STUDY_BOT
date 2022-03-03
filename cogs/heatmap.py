@@ -7,7 +7,6 @@ import sys
 sys.path.append('/.../')
 from vc import vc
 from mydb import db
-import time
 import asyncio
 
 Augustus = Font(vc.Augustus, size=40)
@@ -15,9 +14,7 @@ SmallFont = Font(vc.SmallFont, size=24)
 SmallerFont = Font(vc.SmallerFont, size=21)
 
 class heatmap(commands.Cog):
-    hour = time.localtime().tm_hour
-    minute = time.localtime().tm_min
-    switch = True
+
     def __init__(self, client):
         self.client = client
 
@@ -39,26 +36,20 @@ class heatmap(commands.Cog):
             db.cur.execute(sql, val)
             db.mydb.commit()
 
-    def selectAll(self):
+    def selectAll(self, Timezone):
         # Select entire Daily DB
-        sql = f"SELECT * FROM users.weekly"
+        sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
         sql = str(sql)
         db.cur.execute(sql)
         result = db.cur.fetchall()
         return result
 
-    def addDataDaily(self):
-        result = heatmap.selectAll(self)
+    def addDataDaily(self, Timezone):
+        result = heatmap.selectAll(self, Timezone)
         for i in range(len(result)):
             heatmap.addRow(self, result[i])
 
-    async def checkAdder(self):
-        if heatmap.hour == 0 and heatmap.minute < 30:
-            if heatmap.switch is True:
-                heatmap.switch = False
-                heatmap.addDataDaily(self)
-        if heatmap.hour == 1 and heatmap.minute > 40:
-            heatmap.switch = True
+
     def pickColor(self, Tresholds, Colors, Time):
         for i in range(len(Tresholds)):
             if Time < Tresholds[i]:

@@ -286,7 +286,10 @@ class challenge(commands.Cog):
 
             await challenge.AddToUndone(self, result[i][0], result[i][4])
 
-        if challenge.monthday == 1:
+        async def challengeWinners(guild):
+            sql = "SELECT * from users.challenge WHERE username is not NULL"
+            db.cur.execute(sql, )
+            result = db.cur.fetchall()
             for i in range(len(result)):
                 # Give user +1000xp
                 member = guild.get_member(result[i][0])
@@ -465,30 +468,8 @@ class challenge(commands.Cog):
             await challenge.AddToUndone(self, payload.user_id, 2)
             await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
 
-    async def checktimes(self):
-        guild = client.get_guild(vc.guild_id)
-        if guild is None:
-            try:
-                guild = self.get_guild(vc.guild_id)
-            except:
-                guild = self.client.get_guild(vc.guild_id)
-        if challenge.hour == 0 and challenge.minute == 36:
-            if challenge.switch is True:
-                challenge.switch = False
-                await challenge.NewDay(self, guild)
-        if challenge.hour == 0 and challenge.minute == 38:
-            challenge.switch = True
 
-        if challenge.hour == 22 and challenge.minute == 20:
-            if challenge.switch2 is True:
-                challenge.switch2 = False
-                await challenge.reminder(self, guild)
-        if challenge.hour == 20 and challenge.minute == 23:
-            challenge.switch2 = True
 
-    """    if hour == 1 and minute == 42:
-        switch = True
-        print("switch back on")"""
 
 def setup(client):
     client.add_cog(challenge(client))
