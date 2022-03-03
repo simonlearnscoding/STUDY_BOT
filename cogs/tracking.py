@@ -739,7 +739,7 @@ class tracking(commands.Cog):
 
             #check if currently in a vc
             CurrentlyIn = ""
-            for i in range(len(L1)):
+            for i in range(len(L1) - 1):
                 if extratime is not None:
                     if i == 0:
                         if x.studying == True:
