@@ -41,6 +41,7 @@ async def on_ready():
     checkrank.start(client)
     checkheatmap.start(client)
     await goals.ranking(client)
+    heatmap.addDataDaily(client)
 
 
 

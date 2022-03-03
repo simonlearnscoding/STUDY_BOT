@@ -27,21 +27,22 @@ class heatmap(commands.Cog):
         pass
 
     def addRow(self, userData):
-        activity = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
-        for i in range(0, 7):
-            Activity = str(activity[i])
-            Minutes = str(userData[i + 1])
-            now = datetime.datetime.now()
-            formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-            id = str(userData[0])
-            sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
-            val = (id, formatted_date, Minutes, Activity)
-            db.cur.execute(sql, val)
-            db.mydb.commit()
+        for a in range(3):
+            activity = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
+            for i in range(0, 7):
+                Activity = str(activity[i])
+                Minutes = str(int(userData[i + 1] / 3))
+                now = datetime.datetime.now()
+                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+                id = str(userData[0])
+                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+                val = (id, formatted_date, Minutes, Activity)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
 
     def selectAll(self):
         # Select entire Daily DB
-        sql = f"SELECT * FROM users.daily"
+        sql = f"SELECT * FROM users.weekly"
         sql = str(sql)
         db.cur.execute(sql)
         result = db.cur.fetchall()
