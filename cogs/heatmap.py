@@ -41,7 +41,7 @@ class heatmap(commands.Cog):
 
     def selectAll(self):
         # Select entire Daily DB
-        sql = f"SELECT * FROM users.daily"
+        sql = f"SELECT * FROM users.weekly"
         sql = str(sql)
         db.cur.execute(sql)
         result = db.cur.fetchall()
