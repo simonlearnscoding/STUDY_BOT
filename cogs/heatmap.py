@@ -28,7 +28,7 @@ class heatmap(commands.Cog):
 
     def addRow(self, userData):
         activity = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
-        for i in range(0, 7):
+        for i in range(0, 8):
             Activity = str(activity[i])
             Minutes = str(userData[i + 1])
             now = datetime.datetime.now()
