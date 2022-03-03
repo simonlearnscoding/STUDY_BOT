@@ -62,7 +62,7 @@ class goals(commands.Cog):
             for j in range(len(RankingList)):
                 if RankingWeek[i][2] == RankingList[j][2]:
                     RankingWeek[i][1] += RankingList[j][1]
-                    RankingWeek[i][1] =round((RankingWeek[i][1] / 60), 1)
+                    RankingWeek[i][1] = round((RankingWeek[i][1] / 60), 1)
 
         minutes = lambda RankingList: RankingList[1]
         hours =  lambda RankingWeek: RankingWeek[1]

@@ -36,68 +36,74 @@ class update(commands.Cog):
 
         # daily update
         guild = self.get_guild(vc.guild_id)
-        if hour == 0 and minute == 5:
+        print("update function got called")
+        switchtime = 30
+
+        if minute < switchtime:
+            Timezone = hour
             print("tried to update")
             if update.switch is True:
+                print("update passed")
                 update.switch = False
-                #await tracking.reboot1(self, guild)
-                try:
-                    await update.rewardDailyWinner(client=self)
-                except:
-                    print("theres been an error with the daily winner")
-                try:
-                    await update.rewardTopFour(client=self)
-                except:
-                    print("theres been an error with the daily winner")
+                if hour == 0:
+                    sql = "DELETE FROM users.goal"
+                    db.cur.execute(sql, )
+                    await challenge.NewDay(self, guild)
 
+                    # Reward Daily Winners
+                    try:
+                     await update.rewardDailyWinner(client=self)
+                    except:
+                     print("theres been an error with the daily winner")
+                    try:
+                     await update.rewardTopFour(client=self)
+                    except:
+                     print("theres been an error with the daily winner")
+                    if monthday == 1: #TODO: Test this
+                        print("rewardchallengewinner")
+                        challenge.challengeWinners(guild)
 
-                await update.updateTables("daily", "weekly")
-                sql = "DELETE FROM users.goal"
-                db.cur.execute(sql, )
+                sql = f"SELECT * FROM users.daily Where Timezone = Timezone"
+                sql = str(sql)
+                db.cur.execute(sql)
+                Resultt = db.cur.fetchall()
+                if Resultt is None:
+                    return
+                #await tracking.reboot1(self, guild) #TODO: Reboot function fix
+                heatmap.addDataDaily(self, Timezone)
+
+                await update.updateTables("daily", "weekly", Timezone)
+                #TODO: adapt user goals to timezone
+
+                if weekday == 0:
+                    await update.updateTables("weekly", "monthly", Timezone)
+                    if monthday == 1:
+                        print("monthlyUpdate")
                 #await tracking.reboot2(self, guild)
-        if hour == 1 and minute == 7:
+
+        if minute > switchtime:
             update.switch = True
             print("switch back on")
 
-        # weekly update
-        if weekday == 0 and hour == 3:
-            if update.sitch2 is True:
-                update.switch2 = False
-                #await tracking.reboot1(self, guild)
-                await update.updateTables("weekly", "monthly")
-                #await tracking.reboot2(self, guild)
-        if weekday == 0 and hour == 3 and minute == 45:
-            update.switch2 = True
 
-        # TODO monthly switch
-        if monthday == 1 and hour == 4:
-            if update.switch3 is True:
-                update.switch3 = False
-                #await tracking.reboot1(self, guild)
-                print("monthly switch")
-                #await tracking.reboot2(self, guild)
-                # TODO monthly switch
-        if monthday == 1 and hour == 3  and minute == 55:
-            update.switch3 = True
-
-    async def updateTables(time1, time2):
+    async def updateTables(time1, time2, TimeZone):
         print("one")
         column = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
         for j in range(len(column)):
-            sql = f"SELECT ID, {column[j]} FROM users.{time1} WHERE {column[j]} > 0"
+            sql = f"SELECT ID, {column[j]} FROM users.{time1} WHERE {column[j]} > 0 AND Timezone = {TimeZone}"
             sql = str(sql)
             db.cur.execute(sql)
             result = db.cur.fetchall()
             for i in range(len(result)):
                 ID = int(result[i][0])
                 value = int(result[i][1])
-                sql = f"UPDATE users.{time2} SET {column[j]} = {column[j]} + %s WHERE ID = %s"
+                sql = f"UPDATE users.{time2} SET {column[j]} = {column[j]} + %s WHERE ID = %s AND Timezone = {TimeZone}"
                 sql = str(sql)
                 val = (value, ID)
                 db.cur.execute(sql, val)
                 db.mydb.commit()
 
-                sql = f"UPDATE users.{time1} SET {column[j]} = 0 WHERE ID = %s"
+                sql = f"UPDATE users.{time1} SET {column[j]} = 0 WHERE ID = %s AND Timezone = {TimeZone}"
                 sql = str(sql)
                 val = (ID,)
                 db.cur.execute(sql, val)

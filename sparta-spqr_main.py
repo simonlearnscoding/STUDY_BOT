@@ -37,11 +37,9 @@ async def on_ready():
     await tracking.tracking.reboot2(client, guild)
     checkem.start(client)
     checkupdate.start(client)
-    checkchallenge.start(client)
     checkrank.start(client)
-    checkheatmap.start(client)
     await goals.ranking(client)
-    heatmap.addDataDaily(client)
+
 
 
 
@@ -49,13 +47,7 @@ async def on_ready():
 async def checkupdate(client):
     await update.update(client)
 
-@tasks.loop(seconds=40)
-async def checkchallenge(client):
-    await challenge.checktimes(client)
 
-@tasks.loop(seconds=40)
-async def checkheatmap(client):
-    await heatmap.checkAdder(client)
 
 @tasks.loop(seconds=10) #change the intervall here
 async def checkem(client):
