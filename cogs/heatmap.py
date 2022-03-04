@@ -270,11 +270,12 @@ class heatmap(commands.Cog):
                         if message.author.voice.channel.id == vcs[i]:
                             activity = activities[i]
                             await heatmap.commandHeatmap(self, activity, channel, member)
+
+                        else:
+                            activity = "TOTAL"
+                            await heatmap.commandHeatmap(self, activity, channel, member)
+                            pass
                             return
-                else:
-                    activity = "TOTAL"
-                    #await heatmap.commandHeatmap(self, activity, channel, member)
-                    pass
 
             try:
                 if channel.id != (vc.lions_cage_text_id):

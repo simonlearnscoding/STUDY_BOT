@@ -37,7 +37,7 @@ class update(commands.Cog):
         # daily update
         guild = self.get_guild(vc.guild_id)
         print("update function got called")
-        switchtime = 30
+        switchtime = 40
 
         if minute < switchtime:
             Timezone = hour
@@ -63,7 +63,7 @@ class update(commands.Cog):
                         print("rewardchallengewinner")
                         challenge.challengeWinners(guild)
 
-                sql = f"SELECT * FROM users.daily Where Timezone = Timezone"
+                sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
                 sql = str(sql)
                 db.cur.execute(sql)
                 Resultt = db.cur.fetchall()
