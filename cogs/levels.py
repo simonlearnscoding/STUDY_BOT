@@ -118,7 +118,7 @@ class levels(commands.Cog):
         SmallerFont = Font(vc.SmallerFont, size=16)
 
         canvas = Canvas((900, 300), color="black")
-        print(message.author.avatar_url)
+
         profile = await load_image_async(str(message.author.avatar_url))
         profile = Editor(profile).resize((140, 140)).circle_image()
         editor = Editor(canvas)
@@ -140,8 +140,12 @@ class levels(commands.Cog):
 
         file = discord.File(fp=background.image_bytes, filename="card.png")
         Message = await message.channel.send(file=file)
-        await asyncio.sleep(7)
-        await Message.delete()
+
+        if message.channel.id == (vc.lions_cage_text_id):
+            return
+        else:
+            await asyncio.sleep(7)
+            await Message.delete()
 
 
 
@@ -173,11 +177,15 @@ class levels(commands.Cog):
             print(f" {message.author.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
             print(f"{percentage}%")
             await self.displayMessage(message, xp, lvl, nextlvlxp, percentage)
-            try:
-                await message.delete()
-            except:
-                print("someone wants to know it lol")
+            if message.channel.id == (vc.lions_cage_text_id):
                 pass
+            else:
+                try:
+                    await message.delete()
+                except:
+                    print("someone wants to know it lol")
+                    pass
+
 
 
 

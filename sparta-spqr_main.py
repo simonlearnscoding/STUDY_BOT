@@ -46,7 +46,7 @@ async def on_ready():
 @tasks.loop(seconds=40)
 async def checkupdate(client):
     await update.update(client)
-
+    await tracking.tracking.quitAllUnactive(client)
 
 
 @tasks.loop(seconds=10) #change the intervall here

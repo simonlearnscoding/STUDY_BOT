@@ -188,7 +188,6 @@ class heatmap(commands.Cog):
         Message = await channel.send(file=file)
 
         if channel.id == (vc.lions_cage_text_id):
-
             return
         else:
             await asyncio.sleep(5)

@@ -210,6 +210,7 @@ class challenge(commands.Cog):
         result = db.cur.fetchall()
         for i in range(len(result)):
             #if user missed the day
+
             if result[i][6] == 0:
                 val = (result[i][0], result[i][4])
                 sql = "UPDATE users.challenge SET missed = missed + 1 WHERE userID = %s AND challengeId = %s;"

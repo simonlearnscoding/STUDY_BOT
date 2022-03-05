@@ -7,7 +7,7 @@ import time
 from cogs.levels import levels
 import sys
 from cogs.heatmap import heatmap
-
+from User import User
 sys.path.append('/.../')
 from mydb import db
 from vc import vc
@@ -21,10 +21,6 @@ class update(commands.Cog):
         second = time.localtime().tm_sec
 
     switch = True
-    switch2 = True
-    switch3 = True
-    switch4 = True
-    switch5 = True
 
     async def update(self):
 
@@ -37,7 +33,7 @@ class update(commands.Cog):
         # daily update
         guild = self.get_guild(vc.guild_id)
         print("update function got called")
-        switchtime = 40
+        switchtime = 30
 
         if minute < switchtime:
             Timezone = hour
@@ -46,19 +42,18 @@ class update(commands.Cog):
                 print("update passed")
                 update.switch = False
                 if hour == 0:
-                    sql = "DELETE FROM users.goal"
-                    db.cur.execute(sql, )
+
                     await challenge.NewDay(self, guild)
 
                     # Reward Daily Winners
-                    try:
-                     await update.rewardDailyWinner(client=self)
-                    except:
-                     print("theres been an error with the daily winner")
-                    try:
-                     await update.rewardTopFour(client=self)
-                    except:
-                     print("theres been an error with the daily winner")
+                    #try:
+                     #await update.rewardDailyWinner(client=self)
+                    #except:
+                     #print("theres been an error with the daily winner")
+                    #try:
+                     #await update.rewardTopFour(client=self)
+                    #except:
+                    # print("theres been an error with the daily winner")
                     if monthday == 1: #TODO: Test this
                         print("rewardchallengewinner")
                         challenge.challengeWinners(guild)
@@ -66,9 +61,29 @@ class update(commands.Cog):
                 sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
                 sql = str(sql)
                 db.cur.execute(sql)
+                db.cur.execute(sql)
                 Resultt = db.cur.fetchall()
                 if Resultt is None:
                     return
+                for i in range(len(Resultt)):
+                    sql = "DELETE FROM users.goal WHERE ID = %s"
+                    val = (Resultt[i][0], )
+                    db.cur.execute(sql, val)
+                    db.mydb.commit()
+
+                    member = guild.get_member(Resultt[i][0])
+                    if member.voice is None:
+                        pass
+                    else:
+                        await tracking.QuitSomething(self, member)
+                        await tracking.StartSomething(self, member)
+                        if (member.voice.self_video is True or member.voice.self_stream is True) or (
+                                member.id == 744545219260842014):
+                            if ((member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id)):
+                                for x in User.Users:
+                                    if x.id == member.id:
+                                        await tracking.startStudy(self, x, member)
+
                 #await tracking.reboot1(self, guild) #TODO: Reboot function fix
                 heatmap.addDataDaily(self, Timezone)
 

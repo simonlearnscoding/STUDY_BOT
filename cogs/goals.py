@@ -135,14 +135,16 @@ class goals(commands.Cog):
             db.cur.execute(sql, val)
             totaltime = db.cur.fetchone()
             totaltime = int(totaltime[0])
+            id = int(val[0])
             for x in Users:
-                if x.id == val:
+                if x.id == id:
                     # add current study time
                     if x.StartStudy is not None:
+
                         extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
                         extratime = extratimesec / 60
                         totaltime = totaltime + extratime
-                        print("totaltime")
+                        break
 
             # get user OldCurrent
             sql = "SELECT Current FROM users.goal WHERE ID = %s"
