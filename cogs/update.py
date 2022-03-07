@@ -69,10 +69,12 @@ class update(commands.Cog):
                         await tracking.StartSomething(self, member)
                         if (member.voice.self_video is True or member.voice.self_stream is True) or (
                                 member.id == 744545219260842014):
-                            if ((member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id)):
-                                for x in User.Users:
-                                    if x.id == member.id:
+                            for x in User.Users:
+                                if x.id == member.id:
+                                    try:
                                         await tracking.startStudy(self, x, member)
+                                    except:
+                                        print(f"{member} needs to restart the cam")
 
                 #await tracking.reboot1(self, guild) #TODO: Reboot function fix
                 heatmap.addDataDaily(self, Timezone)
