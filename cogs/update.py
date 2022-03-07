@@ -7,6 +7,7 @@ import time
 from cogs.levels import levels
 import sys
 from cogs.heatmap import heatmap
+import cogs.tasks
 from User import User
 sys.path.append('/.../')
 from mydb import db
@@ -33,7 +34,7 @@ class update(commands.Cog):
         # daily update
         guild = self.get_guild(vc.guild_id)
         print("update function got called")
-        switchtime = 30
+        switchtime = 35
 
         if minute < switchtime:
             Timezone = hour
@@ -54,6 +55,11 @@ class update(commands.Cog):
                 if Resultt is None:
                     return
                 for i in range(len(Resultt)):
+                    cogs.tasks.tasks.resetDay(self, Resultt[i][0])
+
+
+
+
                     sql = "DELETE FROM users.goal WHERE ID = %s"
                     val = (Resultt[i][0], )
                     db.cur.execute(sql, val)

@@ -9,6 +9,7 @@ from cogs import tracking
 from mydb import db
 from cogs.goals import goals
 import cogs.timer
+
 from User import user, userfunction
 from cogs.challenge import challenge
 from cogs.update import update

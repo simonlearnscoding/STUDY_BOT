@@ -1231,16 +1231,17 @@ class tracking(commands.Cog):
 
         if message.channel.id == vc.tasks_id:
             # add xp
-            Embed = discord.Embed()
-            Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
-            Embed.add_field(name="setting a goal for the day!",
-                            value="+20xp",
-                            inline=False)
-            Message = await message.channel.send(embed=Embed)
-            await asyncio.sleep(1)
-            await Message.delete()
-            xp = 25
-            await levels.addXP(self.client, message.author, xp)
+            if message.content.startswith('🔳'):
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
+                Embed.add_field(name="setting a goal for the day!",
+                                value="+20xp",
+                                inline=False)
+                Message = await message.channel.send(embed=Embed)
+                await asyncio.sleep(1)
+                await Message.delete()
+                xp = 25
+                await levels.addXP(self.client, message.author, xp)
 
 def setup(client):
     client.add_cog(tracking(client))
