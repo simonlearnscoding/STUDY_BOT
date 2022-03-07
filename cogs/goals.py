@@ -203,10 +203,10 @@ class goals(commands.Cog):
                     await levels.addXP(client, member, xp)
 
                     #REMOVE HIM FROM DB
-                    sql = "DELETE FROM users.goal WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
+                    #sql = "DELETE FROM users.goal WHERE ID = %s"
+                    #val = (member.id,)
+                    #db.cur.execute(sql, val)
+                    #db.mydb.commit()
 
 
                 Nick = f"{Nick} {NewCurrent}/{Goal}"

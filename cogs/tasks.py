@@ -25,7 +25,7 @@ class tasks(commands.Cog):
             beforeUndone = before.content.count("🔳")
             afterDone = after.content.count("✅")
             afterUndone = after.content.count("🔳")
-            if ((beforeDone < afterDone) and (afterUndone == 0)):
+            if ((beforeDone < afterDone) and (afterUndone == 0) and (beforeUndone > 0)):
                 Embed = discord.Embed()
                 xp = 50
                 Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")

@@ -41,22 +41,10 @@ class update(commands.Cog):
             if update.switch is True:
                 print("update passed")
                 update.switch = False
-                if hour == 0:
 
-                    await challenge.NewDay(self, guild)
-
-                    # Reward Daily Winners
-                    #try:
-                     #await update.rewardDailyWinner(client=self)
-                    #except:
-                     #print("theres been an error with the daily winner")
-                    #try:
-                     #await update.rewardTopFour(client=self)
-                    #except:
-                    # print("theres been an error with the daily winner")
-                    if monthday == 1: #TODO: Test this
-                        print("rewardchallengewinner")
-                        challenge.challengeWinners(guild)
+                if monthday == 1: #TODO: Test this
+                    print("rewardchallengewinner")
+                    challenge.challengeWinners(guild)
 
                 sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
                 sql = str(sql)
@@ -72,23 +60,41 @@ class update(commands.Cog):
                     db.mydb.commit()
 
                     member = guild.get_member(Resultt[i][0])
-                    if member.voice is None:
+                    if member is None:
+                        pass
+                    elif member.voice is None:
                         pass
                     else:
                         await tracking.QuitSomething(self, member)
                         await tracking.StartSomething(self, member)
                         if (member.voice.self_video is True or member.voice.self_stream is True) or (
                                 member.id == 744545219260842014):
-                            if ((member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id)):
-                                for x in User.Users:
-                                    if x.id == member.id:
+                            for x in User.Users:
+                                if x.id == member.id:
+                                    try:
                                         await tracking.startStudy(self, x, member)
+                                    except:
+                                        print(f"{member} needs to restart the cam")
 
                 #await tracking.reboot1(self, guild) #TODO: Reboot function fix
                 heatmap.addDataDaily(self, Timezone)
 
                 await update.updateTables("daily", "weekly", Timezone)
                 #TODO: adapt user goals to timezone
+
+                if hour == 1:
+
+                    await challenge.NewDay(self, guild)
+
+                    # Reward Daily Winners
+                    # try:
+                    # await update.rewardDailyWinner(client=self)
+                    # except:
+                    # print("theres been an error with the daily winner")
+                    # try:
+                    # await update.rewardTopFour(client=self)
+                    # except:
+                    # print("theres been an error with the daily winner")
 
                 if weekday == 0:
                     await update.updateTables("weekly", "monthly", Timezone)

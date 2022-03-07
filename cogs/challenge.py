@@ -257,14 +257,21 @@ class challenge(commands.Cog):
 
                     member = client.get_user(result[i][0])
                     if member is None:
-                        member = self.client.get_user(result[i][0])
+                        try:
+                            member = self.client.get_user(result[i][0])
+                        except:
+                            member = self.get_user(result[i][0])
                     if result[i][4] == 1:
                         channel = guild.get_channel(vc.challenge_1)
                     elif result[i][4] == 2:
                         channel = guild.get_channel(vc.challenge_1)
                     content = f"unfortunately, you lost the challenge {channel.name} because you have missed it for more than two days in a row. better luck next time"
                     channel = await member.create_dm()
-                    await channel.send(content)
+                    try:
+                        await channel.send(content)
+                    except:
+                        print(f"{member} lost the challenge")
+                        pass
             if result[i][6] == 1:
                 val = (result[i][0], result[i][4])
                 sql = "UPDATE users.challenge SET missedstreak = 0 WHERE userID = %s AND challengeId = %s;"
