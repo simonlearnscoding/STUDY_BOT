@@ -32,7 +32,8 @@ class tasks(commands.Cog):
         db.cur.execute(sql, )
         db.mydb.commit()
         sql = f"delete from users.taskmessageid where userid = {userid};"
-
+        db.cur.execute(sql, )
+        db.mydb.commit()
 
     async def colour(ctx, message):
         """Sends a message with our dropdown containing colours"""
@@ -799,11 +800,14 @@ class tasks(commands.Cog):
             now = datetime.now()
             n = random.randint(1, 1000000000)
             taskContent =  message.content[1:]
+            if (taskContent[0].isspace()):
+                taskContent = taskContent[1:]
             sql = "INSERT INTO users.tasks (userid, taskname, CurrentlyWorking, Done, Starttime, taskid, WorkingMinutes) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (message.author.id,taskContent, False, False, 0, n, 0)
             db.cur.execute(sql, val)
             db.mydb.commit()
-            await message.delete()
+            if message.channel.id != (vc.lions_cage_text_id):
+                await message.delete()
 
             sql = f"SELECT taskname, taskid FROM users.tasks where userid ={message.author.id}"
             db.cur.execute(sql, )
@@ -827,7 +831,10 @@ class tasks(commands.Cog):
         if message.content.startswith("*"):
             # get all tasks in user where done = 0
             taskContent = message.content[1:]
-            await message.delete()
+            if (taskContent[0].isspace()):
+                taskContent = taskContent[1:]
+            if message.channel.id != (vc.lions_cage_text_id):
+                await message.delete()
             matches = await tasks.matchResult(message.author.id, taskContent)
 
             if (await tasks.matchesfound(matches, message.channel)) == 1:
@@ -837,7 +844,10 @@ class tasks(commands.Cog):
         if message.content.startswith("-"):
             # get all tasks in user where done = 0
             taskContent = message.content[1:]
-            await message.delete()
+            if (taskContent[0].isspace()):
+                taskContent = taskContent[1:]
+            if message.channel.id != (vc.lions_cage_text_id):
+                await message.delete()
             matches = await tasks.matchResult(message.author.id, taskContent)
 
             if (await tasks.matchesfound(matches, message.channel)) == 1:
@@ -854,7 +864,10 @@ class tasks(commands.Cog):
             sql = f"SELECT taskname, taskid FROM users.tasks where userid ={message.author.id}"
             db.cur.execute(sql, )
             result = db.cur.fetchall()
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
             try:
                 await tasks.colour(message.channel, message)
             except:

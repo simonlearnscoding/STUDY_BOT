@@ -119,7 +119,9 @@ class levels(commands.Cog):
 
         canvas = Canvas((900, 300), color="black")
 
-        profile = await load_image_async(str(message.author.avatar_url))
+        profile = await load_image_async(str(message.author.avatar.url))
+        profile = await load_image_async(str(message.author.avatar.url))
+
         profile = Editor(profile).resize((140, 140)).circle_image()
         editor = Editor(canvas)
         pic = await load_image_async("https://c4.wallpaperflare.com/wallpaper/193/219/663/black-background-marcus-aurelius-statue-hd-wallpaper-preview.jpg")

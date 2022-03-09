@@ -77,12 +77,16 @@ class tracking(commands.Cog):
                         x.StartStudy = datetime.datetime.now()
                         print(f"{x.name} is doing chores since {x.StartStudy}")
                         return
+                    if ((member.voice.self_video is True) or (member.voice.self_stream is True) or (member.id == 744545219260842014)):
+                        if((member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id)):
+                            try:
+                                await tracking.startStudy(self, x, member)
+                            except:
+                                print(f"{member} needs to restart the cam")
 
-            if (member.voice.channel.id == vc.producing_id):
-                if (member.voice.self_stream == True or member.voice.self_video == True):
-                    print(f"{member.name} is producing")
-                    for x in User.Users:
-                        if x.name == member.name:
+                        elif (member.voice.channel.id == vc.producing_id):
+                            print(f"{member.name} is producing")
+
                             if x.creative == True:
                                 return
                             x.creative = True
@@ -776,9 +780,12 @@ class tracking(commands.Cog):
             message = await channel.send(embed=Embed)
 
         else:
-            message = await channel.send(embed=Embed)
-            await asyncio.sleep(4)
-            await message.delete()
+            try:
+                message = await channel.send(embed=Embed)
+                await asyncio.sleep(4)
+                await message.delete()
+            except:
+                print('couldnt send the +xp message')
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -878,9 +885,10 @@ class tracking(commands.Cog):
             db.cur.execute(sql)
             result = db.cur.fetchall()
 
-
-            Messsage = await message.channel.send(embed=embedVar)
-
+            try:
+                Messsage = await message.channel.send(embed=embedVar)
+            except:
+                Messsage = await message.channel.send("you need to have some minutes tracked first")
             if message.channel.id == (vc.lions_cage_text_id):
                 return
             else:

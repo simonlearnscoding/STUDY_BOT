@@ -38,7 +38,7 @@ class heatmap(commands.Cog):
 
     def selectAll(self, Timezone):
         # Select entire Daily DB
-        sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
+        sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"#todo:
         sql = str(sql)
         db.cur.execute(sql)
         result = db.cur.fetchall()
@@ -46,6 +46,8 @@ class heatmap(commands.Cog):
 
     def addDataDaily(self, Timezone):
         result = heatmap.selectAll(self, Timezone)
+        if (len(result)) == 0:
+            return
         for i in range(len(result)):
             heatmap.addRow(self, result[i])
 
@@ -327,9 +329,9 @@ class heatmap(commands.Cog):
                 if (int(result[0][6]) == 0):
                     await heatmap.launchHeatmap(self, "chores", member)
 
-            if ((after.channel.id==vc.creative_id) or (after.channel.id==vc.producing_id)):
+            """if ((after.channel.id==vc.creative_id) or (after.channel.id==vc.producing_id)):
                 if (int(result[0][7]) == 0):
-                    await heatmap.launchHeatmap(self, "creative", member)
+                    await heatmap.launchHeatmap(self, "creative", member)"""
 
 
 def setup(client):
