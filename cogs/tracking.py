@@ -703,7 +703,6 @@ class tracking(commands.Cog):
 
     async def reboot1(self, guild):
         #for member in server
-
         for member in guild.members:
             await tracking.QuitSomething(self, member)
 
@@ -857,9 +856,7 @@ class tracking(commands.Cog):
 
             # Title
             embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
-
             #load the message with content of Total ---
-
             MessageEmoji = {"Study": "- :book: ", "Workout": "- :muscle:  ", "Yoga" : "- :sunny: ", "Reading " : "- :blue_book: ", "Meditation" : "- :cyclone: ", "Chores" : "- :gem: ", "Creative" : "- :art: "}
             messageTodayDone = ""
             for i in Results:
@@ -980,7 +977,6 @@ class tracking(commands.Cog):
                 db.mydb.commit()
 
             await heatmap.commandHeatmap(self.client, "WORKOUT", message.channel, member)
-
         if message.content.startswith('!meditation'):
             member = message.author
             result = message.content.split(" ")
@@ -1061,7 +1057,6 @@ class tracking(commands.Cog):
                 db.mydb.commit()
 
             await heatmap.commandHeatmap(self.client, "MEDITATION", message.channel, member)
-
         if message.content.startswith('!reading'):
             member = message.author
             result = message.content.split(" ")
@@ -1144,8 +1139,6 @@ class tracking(commands.Cog):
                 db.mydb.commit()
 
             await heatmap.commandHeatmap(self.client, "READING", message.channel, member)
-
-
         if message.content.startswith('!yoga'):
             member = message.author
             result = message.content.split(" ")

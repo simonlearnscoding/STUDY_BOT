@@ -11,7 +11,7 @@ import re
 from discord.ui import Button, Select
 from cogs.levels import levels
 # THE OTHER PY FILES
-from vc import vc
+from cogs.vc import vc
 import asyncio
 
 # From now, `custom_emojis` is `list` of `discord.Emoji` that `msg` contains.
@@ -211,7 +211,7 @@ class tasks(commands.Cog):
 
             await message.delete()
         # add xp
-        await levels.addXP(self.client, member, xp)
+        await levels.addXP(member, xp)
 
         if len(options) == 0:
 
@@ -234,7 +234,7 @@ class tasks(commands.Cog):
                 message = await channel.send(embed=Embedd)
 
             # add xp
-            await levels.addXP(self.client, member, xp)
+            await levels.addXP(member, xp)
 
             options.append(discord.SelectOption(label='nothing left to do for today!', emoji='🌞'))
 
@@ -477,7 +477,7 @@ class tasks(commands.Cog):
 
                     await message.delete()
                 # add xp
-                await levels.addXP(interaction.client, member, xp)
+                await levels.addXP(member, xp)
                 if len(options) == 0:
                     options.append(discord.SelectOption(label='nothing left to do for today!', emoji='🌞'))
                     # give user +50
@@ -500,7 +500,7 @@ class tasks(commands.Cog):
                         message = await channel.send(embed=Embedd)
 
                     # add xp
-                    await levels.addXP(interaction.client, member, xp)
+                    await levels.addXP(member, xp)
                 view.children[0].options = options
 
                 sql = f"SELECT taskname, Starttime FROM users.tasks where userid ={interaction.user.id} and CurrentlyWorking = 1"
@@ -824,7 +824,7 @@ class tasks(commands.Cog):
                 await asyncio.sleep(1)
                 await Message.delete()
                 xp = 25
-                await levels.addXP(self.client, message.author, xp)
+                await levels.addXP(message.author, xp)
             else:
                 await tasks.editDailyMessage(self, message.author.id, message.author.name)
 
@@ -905,7 +905,7 @@ class tasks(commands.Cog):
                 await asyncio.sleep(1)
                 await message.delete()
                 # add xp
-                await levels.addXP(self.client, after.author, xp)
+                await levels.addXP(after.author, xp)
 
 
             elif beforeDone < afterDone:
@@ -921,7 +921,7 @@ class tasks(commands.Cog):
                 await asyncio.sleep(1)
                 await message.delete()
                 # add xp
-                await levels.addXP(self.client, after.author, xp)
+                await levels.addXP(after.author, xp)
 
 
 

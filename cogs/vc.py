@@ -1,13 +1,29 @@
 from discord.ext import commands
 
-class vc():
+class vc(commands.Cog):
 
     def __init__(self, client):
         self.client = client
 
+    bot_spam = None
+    vc_chat = None
+    guild = None
     Testing = True
 
+    def start(self, Testing):
+        if Testing == True:
+            vc.guild = self.get_guild(917547601539264623)
+
+        else:
+            vc.guild = self.get_guild(789814373434654731)
+
+        vc.bot_spam = vc.guild.get_channel(vc.lions_cage_text_id)
+        vc.vc_chat = vc.guild.get_channel(vc.chores_vc_id)
+        vc.challenge_1 = vc.guild.get_channel(vc.challenge_1)
+        vc.challenge_2 = vc.guild.get_channel(vc.challenge_2)
+
     if Testing is False:
+
         general_id = 797837772005179433
         guild_id = 789814373434654731
         sparta_id = 834144065133740102
@@ -17,6 +33,7 @@ class vc():
         tasks_id = 915180477269299201
         weekly_message = 923159773464121354
         daily_message = 916518831676071946
+
 
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
@@ -81,3 +98,6 @@ class vc():
         challenge_role_1 = 939464453357994014
         challenge_role_2 = 939464510425665606
 
+
+def setup(client):
+    client.add_cog(vc(client))

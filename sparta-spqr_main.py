@@ -14,12 +14,13 @@ from User import user, userfunction
 from cogs.challenge import challenge
 from cogs.update import update
 from cogs.heatmap import heatmap
+from cogs.trackingsessions import trackings
 from vc import vc
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "*", intents = intents)
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.tracking", "cogs.timer", "User", "cogs.update", "cogs.tasks", "cogs.levels", "cogs.heatmap", "cogs.challenge"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.trackingsessions", "cogs.timer", "User", "cogs.update", "cogs.tasks", "cogs.levels", "cogs.heatmap", "cogs.challenge"] #"cogs.tracking"
 if __name__ == '__main__':
     for ext in extensions:
         client.load_extension(ext)
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 async def on_ready():
     #TODO Switch with timer inbreak
     cogs.timer.InBreak = False
-    print("bot is ready.")#
+    print("bot is ready.")
     #await runschedule()
    #making the tables and add every member
     #db.drop_tables()
@@ -40,8 +41,6 @@ async def on_ready():
     checkupdate.start(client)
     checkrank.start(client)
     await goals.ranking(client)
-
-
 
 
 @tasks.loop(seconds=40)

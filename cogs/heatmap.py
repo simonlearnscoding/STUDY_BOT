@@ -1,13 +1,13 @@
 import discord
 from discord.ext import commands, tasks
 from easy_pil import Canvas, Editor, Font, Text, font
-
 import datetime
 import sys
 sys.path.append('/.../')
-from vc import vc
+from cogs.vc import vc
 from mydb import db
 import asyncio
+#from cogs.levels import levels
 
 Augustus = Font(vc.Augustus, size=40)
 SmallFont = Font(vc.SmallFont, size=24)
@@ -20,10 +20,10 @@ class heatmap(commands.Cog):
 
 
 
-    def updateUser(self, ID, Date, Minutes, Name , Activity):
+    def updateUser(ID, Date, Minutes, Name , Activity):
         pass
 
-    def addRow(self, userData):
+    def addRow(userData):
         activity = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
         for i in range(0, 8):
             Activity = str(activity[i])
@@ -36,7 +36,7 @@ class heatmap(commands.Cog):
             db.cur.execute(sql, val)
             db.mydb.commit()
 
-    def selectAll(self, Timezone):
+    def selectAll(Timezone):
         # Select entire Daily DB
         sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"#todo:
         sql = str(sql)
@@ -44,22 +44,22 @@ class heatmap(commands.Cog):
         result = db.cur.fetchall()
         return result
 
-    def addDataDaily(self, Timezone):
-        result = heatmap.selectAll(self, Timezone)
+    def addDataDaily(Timezone):
+        result = heatmap.selectAll(Timezone)
         if (len(result)) == 0:
             return
         for i in range(len(result)):
-            heatmap.addRow(self, result[i])
+            heatmap.addRow(result[i])
 
 
-    def pickColor(self, Tresholds, Colors, Time):
+    def pickColor(Tresholds, Colors, Time):
         for i in range(len(Tresholds)):
             if Time < Tresholds[i]:
                 return Colors[i]
             else:
                 i = i+1
 
-    def pickColorScheme(self, activity):
+    def pickColorScheme(activity):
 
         if activity == "STUDY":
             return "#60EFE4", [1, 20, 60, 180, 5000], ["#2C3B3A", "#3D7773", "#499F98", "#54C7BE", "#60EFE4"]
@@ -86,7 +86,7 @@ class heatmap(commands.Cog):
 
 
 
-    async def DisplayHeatmap(self, data, activity, Today, channel, member):
+    async def DisplayHeatmap(data, activity, Today, channel, member):
 
         background = Editor(Canvas((840, 516), "#2C2F33"))
         background.rectangle(position=(0,0), width=840, height=516, color="#262727", radius=11)
@@ -139,19 +139,19 @@ class heatmap(commands.Cog):
             dailyAverage = str(f"{dailyAverage} m")
 
         x = (len(data)) - 1
-        Color, Tresholds, Colors = heatmap.pickColorScheme(self, activity)
+        Color, Tresholds, Colors = heatmap.pickColorScheme(activity.upper())
 
 
         background.rectangle(position=(initialWidth2, initialHeight), width=40, height=40,
-                             color=f"{heatmap.pickColor(self, Tresholds, Colors, Today)}", radius=4)
+                             color=f"{heatmap.pickColor(Tresholds, Colors, Today)}", radius=4)
         height = height + Decrease
         for i in range(6):
             try:
                 background.rectangle(position=(initialWidth2, height), width=40, height=40,
-                                     color=f"{heatmap.pickColor(self, Tresholds, Colors, data[x][0])}", radius=4)
+                                     color=f"{heatmap.pickColor(Tresholds, Colors, data[x][0])}", radius=4)
             except:
                 background.rectangle(position=(initialWidth2, height), width=40, height=40,
-                                     color=f"{heatmap.pickColor(self, Tresholds, Colors, 0)}", radius=4)
+                                     color=f"{heatmap.pickColor(Tresholds, Colors, 0)}", radius=4)
             height = height + Decrease
             if x > 0:
                 x -= 1
@@ -161,9 +161,9 @@ class heatmap(commands.Cog):
         for j in range (14):
             for i in range (7):
                 try:
-                    background.rectangle(position=(width,height), width=40, height=40, color=f"{heatmap.pickColor(self, Tresholds, Colors, data[x][0])}", radius=4)
+                    background.rectangle(position=(width,height), width=40, height=40, color=f"{heatmap.pickColor(Tresholds, Colors, data[x][0])}", radius=4)
                 except:
-                    background.rectangle(position=(width, height), width=40, height=40, color=f"{heatmap.pickColor(self, Tresholds, Colors, 0)}", radius=4)
+                    background.rectangle(position=(width, height), width=40, height=40, color=f"{heatmap.pickColor(Tresholds, Colors, 0)}", radius=4)
                 height = height + Decrease
                 if x > 0:
                     x -= 1
@@ -199,8 +199,8 @@ class heatmap(commands.Cog):
 
 
 
-    async def commandHeatmap(self, activity, channel, member):
-        sql="select Minutes from users.log where ID =%s and Activity = %s"
+    async def commandHeatmap(activity, channel, member):
+        sql="select Minutes from users.log where ID =%s and Activity = %s LIMIT 0, 115"
         val=(member.id, activity)
         db.cur.execute(sql, val)
         result = db.cur.fetchall()
@@ -208,7 +208,6 @@ class heatmap(commands.Cog):
 
         if ((activity != "CHALLENGE1") and (activity != "CHALLENGE2")):
             Activity = activity.title()
-
             sql= f"select {Activity} from users.daily where ID =%s"
             val=(member.id, )
             db.cur.execute(sql, val)
@@ -220,6 +219,8 @@ class heatmap(commands.Cog):
             val=(member.id, )
             db.cur.execute(sql, val)
             resultToday = db.cur.fetchone()
+            if resultToday is None:
+                return
             Today = resultToday[0]
 
         elif (activity == "CHALLENGE2"):
@@ -227,9 +228,11 @@ class heatmap(commands.Cog):
             val=(member.id, )
             db.cur.execute(sql, val)
             resultToday = db.cur.fetchone()
+            if resultToday is None:
+                return
             Today = resultToday[0]
 
-        await heatmap.DisplayHeatmap(self, result, activity, Today, channel, member)
+        await heatmap.DisplayHeatmap(result, activity, Today, channel, member)
 
     #for i in range(len(result)):
 
@@ -244,6 +247,9 @@ class heatmap(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        if message.author.bot:
+            return
+
         channel = message.channel
         print(channel)
         if message.content.startswith('!track'):
@@ -253,7 +259,7 @@ class heatmap(commands.Cog):
             result = message.content.split(" ")
             try:
                 activity = str(result[1]).upper()
-                await heatmap.commandHeatmap(self, activity, channel, member)
+                await heatmap.commandHeatmap(activity, channel, member)
             except:
                 if channel.id != (vc.lions_cage_text_id):
                     await message.delete()
@@ -262,7 +268,7 @@ class heatmap(commands.Cog):
                 for i in range(len(vcs)):
                     if message.channel.id == vcs[i]:
                         activity = activities[i]
-                        await heatmap.commandHeatmap(self, activity, channel, member)
+                        await heatmap.commandHeatmap(activity, channel, member)
                         return
                 vcs= [vc.study_id, vc.sparta_id, vc.meditation_id, vc.reading_id, vc.chores_id, vc.workout_id, vc.yoga_id, vc.creative_id, vc.producing_id]
                 activities=["STUDY", "STUDY", "MEDITATION", "READING", "CHORES", "WORKOUT", "YOGA", "CREATIVE", "CREATIVE", ]
@@ -270,13 +276,13 @@ class heatmap(commands.Cog):
                     for i in range(len(vcs)):
                         if message.author.voice.channel.id == vcs[i]:
                             activity = activities[i]
-                            await heatmap.commandHeatmap(self, activity, channel, member)
+                            await heatmap.commandHeatmap(activity, channel, member)
 
-                        else:
-                            activity = "TOTAL"
-                            await heatmap.commandHeatmap(self, activity, channel, member)
-                            pass
-                            return
+                else:
+                    activity = "TOTAL"
+                    await heatmap.commandHeatmap(activity, channel, member)
+
+                    return
 
             try:
                 if channel.id != (vc.lions_cage_text_id):
@@ -285,51 +291,46 @@ class heatmap(commands.Cog):
                 pass
 
 
-    async def launchHeatmap(self, activity, member):
-        channel = self.client.get_channel(vc.chores_vc_id)
-        Message = await channel.send(f"View your Study Stats, type !track (when in vc) or !track {activity}")
-        await heatmap.commandHeatmap(self, f"{activity.upper()}", channel, member)
-        await Message.delete()
+    async def launchHeatmap(activity, member):
+        await heatmap.commandHeatmap(f"{activity.upper()}", vc.vc_chat, member)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # ALL THE START AND STOP STATEMENTS
         if member.bot:
             return
-
+        if (after.channel is None):
+            return
+"""
         if (before.channel != after.channel):
-            if (after.channel is None):
-                return
-            # Select entire Daily DB
-            sql = f"SELECT * FROM users.daily WHERE ID = %s"
-            val = (member.id,)
-            db.cur.execute(sql, val)
-            result = db.cur.fetchall()
+            Activity = channels.checkifChannel(after.channel.id, channels.lifestyle)
+            if Activity:
+                result = levels.getActivity(Activity, member.id)
             if ((after.channel.id==vc.study_id) or (after.channel.id==vc.sparta_id)):
                 if (int(result[0][1]) == 0):
-                    await heatmap.launchHeatmap(self, "study", member)
+                    await heatmap.launchHeatmap("study", member)
 
             if (after.channel.id==vc.workout_id):
                 if (int(result[0][2]) == 0):
-                    await heatmap.launchHeatmap(self, "workout", member)
+                    await heatmap.launchHeatmap("workout", member)
 
             if (after.channel.id==vc.yoga_id):
                 if (int(result[0][3]) == 0):
-                    await heatmap.launchHeatmap(self, "yoga", member)
+                    await heatmap.launchHeatmap("yoga", member)
 
             if (after.channel.id==vc.reading_id):
                 if (int(result[0][4]) == 0):
-                    await heatmap.launchHeatmap(self, "reading", member)
+                    await heatmap.launchHeatmap("reading", member)
 
             if (after.channel.id==vc.meditation_id):
                 if (int(result[0][5]) == 0):
-                    await heatmap.launchHeatmap(self, "meditation", member)
+                    await heatmap.launchHeatmap("meditation", member)
 
             if (after.channel.id==vc.chores_id):
                 if (int(result[0][6]) == 0):
-                    await heatmap.launchHeatmap(self, "chores", member)
+                    await heatmap.launchHeatmap("chores", member)
 
-            """if ((after.channel.id==vc.creative_id) or (after.channel.id==vc.producing_id)):
+            if ((after.channel.id==vc.creative_id) or (after.channel.id==vc.producing_id)):
                 if (int(result[0][7]) == 0):
                     await heatmap.launchHeatmap(self, "creative", member)"""
 

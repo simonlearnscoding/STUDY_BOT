@@ -17,8 +17,6 @@ class update(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-
-
         second = time.localtime().tm_sec
 
     switch = True
@@ -81,7 +79,6 @@ class update(commands.Cog):
                 #TODO: adapt user goals to timezone
 
                 if hour == 7: #todo
-
                     await challenge.NewDay(self, guild)
 
                     # Reward Daily Winners

@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands, tasks
-import datetime
+from datetime import datetime
 import asyncio
 import re
 import sys
@@ -9,7 +9,7 @@ sys.path.append('/.../')
 from vc import vc
 from mydb import db
 from User import userfunction, user, User, Users
-
+from trackingsessions import timeTrack
 
 
 NameCheck = False
@@ -29,9 +29,11 @@ class goals(commands.Cog):
         sql = "SELECT ID, TOTAL FROM users.daily"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
+
         sql = "SELECT ID, NAME FROM users.user"
         db.cur.execute(sql, )
         result2 = db.cur.fetchall()
+
         sql = "SELECT ID, TOTAL FROM users.weekly"
         db.cur.execute(sql, )
         result3 = db.cur.fetchall()
@@ -39,6 +41,7 @@ class goals(commands.Cog):
         RankingList = []
         RankingWeek = []
         for i, j in result:
+
             for x, y in result2:
                 if i == x:
                     RankingList.append([y, j, x, 0])
@@ -47,16 +50,16 @@ class goals(commands.Cog):
                 if i == x:
                     RankingWeek.append([y, j, x])
 
-        for x in Users:
-            # add current study time
-            if x.StartStudy is not None:
-                extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
-                extratime = extratimesec / 60
-                for i in range(len(RankingList)):
-                    for j in range(len(RankingList[i])):
-                        if RankingList[i][j] == x.id:
-                            RankingList[i][1] = int(RankingList[i][1] + extratime)
-                            RankingList[i][3] = 1
+
+        sql = "Select ID, Start, Activity from users.sessionlog"
+        db.cur.execute(sql, )
+        Result = db.cur.fetchall()
+        for i in range(len(Result)):
+            extratime = timeTrack.calculateTime(Result[i][1], datetime.now())
+
+            for i in range(len(RankingList)):
+                    RankingList[i][1] = int(RankingList[i][1] + extratime)
+                    RankingList[i][3] = 1
 
         for i in range(len(RankingWeek)):
             for j in range(len(RankingList)):
@@ -71,12 +74,6 @@ class goals(commands.Cog):
         return RankingList, RankingWeek
 
     async def displayranking(client, list, week):
-
-        """
-        # SEND MSG
-        channel = client.get_channel(vc.leaderboard)
-        await channel.send(".")
-        """
 
         Embed = discord.Embed()
         embed = discord.Embed(
@@ -119,14 +116,28 @@ class goals(commands.Cog):
         except:
             print('didnt work again...')
     # add their current time
+    def seeifInDB(id):
+        sql = f"SELECT * FROM users.goal WHERE ID = {id}"
+        db.cur.execute(sql, )
+        result = db.cur.fetchone()
+        if result is None:
+            return False
+        else:
+            return True
+
     async def check_goals(client):
         global NameCheck
         # for rows in goals:
 
-        sql = "SELECT * FROM users.goal"
+        sql = "SELECT * FROM users.goal WHERE Won = 0"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
         result = list(result)
+
+        sql = "Select ID, Start from users.sessionlog"
+        db.cur.execute(sql, )
+        InSession = db.cur.fetchall()
+
         for i in (range(len(list(result)))):
 
             # get user total
@@ -136,22 +147,19 @@ class goals(commands.Cog):
             totaltime = db.cur.fetchone()
             totaltime = int(totaltime[0])
             id = int(val[0])
-            for x in Users:
-                if x.id == id:
-                    # add current study time
-                    if x.StartStudy is not None:
 
-                        extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
-                        extratime = extratimesec / 60
-                        totaltime = totaltime + extratime
-                        break
+            for i in range(len(InSession)):
+                if id == InSession[i][0]:
+                    extratime = timeTrack.calculateTime(InSession[i][1], datetime.now())
+                    totaltime = totaltime + extratime
+
 
             # get user OldCurrent
             sql = "SELECT Current FROM users.goal WHERE ID = %s"
             db.cur.execute(sql, val)
             OldCurrent = db.cur.fetchone()
             OldCurrent = int(OldCurrent[0])
-            NewCurrent = int(totaltime / 50)  # TODO add / 50
+            NewCurrent = int(totaltime  )  # TODO add / 50
             if OldCurrent != NewCurrent:
                 UserId = result[i][0]
                 # set user measuredmin, user current
@@ -177,11 +185,10 @@ class goals(commands.Cog):
                     channel = client.get_channel(vc.chores_vc_id)
                     await channel.send(f"good job on reaching your daily goal, {Nick}")
 
-                    sql = "UPDATE users.achievements SET Won = Won + 1 WHERE ID = %s"
+                    sql = "UPDATE users.goal SET Won = 1 WHERE ID = %s"
                     val = (member.id,)
                     db.cur.execute(sql, val)
                     db.mydb.commit()
-
 
                     Nick = f"{member.name}"
                     await asyncio.sleep(5)
@@ -200,14 +207,7 @@ class goals(commands.Cog):
                     await asyncio.sleep(4)
                     await message.delete()
                     # add xp
-                    await levels.addXP(client, member, xp)
-
-                    #REMOVE HIM FROM DB
-                    #sql = "DELETE FROM users.goal WHERE ID = %s"
-                    #val = (member.id,)
-                    #db.cur.execute(sql, val)
-                    #db.mydb.commit()
-
+                    await levels.addXP(member, xp)
 
                 Nick = f"{Nick} {NewCurrent}/{Goal}"
                 await asyncio.sleep(5)
@@ -216,16 +216,14 @@ class goals(commands.Cog):
                 except:
                     (f"can't rename member{member.name}")
 
-                #   FROM user.total table days reached goal += 1
-                #   give user some XP
-                #   give user role
-
     # CHECK IF MEMBER CHANGED NAME
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         print("user update")
         if before.display_name != after.display_name:
             print(f"{after.name} changed name")
+            if goals.seeifInDB(after.id):
+                return
             Nick = after.display_name
             txt = str.split(Nick)
             name = txt[0]
