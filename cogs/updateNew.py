@@ -94,7 +94,7 @@ class updateNew(commands.Cog):
 
 
 
-            if hour == 1: #todo change hour
+            if hour == 5: #todo change hour
                 await challenge.NewDay(self, vc.guild)
 
 

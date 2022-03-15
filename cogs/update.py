@@ -78,7 +78,7 @@ class update(commands.Cog):
                 await update.updateTables("daily", "weekly", Timezone)
                 #TODO: adapt user goals to timezone
 
-                if hour == 7: #todo
+                if hour == 5: #todo
                     await challenge.NewDay(self, guild)
 
                     # Reward Daily Winners

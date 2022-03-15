@@ -8,7 +8,7 @@ class vc(commands.Cog):
     bot_spam = None
     vc_chat = None
     guild = None
-    Testing = True
+    Testing = False
 
     def start(self, Testing):
         if Testing == True:
