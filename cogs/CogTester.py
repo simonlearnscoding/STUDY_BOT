@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
 @client.event
 async def on_ready():
-    vc.start(client, True)
+    vc.start(client, False)
     await timeTrack.totalReboot(client)
     checkupdate.start(client)
     checkrank.start(client)
@@ -32,11 +32,11 @@ async def on_ready():
 async def checkupdate(client):
     await updateNew.update(client)
 
-@tasks.loop(seconds=30) #TODO: change the intervall here
+@tasks.loop(seconds=40) #TODO: change the intervall here
 async def checkem(client):
     await goals.check_goals(client)
 
-@tasks.loop(seconds=30) #change the intervall here
+@tasks.loop(seconds=20) #change the intervall here
 async def checkrank(client):
     RankList = await goals.ranking(client)
     await goals.displayranking(client, RankList[0], RankList[1])

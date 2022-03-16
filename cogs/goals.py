@@ -57,9 +57,10 @@ class goals(commands.Cog):
         for i in range(len(Result)):
             extratime = timeTrack.calculateTime(Result[i][1], datetime.now())
 
-            for i in range(len(RankingList)):
-                    RankingList[i][1] = int(RankingList[i][1] + extratime)
-                    RankingList[i][3] = 1
+            for j in range(len(RankingList)):
+                    if Result[i][0] == RankingList[j][1]:
+                        RankingList[j][1] = int(RankingList[j][1] + extratime)
+                        RankingList[j][3] = 1
 
         for i in range(len(RankingWeek)):
             for j in range(len(RankingList)):
