@@ -10,6 +10,9 @@ class vc(commands.Cog):
     guild = None
     Testing = False
 
+        #return self.get_guild(id)
+    #def get_channel(id):
+
     def start(self, Testing):
         if Testing == True:
             vc.guild = self.get_guild(917547601539264623)
@@ -57,9 +60,14 @@ class vc(commands.Cog):
         challenge_role_1 = 939465581936144405
         challenge_role_2 = 939465659211984936
 
-        Augustus = "C:/Code/14_11_21/assets/font/Augustus.ttf"
-        SmallFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
-        SmallerFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
+        #Augustus = "C:/Code/14_11_21/assets/font/Augustus.ttf"
+        #SmallFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
+        #SmallerFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
+
+        Augustus = "C:/Code/SPQR_VPS/assets/font/Augustus.ttf"
+        SmallFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        SmallerFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        #TODO: Fonts!
 
     else:
         # TESTING
