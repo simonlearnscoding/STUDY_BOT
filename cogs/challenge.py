@@ -146,7 +146,7 @@ class challenge(commands.Cog):
 
     async def updateMessage(self, channel):
 
-        if channel.id == vc.challenge_1:
+        if channel == vc.challenge_1:
             Embed = discord.Embed()
             Embed.add_field(name=f"Day {challenge.monthday}", value=f"...", inline=False)
             challenge.updateArrays(client)
@@ -156,7 +156,7 @@ class challenge(commands.Cog):
             challenge.Message1 = await challenge.fillMessages(self, 3)
             await challenge.Message1.edit(embed=Embed)
 
-        elif channel.id == vc.challenge_2:
+        elif channel == vc.challenge_2:
             Embed = discord.Embed()
             Embed.add_field(name=f"Day {challenge.monthday}", value=f"...", inline=False)
             challenge.updateArrays(client)
@@ -280,7 +280,7 @@ class challenge(commands.Cog):
             member = guild.get_member(result[i][0])
             if member is None:
                 member = guild.get_user(result[i][0])
-            await levels.addXP(client, member, 500)
+            await levels.addXP(member, 500)
             channel = challenge.getChannel(result[i][4])
 
             # let user know
@@ -346,14 +346,14 @@ class challenge(commands.Cog):
     def fillMessages(self, integ):
         guild = vc.guild_id
         if integ == 3:
-
+            # Get Challenge id
             sql = "SELECT userID FROM challenge WHERE challengeId = 3"
             db.cur.execute(sql, )
             result = db.cur.fetchone()
-
             return vc.challenge_1.fetch_message(result[0])
 
         elif integ == 4:
+            #get Challenge ID
             sql = "SELECT userID FROM challenge WHERE challengeId = 4"
             db.cur.execute(sql, )
             result = db.cur.fetchone()
@@ -372,8 +372,11 @@ class challenge(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         print(payload.member)
+
+        #Get Challenges
         challenge.Message1 = await challenge.fillMessages(self, 3)
         challenge.Message2 = await challenge.fillMessages(self, 4)
+
         if payload.member.bot:
             print("the N word")
             return
@@ -392,7 +395,7 @@ class challenge(commands.Cog):
             await asyncio.sleep(4)
             await message.delete()
 
-            await levels.addXP(self.client, payload.member, 10) # add xp
+            await levels.addXP(payload.member, 10) # add xp
 
 
         elif payload.message_id == challenge.Message2.id:
@@ -413,7 +416,7 @@ class challenge(commands.Cog):
 
             # add xp
 
-            await levels.addXP(self.client, payload.member, 10)
+            await levels.addXP(payload.member, 10)
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         challenge.Message1 = await challenge.fillMessages(self, 3)
@@ -422,11 +425,11 @@ class challenge(commands.Cog):
         if payload.message_id == challenge.Message1.id:
             print("In challenge 1")
             await challenge.AddToUndone(self, payload.user_id, 1)
-            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_1))
+            await challenge.updateMessage(self, channel=vc.challenge_1)
         elif payload.message_id == challenge.Message2.id:
             print("challenge 2")
             await challenge.AddToUndone(self, payload.user_id, 2)
-            await challenge.updateMessage(self, channel=self.client.get_channel(vc.challenge_2))
+            await challenge.updateMessage(self, channel=vc.challenge_2)
 
 
 def setup(client):

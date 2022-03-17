@@ -104,7 +104,7 @@ class trackings(commands.Cog):
 
         if await channels.quitConditions(member, before, after) is True:
             return
-        if (timeTrack.checkifEntries(member.id)):
+        if (await timeTrack.checkifEntries(member.id)):
             await timeTrack.deleteFromList(member.id)
 
 
@@ -289,8 +289,8 @@ class timeTrack():
         except:
             await channel.send(f"you have to type !{activity} <minutes>.   like !yoga 30")
             return
-        if Time >= 60:
-            await channel.send("nice try, more than 60 minutes of manual logging is not allowed")
+        if Time > 120:
+            await channel.send("nice try, more than 120 minutes of manual logging is not allowed")
             return
         else:
             return activity, Time
@@ -309,7 +309,7 @@ class timeTrack():
         db.cur.execute(sql, )
         db.mydb.commit()
 
-    def checkifEntries(id):
+    async def checkifEntries(id):
         sql = f"select * from users.sessionlog where ID = {id}"
         db.cur.execute(sql,)
         result = db.cur.fetchall()
@@ -318,14 +318,14 @@ class timeTrack():
 
 
 
-    def getAllSessionLogs(self):
+    async def getAllSessionLogs(self):
         sql = "Select ID, Activity from users.sessionlog"
         db.cur.execute(sql, )
         return db.cur.fetchall()
 
 
     async def rebootDown(self):
-        UserInSession = timeTrack.getAllSessionLogs(self)
+        UserInSession = await timeTrack.getAllSessionLogs(self)
         for i in range(len(UserInSession)):
             member = vc.guild.get_member(UserInSession[i][0])
             await timeTrack.quitSomething(member)
@@ -352,7 +352,7 @@ class timeTrack():
 
 
     async def rebootUpdate(self, Result):
-        UserInSession = timeTrack.getAllSessionLogs(self)
+        UserInSession = await timeTrack.getAllSessionLogs(self)
         for i in range(len(UserInSession)):
             for j in range(len(Result)):
                 if UserInSession[i][0] == Result[j][0]:

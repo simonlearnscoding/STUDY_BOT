@@ -13,38 +13,35 @@ class updateNew(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    Switch = False
-    def selectPeople(Timezone):
+
+    async def selectPeople(Timezone):
         sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
-        sql = str(sql)
-        db.cur.execute(sql)
+
+        db.cur.execute(sql, )
         return db.cur.fetchall()
-    def selectPeopleSwitch(Timezone):
-        Timezone = Timezone - 1
-        if Timezone < 0:
-            Timezone = 23
-        sql = f"SELECT * FROM users.daily Where Timezone <= {Timezone} and Switch = True"
+    async def selectPeopleSwitch(Timezone):
+        sql = f"SELECT * FROM users.daily Where Timezone != {Timezone} and Switch = True"
         sql = str(sql)
-        db.cur.execute(sql)
+        db.cur.execute(sql, )
         return db.cur.fetchall()
-    def resetGoals(id):
+
+    async def resetGoals(id):
         sql = f"DELETE FROM users.goal WHERE ID = {id}"
         db.cur.execute(sql, )
         db.mydb.commit()
-    def switch(Result, list, Bool):
-        for i in range(len(Result)):
-            print(Result[i][0])
-            sql = f"update users.{list} set Switch = {Bool} where ID = {Result[i][0]}"
-            db.cur.execute(sql, )
-            db.mydb.commit()
-    def setToFalse(Timezone):
-        Result = updateNew.selectPeopleSwitch(Timezone)
+    async def switch(Result, list, Bool):
+        sql = f"update users.{list} set Switch = {Bool} where ID = {Result}"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+    async def setToFalse(Timezone):
+        Result = await updateNew.selectPeopleSwitch(Timezone)
         if Result is None:  # if there is no user in this timezone exit function
             print("everything's been done")
             pass
         else:
-            updateNew.switch(Result, "daily", "False")
-    def updateTables(userData, time1, time2):
+            for i in range(len(Result)):
+                await updateNew.switch(Result[i][0], "daily", "False")
+    async def updateTables(userData, time1, time2):
         activity = ("Study", "Workout", "Yoga", "Reading", "Meditation", "Chores", "Creative", "Total")
         for i in range(0, 8):
             Activity = str(activity[i])
@@ -59,53 +56,67 @@ class updateNew(commands.Cog):
             db.cur.execute(sql, )
             db.mydb.commit()
 
+    Switch = False
     async def update(self):
 
         minute = time.localtime().tm_min
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
         monthday = time.localtime().tm_mday
-        switchtime = 35 #TODO: fix switchtime
+        switchtime = 40 #TODO: fix switchtime
 
 
         if minute < switchtime:
             Timezone = hour
             print("tried to update")
+            if updateNew.Switch == False:
+                print("update went through")
+                updateNew.Switch = True
+                if monthday == 1:  # TODO: change this to 1
+                    print("rewardchallengewinner")
+                    await challenge.challengeWinners(self, vc.guild)
+                # Challenge New Message
+                if hour == 22: #todo change hour
+                        await challenge.NewDay(self, vc.guild)
+                # Set Switch people last hour to false for next day
+                await updateNew.setToFalse(Timezone)
 
-            if monthday == 1:  # TODO: change this to 1
-                print("rewardchallengewinner")
-                await challenge.challengeWinners(self, vc.guild)
+                # Get all users with Current Timezone
+                Result = await updateNew.selectPeople(Timezone)
+                # if there is no user in this timezone exit function
+                if Result is None:
+                    print("everything's been done")
+                    return
 
-            if hour == 5: #todo change hour
-                if updateNew.Switch == False:
-                    updateNew.Switch = True
-                    await challenge.NewDay(self, vc.guild)
+                # Reboot all Members in vc
+                await timeTrack.rebootUpdate(self, Result)
 
-            if hour == 6:  # todo change hour
-                updateNew.Switch = False
-
-            Result = updateNew.selectPeople(Timezone)
-            if Result is None:  # if there is no user in this timezone exit function
-                print("everything's been done")
-                return
-            await timeTrack.rebootUpdate(self, Result) #Reboot all Members in vc
-            updateNew.switch(Result, "daily", "True") #Set Switch to True
-            for i in range(len(Result)): #reset user's Tasks
-                heatmap.addRow(Result[i])
-                id = Result[i][0]
-                tasks.resetDay(self, id)
-                updateNew.resetGoals(id)
-                updateNew.updateTables(Result[i], "daily", "weekly")
-                await heatmap.commandHeatmap("CHALLENGE1", vc.challenge_1, vc.guild.get_member(id))
-                await heatmap.commandHeatmap("CHALLENGE2", vc.challenge_2, vc.guild.get_member(id))
-
-                if weekday == 0:
-                    updateNew.updateTables(Result[i], "weekly", "monthly")
-
-
+                for i in range(len(Result)): #reset user's Tasks
+                    # Log user Daily Data
+                    heatmap.addRow(Result[i])
+                    id = Result[i][0]
+                    # Reset Users Task List
+                    await tasks.resetDay(self, id)
+                    # Reset users Challenge
+                    await updateNew.resetGoals(id)
+                    # Update his Daily Challenge Thing
+                    await updateNew.updateTables(Result[i], "daily", "weekly")
+                    try:
+                        member = vc.getmember(id)
+                        # Add user Challenge Stat
+                        await heatmap.commandHeatmap("CHALLENGE1", vc.challenge_1, member)
+                        await heatmap.commandHeatmap("CHALLENGE2", vc.challenge_2, member)
+                    except:
+                        print(id)
+                    await updateNew.switch(Result[i][0], "daily", "True")  # Set Switch to True
+                    if weekday == 0:
+                        await updateNew.updateTables(Result[i], "weekly", "monthly")
+        else:
+            updateNew.Switch = False
 
 
-            updateNew.setToFalse(Timezone) #Set Switch people last hour to false for next day
+
+
 
 
 def setup(client):

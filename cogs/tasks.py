@@ -26,7 +26,7 @@ class tasks(commands.Cog):
     Message2 = []
 
 
-    def resetDay(self, userid):
+    async def resetDay(self, userid):
 
         sql = f"delete from users.tasks where userid = {userid};"
         db.cur.execute(sql, )

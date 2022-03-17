@@ -8,15 +8,18 @@ class vc(commands.Cog):
     bot_spam = None
     vc_chat = None
     guild = None
-    Testing = False
-
+    Testing = True
+    challenge_1 = None
+    challenge_2 = None
+    def getmember(id):
+        print(vc.guild)
+        return vc.guild.get_member(id)
         #return self.get_guild(id)
     #def get_channel(id):
 
     def start(self, Testing):
         if Testing == True:
             vc.guild = self.get_guild(917547601539264623)
-
         else:
             vc.guild = self.get_guild(789814373434654731)
 
