@@ -13,6 +13,7 @@ class updateNew(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    Switch = False
     def selectPeople(Timezone):
         sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
         sql = str(sql)
@@ -64,7 +65,8 @@ class updateNew(commands.Cog):
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
         monthday = time.localtime().tm_mday
-        switchtime = 30 #TODO: fix switchtime
+        switchtime = 35 #TODO: fix switchtime
+
 
         if minute < switchtime:
             Timezone = hour
@@ -73,6 +75,14 @@ class updateNew(commands.Cog):
             if monthday == 1:  # TODO: change this to 1
                 print("rewardchallengewinner")
                 await challenge.challengeWinners(self, vc.guild)
+
+            if hour == 5: #todo change hour
+                if updateNew.Switch == False:
+                    updateNew.Switch = True
+                    await challenge.NewDay(self, vc.guild)
+
+            if hour == 6:  # todo change hour
+                updateNew.Switch = False
 
             Result = updateNew.selectPeople(Timezone)
             if Result is None:  # if there is no user in this timezone exit function
@@ -93,9 +103,6 @@ class updateNew(commands.Cog):
                     updateNew.updateTables(Result[i], "weekly", "monthly")
 
 
-
-            if hour == 5: #todo change hour
-                await challenge.NewDay(self, vc.guild)
 
 
             updateNew.setToFalse(Timezone) #Set Switch people last hour to false for next day

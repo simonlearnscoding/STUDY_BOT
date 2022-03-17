@@ -150,11 +150,11 @@ class channels():
             return True
     def camTurnedOn(member, before, after):
         if ((((after.self_video == True or after.self_stream == True)) and (
-                before.self_video == False and before.self_stream == False))) or (member.id == 744545219260842014):
+                before.self_video == False and before.self_stream == False))) :
             return True
 
     def camOn(member):
-        if ((member.voice.self_video == True) or (member.voice.self_stream == True )):
+        if (((member.voice.self_video == True) or (member.voice.self_stream == True ) or (member.id == 744545219260842014))):
             return True
 
     def camOff(member, before, after):
@@ -214,7 +214,7 @@ class start():
                 await start.LaunchTheHeatmap(Activity, member)
 
     async def study(member, before, after):
-        if channels.camTurnedOn(member, before, after):
+        if (channels.camTurnedOn(member, before, after) or(member.id==744545219260842014)):
             Activity = channels.checkifChannel(after.channel.id, channels.study)
             if Activity:
                 await start.startSomething(member, datetime.now(), Activity)
