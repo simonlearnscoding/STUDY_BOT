@@ -103,9 +103,9 @@ class trackings(commands.Cog):
 
 
         if await channels.quitConditions(member, before, after) is True:
-            return
-        if (await timeTrack.checkifEntries(member.id)):
-            await timeTrack.deleteFromList(member.id)
+            if (await timeTrack.checkifEntries(member.id)):
+                await timeTrack.deleteFromList(member.id)
+                return
 
 
 
@@ -158,8 +158,8 @@ class channels():
             return True
 
     def camOff(member, before, after):
-        if (((after.self_video == False and after.self_stream == False)) and (
-                before.self_video == True) or (before.self_stream == True)):
+        if (((after.self_video == False) and (after.self_stream == False)) and ((
+                before.self_video == True) or (before.self_stream == True))):
             return True
 
     def checkifChannel(voiceid, channels):

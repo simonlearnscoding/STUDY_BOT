@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
 @client.event
 async def on_ready():
-    vc.start(client, True)
+    vc.start(client, False)
     await timeTrack.totalReboot(client)
     checkupdate.start(client)
     checkrank.start(client)
