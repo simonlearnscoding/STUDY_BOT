@@ -27,6 +27,7 @@ asyncio.run(main())
 @client.event
 async def on_ready():
     vc.start(client, False)
+    print("bot ready")
     await timeTrack.totalReboot(client)
     checkupdate.start(client)
     checkrank.start(client)
