@@ -1,5 +1,5 @@
 from discord.ext import commands
-
+import discord
 class vc(commands.Cog):
 
     def __init__(self, client):
