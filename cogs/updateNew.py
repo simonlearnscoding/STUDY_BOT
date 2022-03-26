@@ -119,5 +119,8 @@ class updateNew(commands.Cog):
 
 
 
-def setup(client):
-    client.add_cog(updateNew(client))
+async def setup(client):
+    await client.add_cog(updateNew(client))
+
+async def teardown(client):
+    return

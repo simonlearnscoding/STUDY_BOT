@@ -108,5 +108,9 @@ class vc(commands.Cog):
         challenge_role_2 = 939464510425665606
 
 
-def setup(client):
-    client.add_cog(vc(client))
+
+async def setup(client):
+    await client.add_cog(vc(client))
+
+async def teardown(client):
+    return

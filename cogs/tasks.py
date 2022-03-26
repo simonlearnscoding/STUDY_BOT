@@ -928,5 +928,8 @@ class tasks(commands.Cog):
 
 
 
-def setup(client):
-    client.add_cog(tasks(client))
+async def setup(client):
+    await client.add_cog(tasks(client))
+
+async def teardown(client):
+    return

@@ -335,9 +335,10 @@ class heatmap(commands.Cog):
                     await heatmap.launchHeatmap(self, "creative", member)"""
 
 
-def setup(client):
-    client.add_cog(heatmap(client))
 
 
-    #for i in range(len(result)):
-        #self.addRow(self, result[i])
+async def setup(client):
+    await client.add_cog(heatmap(client))
+
+async def teardown(client):
+    return

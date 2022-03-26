@@ -249,7 +249,9 @@ class workaround:
     async def displayMessage(message, xp, lvl, nextlvlxp, percentage):
         return await levels.displayMessage(message, xp, lvl, nextlvlxp, percentage)
 
-def setup(client):
-    client.add_cog(levels(client))
+async def setup(client):
+    await client.add_cog(levels(client))
 
+async def teardown(client):
+    return
 

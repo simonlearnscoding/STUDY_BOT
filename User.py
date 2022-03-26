@@ -154,5 +154,10 @@ class user(commands.Cog):
 
     
 
-def setup(client):
-  client.add_cog(user(client))
+
+
+async def setup(client):
+    await client.add_cog(user(client))
+
+async def teardown(client):
+    return

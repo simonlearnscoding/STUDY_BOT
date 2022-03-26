@@ -138,7 +138,6 @@ class channels():
             try:
                 await timeTrack.quitSomething(member)
             except:
-                print("quit didn't work mate")
                 pass
 
         if channels.checkifChannel(after.channel.id, channels.study):
@@ -165,7 +164,7 @@ class channels():
     def checkifChannel(voiceid, channels):
         for i in range(len(channels)):  # Check if in right channels
             if voiceid == channels[i][1]:
-                print(f" in {channels[i][0]}")
+
                 return channels[i][0]
         return False
 
@@ -296,7 +295,7 @@ class timeTrack():
             return activity, Time
 
     def calculateTime(start, end):
-        print(end-start)
+
         return (int((end - start).total_seconds() / 60)) #TODO: add / 60
 
     async def addTime(time, id, Activity):
@@ -368,8 +367,13 @@ class timeTrack():
     async def ToHours(self, inter):
         return f"{int(inter / 60)}h {int(inter % 60)}m"
 
-def setup(client):
-    client.add_cog(trackings(client))
+
+
+async def setup(client):
+    await client.add_cog(trackings(client))
+
+async def teardown(client):
+    return
 #camoff
 #switchvc
 #camon
