@@ -19,6 +19,9 @@ if __name__ == '__main__':
     for ext in extensions:
         client.load_extension(ext)
 
+
+
+
 @client.event
 async def on_ready():
     vc.start(client, False)

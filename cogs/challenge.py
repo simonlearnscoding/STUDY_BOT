@@ -432,6 +432,7 @@ class challenge(commands.Cog):
             await challenge.updateMessage(self, channel=vc.challenge_2)
 
 
-def setup(client):
-    client.add_cog(challenge(client))
+async def setup(client):
+    await client.add_cog(challenge(client))
+
 
