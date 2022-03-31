@@ -39,7 +39,10 @@ class trackings(commands.Cog):
             Activities = timeTrack.getActivities(self, result)
 
             embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
-            await message.delete()
+            try:
+                await message.delete()
+            except:
+                pass
             CurrentlySomewhere = False
             try:
                 Activity, timeInterval = await start.getSessionTime(message.author)
@@ -176,14 +179,20 @@ class start():
         db.cur.execute(sql,)
         result = db.cur.fetchone()
         end = datetime.now()
-        start = result[0]
-        Activity = result[1]
-        timeInterval = timeTrack.calculateTime(start, end)
-        return Activity, timeInterval
+        try:
+            start = result[0]
+            Activity = result[1]
+            timeInterval = timeTrack.calculateTime(start, end)
+            return Activity, timeInterval
+        except:
+            print(f"{member} couldnt update  minutes(?)")
 
     async def addSessionTime(member):
 
-        Activity, timeInterval = await start.getSessionTime(member)
+        try:
+            Activity, timeInterval = await start.getSessionTime(member)
+        except:
+            print(f"didnt work for {member}")
 
         await levels.giveXP(member, timeInterval, Activity)
         id = member.id
@@ -201,10 +210,13 @@ class start():
         await start.study(member, before, after)
 
     async def LaunchTheHeatmap(Activity, member):
-        Time = levels.getActivity(Activity.title(), member.id)
-        if Time[0] == 0:
-            await heatmap.launchHeatmap(Activity, member)
-
+        try:
+            Time = levels.getActivity(Activity.title(), member.id)
+            if Time[0] == 0:
+                await heatmap.launchHeatmap(Activity, member)
+        except:
+            print("something didnt work chief")
+            pass
     async def lifestyle(member, before, after):  # start lifestyle maybe
         if ((before.channel != after.channel)):
             Activity = channels.checkifChannel(after.channel.id, channels.lifestyle)

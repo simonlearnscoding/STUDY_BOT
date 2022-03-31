@@ -404,7 +404,7 @@ class challenge(commands.Cog):
             await challenge.updateMessage(self, channel=vc.challenge_2)
 
             channel = vc.challenge_2
-            await heatmap.commandHeatmap(self, "CHALLENGE2", channel, payload.member)
+            await heatmap.commandHeatmap("CHALLENGE2", channel, payload.member)
             Embed = discord.Embed()
             Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
             Embed.add_field(name=f"{payload.member}, Committing to the daily challenge! ",

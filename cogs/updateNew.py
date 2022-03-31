@@ -68,7 +68,6 @@ class updateNew(commands.Cog):
 
         if minute < switchtime:
             Timezone = hour
-            print("tried to update")
             if updateNew.Switch == False:
                 print("update went through")
                 updateNew.Switch = True

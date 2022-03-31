@@ -172,11 +172,15 @@ class levels(commands.Cog):
 
     async def selectXPLVL(id):
 
-        sql = "SELECT XP, LVL FROM users.user WHERE ID = %s"
-        val = (id, )
-        db.cur.execute(sql, val)
-        result = db.cur.fetchone()
-        lvl = result[1]
+        try:
+            sql = "SELECT XP, LVL FROM users.user WHERE ID = %s"
+            val = (id, )
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            lvl = result[1]
+        except:
+            print(f"{id} maybe not in db yet?")
+            return
 
         if lvl is None:
             sql = "UPDATE users.user SET LVL = 1 WHERE ID = %s"
@@ -198,8 +202,12 @@ class levels(commands.Cog):
         val = (xp, member.id)
         db.cur.execute(sql, val)
         db.mydb.commit()
-        xp, lvl = await levels.selectXPLVL(member.id)
-        await levels.checkNewLevel(member, lvl, xp)
+        try:
+            xp, lvl = await levels.selectXPLVL(member.id)
+            await levels.checkNewLevel(member, lvl, xp)
+        except:
+            print(f"{member} couldnt update level")
+
     async def displayMessage(message, xp, lvl, nextlvlxp, percentage):
 
         #Chosen Fonts
