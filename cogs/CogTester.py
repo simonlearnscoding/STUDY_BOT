@@ -27,7 +27,7 @@ async def main():
 @client.event
 async def on_ready():
     print("bot ready")
-    vc.start(client, True)
+    vc.start(client, False)
 
     await timeTrack.totalReboot(client)
     checkupdate.start(client)

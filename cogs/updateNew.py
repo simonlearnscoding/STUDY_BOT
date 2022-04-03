@@ -76,7 +76,7 @@ class updateNew(commands.Cog):
                     print("rewardchallengewinner")
                     await challenge.challengeWinners(self, vc.guild)
                 # Challenge New Message
-                if hour == 17: #todo change hour
+                if hour == 10: #todo change hour
                         await challenge.NewDay(self, vc.guild)
                         await questions.postQuestion(questions)
                 # Set Switch people last hour to false for next day

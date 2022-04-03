@@ -8,7 +8,7 @@ class vc(commands.Cog):
     bot_spam = None
     vc_chat = None
     guild = None
-    Testing = True
+    Testing = False
     challenge_1 = None
     challenge_2 = None
     questions= None
