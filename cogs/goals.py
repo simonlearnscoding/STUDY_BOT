@@ -6,10 +6,11 @@ import re
 import sys
 from cogs.levels import levels
 sys.path.append('/.../')
-from vc import vc
+from cogs.vc import vc
 from mydb import db
 from User import userfunction, user, User, Users
 from trackingsessions import timeTrack
+
 
 
 NameCheck = False
@@ -126,96 +127,105 @@ class goals(commands.Cog):
         else:
             return True
 
+    def getUsersInChallenge():
+        sql = "SELECT * FROM users.goal WHERE Won = 0"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        return list(result)
+
+    def getUsersInSession():
+        sql = "Select ID, Start from users.sessionlog"
+        db.cur.execute(sql, )
+        return db.cur.fetchall()
+
+    def getUserTime(id, inSession):
+        sql = f"SELECT Total FROM users.daily WHERE ID = {id}"
+        db.cur.execute(sql, )
+        time = db.cur.fetchone()
+        time = time[0]
+        # add time if user in Session
+        for i in range(len(inSession)):
+            inSessionId = (int(inSession[i][0]))
+            if id == inSessionId:
+                extratime = timeTrack.calculateTime(inSession[i][1], datetime.now())
+                time = time + extratime
+                return time
+        return time
+
+
+    def updateUserTime(newTime, id):
+        # set user measuredmin, user current
+        newHours = int(newTime / 60)
+        sql = f"UPDATE users.goal SET Current = {newHours}, measuredMin = {newTime} WHERE ID = {id}"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+
+    async def changeUserNick(newTime, id):
+        sql = f"SELECT NickName, Goal FROM users.goal WHERE ID = {id}"
+        db.cur.execute(sql,)
+        User = db.cur.fetchone()
+
+        Nick = str(User[0])
+        Goal = int(User[1])
+        newHours = int(newTime / 60)
+        member = vc.guild.get_member(id)
+
+        if newHours >= Goal:
+            await vc.vc_chat.send(f"good job on reaching your daily goal, {Nick}")
+
+            sql = f"UPDATE users.goal SET Won = 1 WHERE ID = {id}"
+            db.cur.execute(sql, )
+            db.mydb.commit()
+
+            #rename member to his original Name
+            Nick = f"{member.name}"
+            await asyncio.sleep(5)
+            try:
+                await member.edit(nick=Nick)
+            except:
+                pass
+
+            xp = 50
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(
+                name=f"{Nick} Sticking to your Goals! +50xp!",
+                value=f"+ {xp}xp",
+                inline=False)
+            message = await vc.vc_chat.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+            # add xp
+            await levels.addXP(member, xp)
+
+        Nick = f"{Nick} {newHours}/{Goal}"
+        await asyncio.sleep(5)
+        try:
+            await member.edit(nick=Nick)
+        except:
+            (f"can't rename member{member.name}")
+
     async def check_goals(client):
         global NameCheck
         # for rows in goals:
 
-        sql = "SELECT * FROM users.goal WHERE Won = 0"
-        db.cur.execute(sql, )
-        result = db.cur.fetchall()
-        result = list(result)
+        Users = goals.getUsersInChallenge()
+        inSession = goals.getUsersInSession()
+        timeDiv = 60
+        #for every user currently in challenge
+        for i in (range(len(Users))):
+            id = Users[i][0]
+            #get User Time
+            OldCurrent = Users[i][4]
+            NewCurrent = goals.getUserTime(id, inSession)
+            oldHours = int(OldCurrent / timeDiv)
+            newHours= int( NewCurrent/ timeDiv)
+            if (oldHours!= newHours):
 
-        sql = "Select ID, Start from users.sessionlog"
-        db.cur.execute(sql, )
-        InSession = db.cur.fetchall()
-
-        for i in (range(len(list(result)))):
-
-            # get user total
-            sql = "SELECT total FROM users.daily WHERE ID = %s"
-            val = (result[i][0],)
-            db.cur.execute(sql, val)
-            totaltime = db.cur.fetchone()
-            totaltime = int(totaltime[0])
-            id = int(val[0])
-
-            for i in range(len(InSession)):
-                if id == InSession[i][0]:
-                    extratime = timeTrack.calculateTime(InSession[i][1], datetime.now())
-                    totaltime = totaltime + extratime
+                goals.updateUserTime(NewCurrent,id)
+                await goals.changeUserNick(NewCurrent, id)
 
 
-            # get user OldCurrent
-            sql = "SELECT Current FROM users.goal WHERE ID = %s"
-            db.cur.execute(sql, val)
-            OldCurrent = db.cur.fetchone()
-            OldCurrent = int(OldCurrent[0])
-            NewCurrent = int(totaltime  )  # TODO add / 50
-            if OldCurrent != NewCurrent:
-                UserId = result[i][0]
-                # set user measuredmin, user current
-                sql = "UPDATE users.goal SET Current = %s, measuredMin = %s WHERE ID = %s"
-                val = (NewCurrent, totaltime, UserId)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                guild = client.get_guild(vc.guild_id)
-                member = guild.get_member(UserId)
-
-                sql = "SELECT NickName FROM users.goal WHERE ID = %s"
-                val = (UserId,)
-                db.cur.execute(sql, val)
-                Nick = db.cur.fetchone()
-                Nick = str(Nick[0])
-
-                sql = "SELECT Goal FROM users.goal WHERE ID = %s"
-                val = (UserId,)
-                db.cur.execute(sql, val)
-                Goal = db.cur.fetchone()
-                Goal = int(Goal[0])
-                if NewCurrent >= Goal:
-                    channel = client.get_channel(vc.chores_vc_id)
-                    await channel.send(f"good job on reaching your daily goal, {Nick}")
-
-                    sql = "UPDATE users.goal SET Won = 1 WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
-
-                    Nick = f"{member.name}"
-                    await asyncio.sleep(5)
-                    try:
-                        await member.edit(nick=Nick)
-                    except:
-                        pass
-                    xp = 50
-                    Embed = discord.Embed()
-                    Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
-                    Embed.add_field(
-                        name=f"{Nick} Sticking to your Goals! +50xp!",
-                        value=f"+ {xp}xp",
-                        inline=False)
-                    message = await channel.send(embed=Embed)
-                    await asyncio.sleep(4)
-                    await message.delete()
-                    # add xp
-                    await levels.addXP(member, xp)
-
-                Nick = f"{Nick} {NewCurrent}/{Goal}"
-                await asyncio.sleep(5)
-                try:
-                    await member.edit(nick=Nick)
-                except:
-                    (f"can't rename member{member.name}")
 
     # CHECK IF MEMBER CHANGED NAME
     @commands.Cog.listener()
@@ -241,16 +251,14 @@ class goals(commands.Cog):
                     member = guild.get_member(ID)
                     await userfunction.AddMember(self, member)
                     sql = "SELECT Total FROM users.daily WHERE ID = %s"
-                    print(after.id)
                     val = (after.id,)
                     db.cur.execute(sql, val)
                     result = db.cur.fetchone()
-                    print(result)
-                print(result)
+
             except Exception as e:
                 print("Error looking up user id %s", (e))
 
-            print(result)
+
             # print(result[8])
             measuredMin = int(result[0])
             # get user value
@@ -269,7 +277,7 @@ class goals(commands.Cog):
                     number = txt[-1]
                     x = re.split("/", number)
                     Goal = int(x[1])
-                    print(Goal)
+
 
                     sql = "INSERT INTO goal (ID, Goal, Current, NickName, measuredMin, Won) VALUES (%s, %s, %s, %s, %s, %s)"
                     val = (ID, Goal, current, name, measuredMin, False)

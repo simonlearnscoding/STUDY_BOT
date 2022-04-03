@@ -797,7 +797,6 @@ class tasks(commands.Cog):
 
         if message.author.bot:
             return
-
         if message.content.startswith("+"):
 
             now = datetime.now()

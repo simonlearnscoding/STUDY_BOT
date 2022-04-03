@@ -39,7 +39,7 @@ async def on_ready():
 async def checkupdate(client):
     await updateNew.update(client)
 
-@tasks.loop(seconds=40) #TODO: change the intervall here
+@tasks.loop(seconds=5) #TODO: change the intervall here
 async def checkem(client):
     await goals.check_goals(client)
 
