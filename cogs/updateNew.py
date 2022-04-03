@@ -63,7 +63,7 @@ class updateNew(commands.Cog):
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
         monthday = time.localtime().tm_mday
-        switchtime = 45 #TODO: fix switchtime
+        switchtime = 30 #TODO: fix switchtime
 
 
         if minute < switchtime:
@@ -75,7 +75,7 @@ class updateNew(commands.Cog):
                     print("rewardchallengewinner")
                     await challenge.challengeWinners(self, vc.guild)
                 # Challenge New Message
-                if hour == 9: #todo change hour
+                if hour == 10: #todo change hour
                         await challenge.NewDay(self, vc.guild)
                 # Set Switch people last hour to false for next day
                 await updateNew.setToFalse(Timezone)

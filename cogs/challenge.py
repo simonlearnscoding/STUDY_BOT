@@ -125,7 +125,7 @@ class challenge(commands.Cog):
 
     async def MakeMessage(self, channel):
         Embed = discord.Embed()
-        Embed.add_field(name=f"Day {challenge.monthday}", value=f"...", inline=False)
+        Embed.add_field(name=f"Day {time.localtime().tm_mday}", value=f"...", inline=False)
         if channel == vc.challenge_1:
             Embed.add_field(name="Done: ", value=f"{challenge.done1}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing1}\n", inline=False)
@@ -148,7 +148,7 @@ class challenge(commands.Cog):
 
         if channel == vc.challenge_1:
             Embed = discord.Embed()
-            Embed.add_field(name=f"Day {challenge.monthday}", value=f"...", inline=False)
+            Embed.add_field(name=f"Day {time.localtime().tm_mday}", value=f"...", inline=False)
             challenge.updateArrays(client)
             Embed.add_field(name="Done: ", value=f"{challenge.done1}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing1}\n", inline=False)
@@ -158,7 +158,7 @@ class challenge(commands.Cog):
 
         elif channel == vc.challenge_2:
             Embed = discord.Embed()
-            Embed.add_field(name=f"Day {challenge.monthday}", value=f"...", inline=False)
+            Embed.add_field(name=f"Day {time.localtime().tm_mday}", value=f"...", inline=False)
             challenge.updateArrays(client)
             Embed.add_field(name="Done: ", value=f"{challenge.done2}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing2}\n", inline=False)
