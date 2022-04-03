@@ -9,7 +9,7 @@ from cogs.vc import vc
 from cogs.updateNew import updateNew
 from cogs.goals import goals
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.timer", "User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.timer", "User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "~", intents = intents)
@@ -24,16 +24,10 @@ async def main():
 
 
 
-
-
-
-
-
-
 @client.event
 async def on_ready():
     print("bot ready")
-    vc.start(client, False)
+    vc.start(client, True)
 
     await timeTrack.totalReboot(client)
     checkupdate.start(client)

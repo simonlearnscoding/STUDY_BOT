@@ -8,9 +8,10 @@ class vc(commands.Cog):
     bot_spam = None
     vc_chat = None
     guild = None
-    Testing = False
+    Testing = True
     challenge_1 = None
     challenge_2 = None
+    questions= None
     def getmember(id):
         print(vc.guild)
         return vc.guild.get_member(id)
@@ -27,9 +28,11 @@ class vc(commands.Cog):
         vc.vc_chat = vc.guild.get_channel(vc.chores_vc_id)
         vc.challenge_1 = vc.guild.get_channel(vc.challenge_1)
         vc.challenge_2 = vc.guild.get_channel(vc.challenge_2)
+        vc.questions = vc.guild.get_channel(vc.questions_id)
 
     if Testing is False:
 
+        questions_id= 960144604206858320
         general_id = 797837772005179433
         guild_id = 789814373434654731
         sparta_id = 834144065133740102
@@ -75,6 +78,7 @@ class vc(commands.Cog):
         Augustus = "C:/Code/SPQR_VPS/assets/font/Augustus.ttf"
         SmallFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
         SmallerFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        questions_id = 917547601753178207
         general_id = 917547601753178207
         guild_id = 917547601539264623
         tasks_id = 917547601753178210

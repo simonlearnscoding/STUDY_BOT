@@ -795,6 +795,9 @@ class tasks(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
 
+        if message.author.bot:
+            return
+
         if message.content.startswith("+"):
 
             now = datetime.now()
@@ -830,6 +833,7 @@ class tasks(commands.Cog):
 
         if message.content.startswith("*"):
             # get all tasks in user where done = 0
+
             taskContent = message.content[1:]
             if (taskContent[0].isspace()):
                 taskContent = taskContent[1:]
