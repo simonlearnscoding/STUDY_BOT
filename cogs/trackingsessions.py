@@ -34,54 +34,11 @@ class trackings(commands.Cog):
                 levels.popupMessage(message.author, 25, content)
 
         if message.content.startswith('!day'):
-
-            result = timeTrack.getUserStats(message.author.id)
-            Activities = timeTrack.getActivities(self, result)
-
-            embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
+            await timeTrack.dayFunction(self, message.author, message.channel)
             try:
                 await message.delete()
             except:
                 pass
-            CurrentlySomewhere = False
-            try:
-                Activity, timeInterval = await start.getSessionTime(message.author)
-                CurrentlySomewhere = True
-                embedVar.add_field(name=f"Currently in {Activity}",
-                                   value=f"{timeInterval} m", inline=False)
-            except:
-                embedVar.add_field(name=f"Currently nowhere",
-                                   value=f"-", inline=False)
-                Activity = "Workout"
-                timeInterval = 0
-                pass
-
-            Results = await timeTrack.addThingsDoneToday(self, Activities, CurrentlySomewhere, timeInterval, Activity.title())
-            messageTodayDone = timeTrack.addTodayDone(Results)
-            Message = timeTrack.createMessage(Results)
-
-
-
-
-
-            try:
-                embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)
-            except:
-                embedVar.add_field(name="Stats Today: ", value=f"start your day now", inline=False)
-            embedVar.add_field(name="Things Done Today", value=f"{messageTodayDone}", inline=False)
-            print(embedVar)
-            try:
-                Messsage = await message.channel.send(embed=embedVar)
-            except:
-               Messsage = await message.channel.send("you need to have some minutes tracked first")
-
-            if message.channel.id == (vc.lions_cage_text_id):
-                return
-            else:
-                await asyncio.sleep(4)
-                await Messsage.delete()
-
-            return
 
 
 
@@ -235,6 +192,49 @@ class start():
 
 class timeTrack():
 
+    async def dayFunction(self, member, channel):
+        result = timeTrack.getUserStats(member.id)
+        Activities = timeTrack.getActivities(self, result)
+
+        embedVar = discord.Embed(title=f"{member.name}'s day", color=0xe86a75)
+
+        CurrentlySomewhere = False
+        try:
+            Activity, timeInterval = await start.getSessionTime(member)
+            CurrentlySomewhere = True
+            embedVar.add_field(name=f"Currently in {Activity}",
+                               value=f"{timeInterval} m", inline=False)
+        except:
+            embedVar.add_field(name=f"Currently nowhere",
+                               value=f"-", inline=False)
+            Activity = "Workout"
+            timeInterval = 0
+            pass
+
+        Results = await timeTrack.addThingsDoneToday(self, Activities, CurrentlySomewhere, timeInterval,
+                                                     Activity.title())
+        messageTodayDone = timeTrack.addTodayDone(Results)
+        Message = timeTrack.createMessage(Results)
+
+        try:
+            embedVar.add_field(name="Stats Today: ", value=f"{Message}", inline=False)
+        except:
+            embedVar.add_field(name="Stats Today: ", value=f"start your day now", inline=False)
+        embedVar.add_field(name="Things Done Today", value=f"{messageTodayDone}", inline=False)
+        print(embedVar)
+        try:
+            Messsage = await channel.send(embed=embedVar)
+        except:
+            Messsage = await channel.send("you need to have some minutes tracked first")
+
+        if channel.id == (vc.lions_cage_text_id):
+            return
+        else:
+            await asyncio.sleep(4)
+            await Messsage.delete()
+
+        return
+
     def getActivities(self, result):
         Activities = list(result)
         Activities.pop(0)
@@ -298,7 +298,6 @@ class timeTrack():
         activity = activity[1:]
         try:
             Time = int(result[1])
-
         except:
             await channel.send(f"you have to type !{activity} <minutes>.   like !yoga 30")
             return

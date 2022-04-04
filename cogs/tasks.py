@@ -791,6 +791,44 @@ class tasks(commands.Cog):
             await Message.delete()
         else:
             return 1
+    async def addTask(self, member, channel, taskContent):
+
+        now = datetime.now()
+        n = random.randint(1, 1000000000)
+
+        if (taskContent[0].isspace()):
+            taskContent = taskContent[1:]
+        sql = "INSERT INTO users.tasks (userid, taskname, CurrentlyWorking, Done, Starttime, taskid, WorkingMinutes) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (member.id, taskContent, False, False, 0, n, 0)
+        db.cur.execute(sql, val)
+        db.mydb.commit()
+
+        sql = f"SELECT taskname, taskid FROM users.tasks where userid ={member.id}"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        if (len(result)) == 1:
+            await tasks.createDailyMessage(self, member.id, member.name)
+
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
+            Embed.add_field(name="setting a goal for the day!",
+                            value="+20xp",
+                            inline=False)
+            Message = await channel.send(embed=Embed)
+            await asyncio.sleep(1)
+            await Message.delete()
+            xp = 25
+            await levels.addXP(member, xp)
+        else:
+            await tasks.editDailyMessage(self, member.id, member.name)
+
+    async def workOnTask(self, member, taskContent, channel):
+        matches = await tasks.matchResult(member.id, taskContent)
+
+        if (await tasks.matchesfound(matches, channel)) == 1:
+            print(matches[0])
+            await tasks.updateCurrentlyWorking(self, member.id, matches[0], member.name)
+        return matches[0]
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -798,37 +836,11 @@ class tasks(commands.Cog):
         if message.author.bot:
             return
         if message.content.startswith("+"):
-
-            now = datetime.now()
-            n = random.randint(1, 1000000000)
-            taskContent =  message.content[1:]
-            if (taskContent[0].isspace()):
-                taskContent = taskContent[1:]
-            sql = "INSERT INTO users.tasks (userid, taskname, CurrentlyWorking, Done, Starttime, taskid, WorkingMinutes) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (message.author.id,taskContent, False, False, 0, n, 0)
-            db.cur.execute(sql, val)
-            db.mydb.commit()
+            taskContent = message.content[1:]
+            await tasks.addTask(self, message.author, message.channel, taskContent)
             if message.channel.id != (vc.lions_cage_text_id):
                 await message.delete()
 
-            sql = f"SELECT taskname, taskid FROM users.tasks where userid ={message.author.id}"
-            db.cur.execute(sql, )
-            result = db.cur.fetchall()
-            if (len(result)) == 1:
-                await tasks.createDailyMessage(self, message.author.id, message.author.name)
-
-                Embed = discord.Embed()
-                Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
-                Embed.add_field(name="setting a goal for the day!",
-                                value="+20xp",
-                                inline=False)
-                Message = await message.channel.send(embed=Embed)
-                await asyncio.sleep(1)
-                await Message.delete()
-                xp = 25
-                await levels.addXP(message.author, xp)
-            else:
-                await tasks.editDailyMessage(self, message.author.id, message.author.name)
 
         if message.content.startswith("*"):
             # get all tasks in user where done = 0
@@ -836,13 +848,9 @@ class tasks(commands.Cog):
             taskContent = message.content[1:]
             if (taskContent[0].isspace()):
                 taskContent = taskContent[1:]
+            await tasks.workOnTask(self, message.author, taskContent, message.channel)
             if message.channel.id != (vc.lions_cage_text_id):
                 await message.delete()
-            matches = await tasks.matchResult(message.author.id, taskContent)
-
-            if (await tasks.matchesfound(matches, message.channel)) == 1:
-                print(matches[0])
-                await tasks.updateCurrentlyWorking(self, message.author.id, matches[0], message.author.name)
 
         if message.content.startswith("-"):
             # get all tasks in user where done = 0

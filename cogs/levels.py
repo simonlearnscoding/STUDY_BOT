@@ -16,6 +16,37 @@ class levels(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+
+    async def levelFunction(self, member, channel):
+        id = member.id
+        xp, lvl = await workaround.selectXPLVL(id)
+        # message = await message.channel.send(f"xp: {xp}! Level: {lvl}!")
+
+        await workaround.checkNewLevel(member, lvl, xp)
+        # Calculate Levels List
+        levels = {1: 100}
+        for i in range(2, 100):
+            levels[i] = round(((levels[i - 1] + 100) * 1.06) / 10) * 10
+
+        current_lvl = list(levels)[(lvl - 1)]
+        next_lvl = list(levels)[(lvl)]
+
+        curlvlxp = levels[(lvl)]
+        nextlvlxp = levels[(lvl + 1)]
+
+        missingxp = nextlvlxp - curlvlxp
+        alreadydone = (xp - curlvlxp)
+        percentage = round((alreadydone / missingxp) * 100)
+        if percentage < 0:
+            percentage = 0
+
+        print(f" {member.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
+        print(f"{percentage}%")
+        await workaround.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
+
+
+
+
     async def checkNewLevel(member, currentLevel, experience):
 
         # Calculate Levels List
@@ -65,31 +96,7 @@ class levels(commands.Cog):
             return
 
         if message.content.startswith('!day'):
-            id = message.author.id
-            xp, lvl = await workaround.selectXPLVL(id)
-            # message = await message.channel.send(f"xp: {xp}! Level: {lvl}!")
-
-            await workaround.checkNewLevel(message.author, lvl, xp)
-            # Calculate Levels List
-            levels = {1: 100}
-            for i in range(2, 100):
-                levels[i] = round(((levels[i - 1] + 100) * 1.06) / 10) * 10
-
-            current_lvl = list(levels)[(lvl - 1)]
-            next_lvl = list(levels)[(lvl)]
-
-            curlvlxp = levels[(lvl)]
-            nextlvlxp = levels[(lvl + 1)]
-
-            missingxp = nextlvlxp - curlvlxp
-            alreadydone = (xp - curlvlxp)
-            percentage = round((alreadydone / missingxp) * 100)
-            if percentage < 0:
-                percentage = 0
-
-            print(f" {message.author.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
-            print(f"{percentage}%")
-            await workaround.displayMessage(message, xp, lvl, nextlvlxp, percentage)
+            await levels.levelFunction(self, message.author, message.channel)
             if message.channel.id == (vc.lions_cage_text_id):
                 pass
             else:
@@ -98,7 +105,6 @@ class levels(commands.Cog):
                 except:
                     print("someone wants to know it lol")
                     pass
-
 
     async def giveXP(member, time, Activity):
 
@@ -208,8 +214,7 @@ class levels(commands.Cog):
         except:
             print(f"{member} couldnt update level")
 
-    async def displayMessage(message, xp, lvl, nextlvlxp, percentage):
-
+    async def displayMessage(member, channel, xp, lvl, nextlvlxp, percentage):
         #Chosen Fonts
         Augustus = Font(vc.Augustus, size=28)
         SmallFont = Font(vc.SmallFont, size=24)
@@ -217,8 +222,8 @@ class levels(commands.Cog):
 
         canvas = Canvas((900, 300), color="black")
 
-        profile = await load_image_async(str(message.author.avatar.url))
-        profile = await load_image_async(str(message.author.avatar.url))
+        profile = await load_image_async(str(member.avatar.url))
+        profile = await load_image_async(str(member.avatar.url))
 
         profile = Editor(profile).resize((140, 140)).circle_image()
         editor = Editor(canvas)
@@ -232,16 +237,16 @@ class levels(commands.Cog):
 
         background.rectangle((30, 240), width=490, height=35, fill="white", radius=9)
         background.bar((30, 240), max_width=490, height=35, percentage=percentage, fill="#84DCCF", radius=9)   #353a47
-        background.text((200, 25), str(f"{message.author.name}"), font=Augustus, color="white")
+        background.text((200, 25), str(f"{member.name}"), font=Augustus, color="white")
         background.rectangle((200, 60), width=220, height=1, fill="#adf7b6", )
 
         background.text((40, 210), f"Level: {lvl}", font=SmallFont, color="white")
         background.text((380, 215), f"XP: {xp}/{nextlvlxp}", font=SmallerFont, color="white")
 
         file = discord.File(fp=background.image_bytes, filename="card.png")
-        Message = await message.channel.send(file=file)
+        Message = await channel.send(file=file)
 
-        if message.channel.id == (vc.lions_cage_text_id):
+        if channel.id == (vc.lions_cage_text_id):
             return
         else:
             await asyncio.sleep(7)
@@ -254,8 +259,9 @@ class workaround:
 
     async def checkNewLevel(member, currentLevel, experience):
         return await levels.checkNewLevel(member, currentLevel, experience)
-    async def displayMessage(message, xp, lvl, nextlvlxp, percentage):
-        return await levels.displayMessage(message, xp, lvl, nextlvlxp, percentage)
+    async def displayMessage(member, channel, xp, lvl, nextlvlxp, percentage):
+        return await levels.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
+
 
 async def setup(client):
     await client.add_cog(levels(client))

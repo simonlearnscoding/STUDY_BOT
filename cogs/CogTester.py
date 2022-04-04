@@ -2,17 +2,21 @@ import asyncio
 
 import discord
 
+
 from discord.ext import commands, tasks
 from cogs.trackingsessions import trackings, timeTrack
 from cogs.User import userfunction
 from cogs.vc import vc
 from cogs.updateNew import updateNew
 from cogs.goals import goals
-
-extensions = ["cogs.boot", "cogs.goals", "cogs.timer", "cogs.User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
+from discord import app_commands
+extensions = ["cogs.boot", "cogs.vcroles", "cogs.slashcommands","cogs.goals", "cogs.timer", "cogs.User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
 
 intents = discord.Intents.all()
+intents.message_content = False
 client = commands.Bot(command_prefix = "~", intents = intents)
+application_id = 839089655189864508
+
 
 async def main():
 
@@ -20,6 +24,8 @@ async def main():
         for ext in extensions:
             await client.load_extension(ext)
         loop = asyncio.get_event_loop()
+
+
         await loop.run_until_complete(await client.start("ODM5MDg5NjU1MTg5ODY0NTA4.YJElIw.8v1pOwMXScG-HF7LCQnDAybNiQk"))
 
 
@@ -27,7 +33,9 @@ async def main():
 @client.event
 async def on_ready():
     print("bot ready")
-    vc.start(client, False)
+
+    vc.start(client, True)
+    await client.tree.sync(guild=discord.Object(id=vc.guild_id))
     for member in vc.guild.members:
         await userfunction.GetUser(client, member)
     await timeTrack.totalReboot(client)
@@ -49,5 +57,8 @@ async def checkem(client):
 async def checkrank(client):
     RankList = await goals.ranking(client)
     await goals.displayranking(client, RankList[0], RankList[1])
+
+
+
 
 asyncio.run(main())

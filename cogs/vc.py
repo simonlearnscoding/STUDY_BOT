@@ -11,7 +11,9 @@ class vc(commands.Cog):
     Testing = False
     challenge_1 = None
     challenge_2 = None
+    vc_role = None
     questions= None
+    challengeName1 = None
     def getmember(id):
         print(vc.guild)
         return vc.guild.get_member(id)
@@ -21,6 +23,9 @@ class vc(commands.Cog):
     def start(self, Testing):
         if Testing == True:
             vc.guild = self.get_guild(917547601539264623)
+
+
+
         else:
             vc.guild = self.get_guild(789814373434654731)
 
@@ -29,6 +34,7 @@ class vc(commands.Cog):
         vc.challenge_1 = vc.guild.get_channel(vc.challenge_1)
         vc.challenge_2 = vc.guild.get_channel(vc.challenge_2)
         vc.questions = vc.guild.get_channel(vc.questions_id)
+
 
 
     if Testing is False:
@@ -43,6 +49,7 @@ class vc(commands.Cog):
         tasks_id = 915180477269299201
         weekly_message = 923159773464121354
         daily_message = 916518831676071946
+        vc_role = 829059975585595393
 
 
         #TODO: change with this when done:  826514598709690388
@@ -63,6 +70,7 @@ class vc(commands.Cog):
         vibing_id = 789814373870075932
         challenge_1 = 937645950695010315
         challenge_2 = 937646602527588352
+        focused_role = 960522808264376370
 
         challenge_role_1 = 939465581936144405
         challenge_role_2 = 939465659211984936
@@ -72,13 +80,14 @@ class vc(commands.Cog):
         SmallerFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
 
 
-        #TODO: Fonts!
 
     else:
         # TESTING
         Augustus = "C:/Code/SPQR_VPS/assets/font/Augustus.ttf"
         SmallFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
         SmallerFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        vc_role = 917547601551822871
+        focused_role = 960521990068895794
         questions_id = 917547601753178207
         general_id = 917547601753178207
         guild_id = 917547601539264623
