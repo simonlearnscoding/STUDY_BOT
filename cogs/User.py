@@ -5,19 +5,17 @@ from mydb import db
 from cogs.vc import vc
 
 
-class userfunction():
+class userfunction(commands.Cog):
+    def __init__(self, client):
+        self.client = client
+
 # ADD A NEW MEMBER TO THE DATABASE
     async def AddMember(self, member):
-        if await userfunction.GetUser(self, member):
-            return
         #make entry in main list
-        print(member.id)
-        print(member.bot)
-        print(member.name)
+        print(f"adding {member.name} to the database")
         
         sql = "INSERT INTO users.user (ID, Bot, Name, NickName, xp, LVL) VALUES (%s, %s, %s, %s, %s, %s)"
         val = (member.id, member.bot, member.name, member.display_name, 100, 1)
-        print(sql)
         db.cur.execute(sql, val)
         db.mydb.commit()
 
@@ -62,7 +60,7 @@ class userfunction():
         result = db.cur.fetchone()
         if result is None:
             print(f"User not in DB yet")
-            userfunction.AddMember(self, member)
+            await userfunction.AddMember(self, member)
 
     #Add new joining members to the database
     @commands.Cog.listener()

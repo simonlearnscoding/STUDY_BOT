@@ -30,6 +30,7 @@ class vc(commands.Cog):
         vc.challenge_2 = vc.guild.get_channel(vc.challenge_2)
         vc.questions = vc.guild.get_channel(vc.questions_id)
 
+
     if Testing is False:
 
         questions_id= 960144604206858320

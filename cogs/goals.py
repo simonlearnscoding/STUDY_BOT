@@ -8,7 +8,7 @@ from cogs.levels import levels
 sys.path.append('/.../')
 from cogs.vc import vc
 from mydb import db
-from User import userfunction, user, User, Users
+from User import userfunction
 from trackingsessions import timeTrack
 
 
@@ -262,7 +262,7 @@ class goals(commands.Cog):
             # print(result[8])
             measuredMin = int(result[0])
             # get user value
-            current = int(measuredMin / 50)  # TODO add /50
+            current = int(measuredMin / 60)  # TODO add /50
 
             # see if id in datenbank
             try:
@@ -279,6 +279,7 @@ class goals(commands.Cog):
                     Goal = int(x[1])
 
 
+                    #Instert into Goals db
                     sql = "INSERT INTO goal (ID, Goal, Current, NickName, measuredMin, Won) VALUES (%s, %s, %s, %s, %s, %s)"
                     val = (ID, Goal, current, name, measuredMin, False)
                     db.cur.execute(sql, val)

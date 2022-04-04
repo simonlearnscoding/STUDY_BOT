@@ -4,12 +4,12 @@ import discord
 
 from discord.ext import commands, tasks
 from cogs.trackingsessions import trackings, timeTrack
-
+from cogs.User import userfunction
 from cogs.vc import vc
 from cogs.updateNew import updateNew
 from cogs.goals import goals
 
-extensions = ["cogs.boot", "cogs.goals", "cogs.timer", "User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
+extensions = ["cogs.boot", "cogs.goals", "cogs.timer", "cogs.User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
 
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix = "~", intents = intents)
@@ -28,18 +28,20 @@ async def main():
 async def on_ready():
     print("bot ready")
     vc.start(client, False)
-
+    for member in vc.guild.members:
+        await userfunction.GetUser(client, member)
     await timeTrack.totalReboot(client)
     checkupdate.start(client)
     checkrank.start(client)
     checkem.start(client)
     await goals.ranking(client)
 
+
 @tasks.loop(seconds=40)
 async def checkupdate(client):
     await updateNew.update(client)
 
-@tasks.loop(seconds=5) #TODO: change the intervall here
+@tasks.loop(seconds=20) #TODO: change the intervall here
 async def checkem(client):
     await goals.check_goals(client)
 
