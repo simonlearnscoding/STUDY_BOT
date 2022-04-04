@@ -211,7 +211,7 @@ class challenge(commands.Cog):
                 val = (id, formatted_date, Minutes, Activity)
                 db.cur.execute(sql, val)
                 db.mydb.commit()
-
+                """
                 if result[i][2] >= 5:
                     await challenge.removeRole(self, result[i][0], result[i][4])
                     val = (result[i][0], result[i][4])
@@ -227,7 +227,8 @@ class challenge(commands.Cog):
                         await channel.send(content)
                     except:
                         pass
-
+                """
+                """
                 # IF member misses more than 2 days in a row
                 if result[i][3] >= 2:
                     await challenge.removeRole(self, result[i][0], result[i][4])
@@ -250,6 +251,7 @@ class challenge(commands.Cog):
                     except:
                         print(f"{member} lost the challenge")
                         pass
+                """
             if result[i][6] == 1:
                 val = (result[i][0], result[i][4])
                 sql = "UPDATE users.challenge SET missedstreak = 0 WHERE userID = %s AND challengeId = %s;"
