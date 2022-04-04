@@ -109,7 +109,7 @@ class levels(commands.Cog):
         content = f"{member.name}, {Activity.title()} for {int(time)} minutes! {contentplus}"
 
         #create embed if in vc for more than 5m
-        if time > 5:
+        if time > 4:
             await levels.popupMessage(member, xp, content)
 
 

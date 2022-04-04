@@ -89,9 +89,11 @@ class trackings(commands.Cog):
             # if user in sessionlogs
         if timeTrack.trackingTime(message):
             Activity, Time = await timeTrack.getMessageContent(message.content, message.channel)
+            await timeTrack.addTime(Time, message.author.id, Activity)
+            await heatmap.launchHeatmapTracking(Activity, message.author, message.channel)
             await levels.giveXP(message.author, Time, Activity)
             await timeTrack.deleteUserMessage(message)
-            await timeTrack.addTime(Time, message.author.id, Activity)
+
 
             if message.channel.id == (vc.lions_cage_text_id):
                 return

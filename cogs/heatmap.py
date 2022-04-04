@@ -294,6 +294,9 @@ class heatmap(commands.Cog):
     async def launchHeatmap(activity, member):
         await heatmap.commandHeatmap(f"{activity.upper()}", vc.vc_chat, member)
 
+    async def launchHeatmapTracking(activity, member, channel):
+        await heatmap.commandHeatmap(f"{activity.upper()}", channel, member)
+
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # ALL THE START AND STOP STATEMENTS
