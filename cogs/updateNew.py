@@ -64,7 +64,7 @@ class updateNew(commands.Cog):
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
         monthday = time.localtime().tm_mday
-        switchtime = 30 #TODO: fix switchtime
+        switchtime = 15 #TODO: fix switchtime
 
 
         if minute < switchtime:

@@ -835,6 +835,7 @@ class tasks(commands.Cog):
 
         if message.author.bot:
             return
+        print(message.content)
         if message.content.startswith("+"):
             taskContent = message.content[1:]
             await tasks.addTask(self, message.author, message.channel, taskContent)

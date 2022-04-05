@@ -34,7 +34,7 @@ async def main():
 async def on_ready():
     print("bot ready")
 
-    vc.start(client, True)
+    vc.start(client, False)
     await client.tree.sync(guild=discord.Object(id=vc.guild_id))
     for member in vc.guild.members:
         await userfunction.GetUser(client, member)
