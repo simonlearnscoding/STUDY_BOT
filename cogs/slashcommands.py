@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -102,6 +103,8 @@ class slashcommands(commands.Cog):
 
         await  tasks.addTask(self, interaction.user, interaction.channel, add)
         await interaction.response.send_message(f"added _{add}_ to your Tasklist", ephemeral=True)
+        #await asyncio.sleep(1)
+        #await interaction.delete_original_message()
 
     @app_commands.command(
         name = "start",

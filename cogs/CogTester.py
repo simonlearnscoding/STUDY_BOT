@@ -13,7 +13,7 @@ from discord import app_commands
 extensions = ["cogs.boot", "cogs.vcroles", "cogs.slashcommands","cogs.goals", "cogs.timer", "cogs.User", "cogs.levels", "cogs.heatmap", "cogs.challenge", "cogs.trackingsessions", "cogs.vc", "cogs.updateNew", "cogs.tasks", "cogs.questions"]
 
 intents = discord.Intents.all()
-intents.message_content = False
+intents.message_content = True
 client = commands.Bot(command_prefix = "~", intents = intents)
 application_id = 839089655189864508
 

@@ -821,26 +821,36 @@ class tasks(commands.Cog):
             await levels.addXP(member, xp)
         else:
             await tasks.editDailyMessage(self, member.id, member.name)
+        Message = await channel.send(f"🔳 {taskContent}")
+        await asyncio.sleep(0.3)
+        await Message.delete()
 
     async def workOnTask(self, member, taskContent, channel):
         matches = await tasks.matchResult(member.id, taskContent)
 
         if (await tasks.matchesfound(matches, channel)) == 1:
-            print(matches[0])
+
+            Message = await channel.send(f"⌛ {taskContent}")
+            await asyncio.sleep(0.3)
+            await Message.delete()
             await tasks.updateCurrentlyWorking(self, member.id, matches[0], member.name)
         return matches[0]
+
+
+
 
     @commands.Cog.listener()
     async def on_message(self, message):
 
         if message.author.bot:
             return
-        print(message.content)
+        print(message.content[1])
         if message.content.startswith("+"):
             taskContent = message.content[1:]
-            await tasks.addTask(self, message.author, message.channel, taskContent)
             if message.channel.id != (vc.lions_cage_text_id):
                 await message.delete()
+            await tasks.addTask(self, message.author, message.channel, taskContent)
+
 
 
         if message.content.startswith("*"):
@@ -849,9 +859,10 @@ class tasks(commands.Cog):
             taskContent = message.content[1:]
             if (taskContent[0].isspace()):
                 taskContent = taskContent[1:]
-            await tasks.workOnTask(self, message.author, taskContent, message.channel)
             if message.channel.id != (vc.lions_cage_text_id):
                 await message.delete()
+            await tasks.workOnTask(self, message.author, taskContent, message.channel)
+
 
         if message.content.startswith("-"):
             # get all tasks in user where done = 0
@@ -864,7 +875,11 @@ class tasks(commands.Cog):
 
             if (await tasks.matchesfound(matches, message.channel)) == 1:
                 print(matches[0])
+                Message = await message.channel.send(f"✅ ~~{matches[0]}~~")
+                await asyncio.sleep(0.6)
+                await Message.delete()
                 await tasks.updateSetDoDone(self, message.author.id, matches[0], message.author.name)
+
 
 
 
