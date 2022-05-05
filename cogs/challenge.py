@@ -26,6 +26,7 @@ class challenge(commands.Cog):
     missing2 = []
     done2 = []
 
+
     new_line = '\n'
     emoji = '\N{RAISED HAND}'
     switch = True
@@ -126,7 +127,7 @@ class challenge(commands.Cog):
     async def MakeMessage(self, channel):
         Embed = discord.Embed()
         Embed.add_field(name=f"Day {time.localtime().tm_mday}", value=f"...", inline=False)
-        if channel == vc.challenge_1:
+        if channel.id == vc.challenge_1:
             Embed.add_field(name="Done: ", value=f"{challenge.done1}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing1}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
@@ -135,7 +136,7 @@ class challenge(commands.Cog):
             challenge.Message1 = await challenge.fillMessages(self, 3)
             await challenge.Message1.add_reaction(challenge.emoji)
 
-        elif channel == vc.challenge_2:
+        elif channel.id == vc.challenge_2:
             Embed.add_field(name="Done: ", value=f"{challenge.done2}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing2}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
@@ -182,8 +183,10 @@ class challenge(commands.Cog):
     async def SendMessage(self):
 
         challenge.updateArrays(self)
-        await challenge.MakeMessage(self, vc.challenge_1)
-        await challenge.MakeMessage(self, vc.challenge_2)
+        channel1 = self.get_channel(vc.challenge_1)
+        channel2 = self.get_channel(vc.challenge_2)
+        await challenge.MakeMessage(self, channel1) #Here is the problem
+        await challenge.MakeMessage(self, channel2)
 
 
     async def NewDay(self, guild):

@@ -9,8 +9,7 @@ class vc(commands.Cog):
     vc_chat = None
     guild = None
     Testing = False
-    challenge_1 = None
-    challenge_2 = None
+
     vc_role = None
     questions= None
     challengeName1 = None
@@ -31,8 +30,6 @@ class vc(commands.Cog):
 
         vc.bot_spam = vc.guild.get_channel(vc.lions_cage_text_id)
         vc.vc_chat = vc.guild.get_channel(vc.chores_vc_id)
-        vc.challenge_1 = vc.guild.get_channel(vc.challenge_1)
-        vc.challenge_2 = vc.guild.get_channel(vc.challenge_2)
         vc.questions = vc.guild.get_channel(vc.questions_id)
 
 
