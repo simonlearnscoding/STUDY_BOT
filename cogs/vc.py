@@ -9,10 +9,12 @@ class vc(commands.Cog):
     vc_chat = None
     guild = None
     Testing = False
-
     vc_role = None
     questions= None
     challengeName1 = None
+    challenge_1 = None
+    challenge_2 = None
+
     def getmember(id):
         print(vc.guild)
         return vc.guild.get_member(id)
@@ -22,11 +24,15 @@ class vc(commands.Cog):
     def start(self, Testing):
         if Testing == True:
             vc.guild = self.get_guild(917547601539264623)
+            vc.challenge_1 = self.get_channel(939252150385655838)
+            vc.challenge_2 = self.get_channel(939252226118013019)
 
 
 
         else:
             vc.guild = self.get_guild(789814373434654731)
+            vc.challenge_1 = self.get_channel(937645950695010315)
+            vc.challenge_2 = self.get_channel(937646602527588352)
 
         vc.bot_spam = vc.guild.get_channel(vc.lions_cage_text_id)
         vc.vc_chat = vc.guild.get_channel(vc.chores_vc_id)

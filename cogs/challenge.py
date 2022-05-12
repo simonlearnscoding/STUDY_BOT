@@ -25,6 +25,8 @@ class challenge(commands.Cog):
     done1 = []
     missing2 = []
     done2 = []
+    Message1 = None
+    Message2 = None
 
 
     new_line = '\n'
@@ -36,6 +38,37 @@ class challenge(commands.Cog):
         self.client = client
 
 
+    async def NewDay(self, guild):
+        # GET ALL USERS
+        sql = "SELECT * from users.challenge WHERE username is not NULL and failed != 1"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        me = client.get_user(366276958566481920)
+
+        # FOR EVERY ENTRY IN THE DATABASE
+        for i in range(len(result)):
+
+            # SET THE DATA TO SOMETHING READABLE
+            doneYesterday = result[i][6]
+            missedDays = result[i][2]
+            challengeId = result[i][4]
+            userID = result[i][0]
+
+            # IF THE USER DIDNT DO IT YESTERDAY
+            if doneYesterday == 0:
+
+                # Update Databases
+                challenge.DBMissedYesterday(userID, challengeId) # SET MISSED +1
+                challenge.DBHeatmap(challengeId, userID)
+
+                #TODO: debug - dm me if user missed more than 5 days
+                await challenge.UserLostMaybe(self, userID, challengeId, missedDays, me)
+
+            else:
+                challenge.DBUpdateUserDidIt(userID, challengeId)
+
+            await challenge.AddToUndone(self, userID, challengeId)
+        await challenge.SendMessage(self)
 
 
 
@@ -97,10 +130,14 @@ class challenge(commands.Cog):
         challenge.FillDoneArrays(self)
 
     def getChannel(result):
+        print(result)
         if result == 1:
+            print(vc.challenge_1)
             return vc.challenge_1
         elif result == 2:
+            print(vc.challenge_2)
             return vc.challenge_2
+
 
     def startDay(self):
         challenge.SetToMissing(self)
@@ -127,7 +164,7 @@ class challenge(commands.Cog):
     async def MakeMessage(self, channel):
         Embed = discord.Embed()
         Embed.add_field(name=f"Day {time.localtime().tm_mday}", value=f"...", inline=False)
-        if channel.id == vc.challenge_1:
+        if channel == vc.challenge_1:
             Embed.add_field(name="Done: ", value=f"{challenge.done1}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing1}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
@@ -136,7 +173,7 @@ class challenge(commands.Cog):
             challenge.Message1 = await challenge.fillMessages(self, 3)
             await challenge.Message1.add_reaction(challenge.emoji)
 
-        elif channel.id == vc.challenge_2:
+        elif channel == vc.challenge_2:
             Embed.add_field(name="Done: ", value=f"{challenge.done2}\n", inline=False)
             Embed.add_field(name="Missing: ", value=f"{challenge.missing2}\n", inline=False)
             Embed.add_field(name="react with :raised_hand: if you did it", value="...", inline=False)
@@ -179,102 +216,102 @@ class challenge(commands.Cog):
         db.cur.execute(sql, val)
         db.mydb.commit()
 
-
     async def SendMessage(self):
-
         challenge.updateArrays(self)
-        channel1 = self.get_channel(vc.challenge_1)
-        channel2 = self.get_channel(vc.challenge_2)
+        channel1 = vc.challenge_1
+        channel2 = vc.challenge_2
         await challenge.MakeMessage(self, channel1) #Here is the problem
         await challenge.MakeMessage(self, channel2)
 
-
-    async def NewDay(self, guild):
-        #get all users
-        sql = "SELECT * from users.challenge WHERE username is not NULL"
+    def DBUpdateUserDidIt(userID, challengeId):
+        # SET MISSEDSTREAK TO 0
+        sql = f"UPDATE users.challenge SET missedstreak = 0 WHERE userID = {userID} AND challengeId = {challengeId};"
         db.cur.execute(sql, )
-        result = db.cur.fetchall()
-        for i in range(len(result)):
-            #if user missed the day
-            if result[i][6] == 0:
-                val = (result[i][0], result[i][4])
-                sql = "UPDATE users.challenge SET missed = missed + 1 WHERE userID = %s AND challengeId = %s;"
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                sql = "UPDATE users.challenge SET missedstreak = missedstreak + 1 WHERE userID = %s AND challengeId = %s;"
-                db.cur.execute(sql, val)
-                db.mydb.commit()
+        db.mydb.commit()
 
-                Activity = str(f"CHALLENGE{result[i][4]}")
-                Minutes = 0
-                now = datetime.datetime.now()
-                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-                id = str(result[i][0])
-                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
-                val = (id, formatted_date, Minutes, Activity)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                """
-                if result[i][2] >= 5:
-                    await challenge.removeRole(self, result[i][0], result[i][4])
-                    val = (result[i][0], result[i][4])
-                    sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
-                    member = client.get_user(result[i][0])
+        # SET STREAK TO +1
+        sql = f"UPDATE users.challenge SET streak = streak + 1 WHERE userID = {userID} AND challengeId = {challengeId};"
+        db.cur.execute(sql, )
+        db.mydb.commit()
 
-                    channel = challenge.getChannel(result[i][4])
-                    content = f"unfortunately, you lost the challenge {channel.name} because you have missed it for more than 5 days in total. better luck next time"
-                    try:
-                        channel = await member.create_dm()
-                        await channel.send(content)
-                    except:
-                        pass
-                """
-                """
-                # IF member misses more than 2 days in a row
-                if result[i][3] >= 2:
-                    await challenge.removeRole(self, result[i][0], result[i][4])
-                    val = (result[i][0], result[i][4])
-                    sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
+        # UPDATE HEATMAP
+        Activity = str(f"CHALLENGE{challengeId}")
+        Minutes = 1
+        now = datetime.datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+        sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+        val = (userID, formatted_date, Minutes, Activity)
+        db.cur.execute(sql, val)
+        db.mydb.commit()
 
-                    member = client.get_user(result[i][0])
-                    if member is None:
-                        try:
-                            member = self.client.get_user(result[i][0])
-                        except:
-                            member = self.get_user(result[i][0])
-                    channel = challenge.getChannel(result[i][4])
-                    content = f"unfortunately, you lost the challenge {channel.name} because you have missed it for more than two days in a row. better luck next time"
-                    channel = await member.create_dm()
-                    try:
-                        await channel.send(content)
-                    except:
-                        print(f"{member} lost the challenge")
-                        pass
-                """
-            if result[i][6] == 1:
-                val = (result[i][0], result[i][4])
-                sql = "UPDATE users.challenge SET missedstreak = 0 WHERE userID = %s AND challengeId = %s;"
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                sql = "UPDATE users.challenge SET streak = streak + 1 WHERE userID = %s AND challengeId = %s;"
-                db.cur.execute(sql, val)
-                db.mydb.commit()
+    def DBMissedYesterday(userID, challengeId):
 
-                Activity = str(f"CHALLENGE{result[i][4]}")
-                Minutes = 1
-                now = datetime.datetime.now()
-                formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-                id = str(result[i][0])
-                sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
-                val = (id, formatted_date, Minutes, Activity)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-            await challenge.AddToUndone(self, result[i][0], result[i][4])
-        await challenge.SendMessage(self)
+        # SET MISSED +1
+        sql = f"UPDATE users.challenge SET missed = missed + 1 WHERE userID = {userID} AND challengeId = {challengeId};"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+
+        # UPDATE STREAK
+        sql = f"UPDATE users.challenge SET missedstreak = missedstreak + 1 WHERE userID = {userID} AND challengeId = {challengeId};"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+
+
+
+    async def UserLostMaybe(self, userID, challengeId, missedDays, me):
+        if missedDays >= 5:
+            challenge.DBSetToLost(challengeId, userID)
+            reason = "because you have missed more than 5 days in total"
+            await challenge.sendMessageLost(self, userID, challengeId, reason)
+
+            # CURRENTLY PEOPLE WHO LOST THE CHALLENGE DONT GET KICKED OUT SO THIS IS COMMENTES OUT
+            """await challenge.removeRole(self, result[i][0], result[i][4])
+            #sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
+            #db.cur.execute(sql, val)
+            #db.mydb.commit()
+             """
+            return
+        # TODO: debug IF member misses more than 2 days in a row
+        if missedDays >= 2:
+            challenge.DBSetToLost(challengeId, userID)
+            reason = "because you have missed more than 2 days in a row"
+            await challenge.sendMessageLost(self, userID, challengeId, reason)
+
+            # await challenge.removeRole(self, userID, challengeId)
+            # val = (result[i][0], result[i][4])
+            # sql = "DELETE FROM users.challenge WHERE userID = %s AND challengeId = %s;"
+            # db.cur.execute(sql, val)
+            # db.mydb.commit()
+
+
+
+    async def sendMessageLost(self, userID, challengeId, reason):
+        member = self.get_user(userID)
+
+        channel = challenge.getChannel(challengeId)
+        content = f"Unfortunately, {member.mention}, you have lost the challenge {reason}"
+        try:
+            await channel.send(content)
+        except:
+            pass
+        #TODO: Delete this if it didnt work
+
+    def DBSetToLost(challengeId, userID):
+        # SET failed to true
+        sql = f"UPDATE users.challenge SET failed = 1 WHERE userID = {userID} AND challengeId = {challengeId};"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+
+    def DBHeatmap(challengeId, userID):
+        # add user in challenge heatmap log
+        Activity = str(f"CHALLENGE{challengeId}")
+        Minutes = 0
+        now = datetime.datetime.now()
+        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
+        sql = f"INSERT INTO users.log (ID, Date, Minutes, Activity) VALUES (%s, %s, %s, %s);"
+        val = (userID, formatted_date, Minutes, Activity)
+        db.cur.execute(sql, val)
+        db.mydb.commit()
 
     async def challengeWinners(self, guild):
         sql = "SELECT * from users.challenge WHERE username is not NULL"

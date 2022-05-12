@@ -72,19 +72,18 @@ class updateNew(commands.Cog):
             if updateNew.Switch == False:
                 print("update went through")
                 updateNew.Switch = True
-                if monthday == 1:  # TODO: change this to 1
-                    print("rewardchallengewinner")
-                    await challenge.challengeWinners(self, vc.guild)
+
+
+                #if monthday == 1:  # TODO: change this to 1
+                 #   print("rewardchallengewinner")
+                   # await challenge.challengeWinners(self, vc.guild)
+
                 # Challenge New Message
                 if hour == 7: #todo change hour
-                        try:
-                            await challenge.NewDay(self, vc.guild)
-                        except:
-                            print("newday didnt pass")
-                        try:
-                            await questions.postQuestion(questions)
-                        except:
-                            print("newday didnt pass")
+
+                    await challenge.NewDay(self, vc.guild)
+                    await questions.postQuestion(questions)
+
                 # Set Switch people last hour to false for next day
                 await updateNew.setToFalse(Timezone)
 
