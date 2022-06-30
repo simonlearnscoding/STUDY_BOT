@@ -27,6 +27,8 @@ class boot(commands.Cog):
         self.client = client
     
     async def InSparta(self, member):
+        if member.voice is None:
+            return False
         if member.voice.channel.id == vc.sparta_id:
             return True
 
@@ -105,7 +107,7 @@ class boot(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         if member.bot:
             return    
-        channel = self.client.get_channel(id=vc.sparta_id)
+        channel = self.client.get_channel(vc.sparta_id)
         if (after.self_video == False and after.self_stream == False):
             if (await self.InSparta(member)):
                 print("LOL")        
@@ -210,5 +212,9 @@ class boot(commands.Cog):
 
 
 
-def setup(client):
-   client.add_cog(boot(client))
+
+async def setup(client):
+    await client.add_cog(boot(client))
+
+async def teardown(client):
+    return

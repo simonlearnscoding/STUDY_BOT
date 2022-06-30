@@ -2,12 +2,15 @@ import discord
 from discord.ext import commands
 from mydb import db
 import datetime
-
-
+import asyncio
+"""intents = discord.Intents.all()
+client = commands.Bot(command_prefix = "*", intents = intents)
+"""
 # THE OTHER PY FILES
 import User
 from vc import vc
 from cogs.boot import boot
+from cogs.heatmap import heatmap
 from cogs.levels import levels
 
 # client.load_extension("cogs.boot")
@@ -18,6 +21,9 @@ class tracking(commands.Cog):
 
     async def ToHours(self, inter):
         return f"{int(inter / 60)}h {int(inter % 60)}m"
+
+
+
 
     async def StartSomething(self, member):
         if (member.voice is not None):
@@ -71,12 +77,16 @@ class tracking(commands.Cog):
                         x.StartStudy = datetime.datetime.now()
                         print(f"{x.name} is doing chores since {x.StartStudy}")
                         return
+                    if ((member.voice.self_video is True) or (member.voice.self_stream is True) or (member.id == 744545219260842014)):
+                        if((member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id)):
+                            try:
+                                await tracking.startStudy(self, x, member)
+                            except:
+                                print(f"{member} needs to restart the cam")
 
-            if (member.voice.channel.id == vc.producing_id):
-                if (member.voice.self_stream == True or member.voice.self_video == True):
-                    print(f"{member.name} is producing")
-                    for x in User.Users:
-                        if x.name == member.name:
+                        elif (member.voice.channel.id == vc.producing_id):
+                            print(f"{member.name} is producing")
+
                             if x.creative == True:
                                 return
                             x.creative = True
@@ -86,28 +96,34 @@ class tracking(commands.Cog):
 
     async def QuitSomething(self, member):
         print(f"{member.name} left vc")
+
+        try:
+            channel = self.client.get_channel(vc.chores_vc_id)
+        except:
+            channel = self.get_channel(vc.chores_vc_id)
+
         for x in User.Users:
             if x.name == member.name:
                 if x.studying is True:
-                    await tracking.quitStudy(self, member, x)
+                    await tracking.quitStudy(self, member, x, channel)
                     return
                 if x.workout is True:
-                    await tracking.quitWorkout(self, member, x)
+                    await tracking.quitWorkout(self, member, x, channel)
                     return
                 if x.yoga is True:
-                    await tracking.quitYoga(self, member, x)
+                    await tracking.quitYoga(self, member, x, channel)
                     return
                 if x.reading is True:
-                    await tracking.quitReading(self, member, x)
+                    await tracking.quitReading(self, member, x, channel)
                     return
                 if x.meditation is True:
-                    await tracking.quitMeditation(self, member, x)
+                    await tracking.quitMeditation(self, member, x, channel)
                     return
                 if x.chores is True:
-                    await tracking.quitChores(self, member, x)
+                    await tracking.quitChores(self, member, x, channel)
                     return
                 if x.creative is True:
-                    await tracking.quitCreative(self, member, x)
+                    await tracking.quitCreative(self, member, x, channel)
                     return
 
     # Update total time value
@@ -117,9 +133,7 @@ class tracking(commands.Cog):
         val = (member.id,)
         db.cur.execute(sql, val)
         result = db.cur.fetchone()
-        print(result)
-        newID = result[0] + 1
-        print(newID)
+        newID = result[0]
         # TODO Turn result into int
         NewResult = newID + int(Time)
         sql = "UPDATE users.daily SET Total = %s WHERE ID = %s"
@@ -131,8 +145,26 @@ class tracking(commands.Cog):
         db.cur.execute(sql, val)
         db.mydb.commit()
 
+    async def quitAllUnactive(self):
+        try:
+            guild = self.get_guild(vc.guild_id)
+        except:
+            guild = self.client.get_guild(vc.guild_id)
+        members = guild.members
+        for member in members:
+            if member.voice is None:
+                await tracking.quitMember(self, member)
+
+    async def quitMember(self, member):
+        for x in User.Users:
+            if x.id == member.id:
+                x.studying = False
+                x.StartStudy = None
+                x.EndStudy = None
+                return
+
     # Quit something Statements
-    async def quitStudy(self, member, x):
+    async def quitStudy(self, member, x, channel):
         if x.studying:
             x.studying = False
             x.EndStudy = datetime.datetime.now()
@@ -145,33 +177,19 @@ class tracking(commands.Cog):
 
                 # Check if it's a new
 
-                """
-                sql = "SELECT LongestSession FROM users.streaks WHERE ID = %s"
-                val = (Id,)
-                db.cur.execute(sql, val)
-                result = db.cur.fetchone()
-                print(result)
-                #if Time > int(result[0]) and Time > 20:
-                    print("new record")
-                    channel = self.client.get_channel(vc.chores_vc_id)
-                    await channel.send(f"Congratulations on your new record of studying for {int(Time)} minutes!")
 
-                sql = "UPDATE users.streaks SET LongestSession = %s WHERE ID = %s"
-                val = (Time, member.id)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                """
 
                 # update new Study Time
                 sql = "SELECT Study FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
+
                 newID = result[0]
-                print(newID)
+
                 # TODO Turn result into int
                 NewResult = newID + int(Time)
+
                 sql = "UPDATE users.daily SET Study = %s WHERE ID = %s"
                 val = (NewResult, member.id)
                 db.cur.execute(sql, val)
@@ -181,14 +199,29 @@ class tracking(commands.Cog):
                 xp = int(round(Time / 5.0) * 5.0)
                 if (xp < 5):
                     xp = 5
-                levels.addXP(self.client, member, xp)
-                await tracking.UpdateTotal(self, member, Time)
+
+                #if xp > 20:
+                                            #TODO: await MessageXP(member, activity, Time, xp, channel)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://i.pinimg.com/564x/43/08/c9/4308c9c4a2b3db835f739c9ee612dae0.jpg")
+                Embed.add_field(name=f"{member.name}, Studying for {int(Time)} minutes!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+
+                await tracking.sendMessage(self, member, channel, Embed)
+
+
+                # add xp
+                try:
+                    await levels.addXP(self.client, member, xp)
+                except:
+                    await levels.addXP(self, member, xp)
 
                 sql = "SELECT Study FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
+                await tracking.UpdateTotal(self, member, Time)
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Study) VALUES (%s, %s)"
@@ -199,7 +232,7 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitWorkout(self, member, x):
+    async def quitWorkout(self, member, x, channel):
         if x.workout == True:
             x.workout = False
             x.EndStudy = datetime.datetime.now()
@@ -209,43 +242,59 @@ class tracking(commands.Cog):
                 print(f"{x.name} has been working out for {int(x.StudyIntervall)} minutes")
                 Id = member.id
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.chores_vc_id)
 
-                #add xp
-                xp = 50
-                if (xp < 5):
-                    xp = 5
-                levels.addXP(self.client, member, xp)
 
+                # Get Current Workout Time
                 sql = "SELECT Workout FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
+                if Time > 120:
+                    Time = 120
+                # Give User XP
+                if result[0] == 0 and Time > 5:
+                    xp = 20 + (int(round(Time / 5.0) * 5.0))
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+                    Embed.add_field(name=f"{member.name}, Working out for {int(Time)} minutes! +20 xp bonus for doing it today!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+                    # add xp
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
 
-                print(result)
-                if result = 0:
-                    await channel.send(f"good job, {x.name}! you've been working out for {int(Time)} minutes! +50xp")
-                newID = result[0] + 1
-                print(newID)
-                # TODO Turn result into int
+                # Give User XP
+                elif result[0] != 0 and Time > 10:
+                    xp = int(round(Time / 5.0) * 5.0)
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+                    Embed.add_field(name=f"{member.name}, Working out for {int(Time)} minutes!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+
+                    await tracking.sendMessage(self, member, channel, Embed)
+                    # add xp
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                newID = result[0]
                 NewResult = newID + int(Time)
+                if newID > 0:
+                    sql = "UPDATE users.daily SET Workout = %s WHERE ID = %s"
+                    val = (NewResult, member.id)
+                    db.cur.execute(sql, val)
+                    db.mydb.commit()
 
-                sql = "UPDATE users.daily SET Workout = %s WHERE ID = %s"
-                val = (NewResult, member.id)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-
-                sql = "SELECT Workout FROM users.daily WHERE ID = %s"
-                val = (Id,)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-
-                sql = "SELECT Workout FROM users.daily WHERE ID = %s"
-                val = (Id,)
-                db.cur.execute(sql, val)
-                result = db.cur.fetchone()
-                print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                    sql = "SELECT Workout FROM users.daily WHERE ID = %s"
+                    val = (Id,)
+                    db.cur.execute(sql, val)
+                    result = db.cur.fetchone()
+                    await tracking.UpdateTotal(self, member, Time)
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Workout) VALUES (%s, %s)"
@@ -256,7 +305,7 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitReading(self, member, x):
+    async def quitReading(self, member, x, channel):
         if x.reading == True:
             x.reading = False
             x.EndStudy = datetime.datetime.now()
@@ -266,16 +315,46 @@ class tracking(commands.Cog):
                 print(f"{x.name} has been Reading for {int(x.StudyIntervall)} minutes")
                 Id = member.id
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"keep it up, {x.name}! you've been Reading for {int(Time)} minutes!")
 
+
+                # Get Current Reading Time
                 sql = "SELECT Reading FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
-                newID = result[0] + 1
-                print(newID)
+                if Time > 120:
+                    Time = 120
+                # Give User XP
+                if result[0] == 0 and Time > 5:
+                    xp = 15 + (int(round(Time / 5.0) * 5.0))
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                    Embed.add_field(name=f"{member.name}, Reading for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                # Give User XP
+                elif result[0] != 0 and Time > 10:
+                    xp = int(round(Time / 5.0) * 5.0)
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                    Embed.add_field(name=f"{member.name}, Reading for {int(Time)} minutes!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                newID = result[0]
                 # TODO Turn result into int
                 NewResult = newID + int(Time)
 
@@ -287,14 +366,17 @@ class tracking(commands.Cog):
                 sql = "SELECT Reading FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
-                db.mydb.commit()
+                result = db.cur.fetchone()
 
                 sql = "SELECT Reading FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                try:
+                    await tracking.UpdateTotal(self, member, Time)
+                except:
+                    await tracking.UpdateTotal(self.client, member, Time)
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Reading) VALUES (%s, %s)"
@@ -305,7 +387,7 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitYoga(self, member, x):
+    async def quitYoga(self, member, x, channel):
         if x.yoga == True:
             x.yoga = False
             x.EndStudy = datetime.datetime.now()
@@ -315,17 +397,47 @@ class tracking(commands.Cog):
                 print(f"{x.name} has been doing Yoga for {int(x.StudyIntervall)} minutes")
                 Id = member.id
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.chores_vc_id)
-                await channel.send(f"nice, {x.name}!you've been doing Yoga for {int(Time)} minutes!")
-
+                # Get Current Yoga Time
                 sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
-                newID = result[0] + 1
-                print(newID)
-                # TODO Turn result into int
+
+                if Time > 60:
+                    Time = 60
+                # Give User XP
+                if result[0] == 0 and Time > 5:
+                    xp = 15 + (int(round(Time / 5.0) * 5.0))
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                    Embed.add_field(name=f"{member.name}, Doing Yoga for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    # add xp
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                elif result[0] != 0 and Time > 10:
+                    xp = (int(round(Time / 5.0) * 5.0))
+
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                    Embed.add_field(name=f"{member.name}, Doing Yoga for {int(Time)} minutes!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    #add xp
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                newID = result[0]
                 NewResult = newID + int(Time)
 
                 sql = "UPDATE users.daily SET Yoga = %s WHERE ID = %s"
@@ -336,14 +448,11 @@ class tracking(commands.Cog):
                 sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
-                db.mydb.commit()
-
-                sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
-                val = (Id,)
-                db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                try:
+                    await tracking.UpdateTotal(self, member, Time)
+                except:
+                    await tracking.UpdateTotal(self.client, member, Time)
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Yoga) VALUES (%s, %s)"
@@ -354,27 +463,61 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitMeditation(self, member, x):
+    async def quitMeditation(self, member, x, channel):
         if x.meditation == True:
             x.meditation = False
             x.EndStudy = datetime.datetime.now()
             if x.StartStudy is not None:
 
                 x.StudyIntervall = int((x.EndStudy - x.StartStudy).total_seconds() / 60)
+
                 print(f"{x.name} has been meditating for {int(x.StudyIntervall)} minutes")
                 Id = member.id
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.bot_id)
-                # await channel.send(f"you've been meditating for {int(Time)} minutes!")
+
+                sql = "SELECT Meditation FROM users.daily WHERE ID = %s"
+                val = (Id,)
+                db.cur.execute(sql, val)
+                result = db.cur.fetchone()
+                if Time > 30:
+                    Time = 30
+                if result[0] == 0 and Time > 5:
+                    xp = 15 + (int(round(Time / 5.0) * 5.0) * 2)
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                    Embed.add_field(name=f"{member.name}, Meditating for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                 # add xp
+
+
+                elif result[0] != 0 and Time > 5:
+                    xp = (int(round(Time / 5.0) * 5.0) * 2)
+                    await levels.addXP(self.client, member, xp)
+
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                    Embed.add_field(name=f"{member.name}, Meditating for {int(Time)} minutes!",
+                                    value=f"+ {xp}xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    # add xp
+
 
                 sql = "SELECT Meditation FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                newID = result[0] + 1
-                print(newID)
-                # TODO Turn result into int
+                newID = result[0]
                 NewResult = newID + int(Time)
 
                 sql = "UPDATE users.daily SET Meditation = %s WHERE ID = %s"
@@ -392,7 +535,11 @@ class tracking(commands.Cog):
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                try:
+                    await tracking.UpdateTotal(self, member, Time)
+                except:
+                    await tracking.UpdateTotal(self.client, member, Time)
+
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Meditation) VALUES (%s, %s)"
@@ -403,24 +550,44 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitChores(self, member, x):
+    async def quitChores(self, member, x, channel):
         if x.chores == True:
             x.chores = False
             x.EndStudy = datetime.datetime.now()
             if x.StartStudy is not None:
-
                 x.StudyIntervall = int((x.EndStudy - x.StartStudy).total_seconds() / 60)
                 print(f"{x.name} has been doing chores out for {int(x.StudyIntervall)} minutes")
                 Id = member.id
+
+                sql = "SELECT Chores FROM users.daily WHERE ID = %s"
+                val = (Id,)
+                db.cur.execute(sql, val)
+                result = db.cur.fetchone()
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"well done, {x.name}!you've been doing chores for {int(Time)} minutes!")
+                if Time > 90:
+                    Time = 90
+                if result[0] == 0:
+
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/clean-iphone")
+                    Embed.add_field(name=f"{member.name}, Doing Chores for {int(Time)} minutes! 40xp for taking care of your house!",
+                                    value="+ 40xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    # add xp
+                    xp = 40
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
                 sql = "SELECT Chores FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                newID = result[0] + 1
+                newID = result[0]
                 print(newID)
 
                 NewResult = newID + int(Time)
@@ -440,7 +607,12 @@ class tracking(commands.Cog):
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
                 print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                try:
+                    await tracking.UpdateTotal(self, member, Time)
+                except:
+                    await tracking.UpdateTotal(self.client, member, Time)
+
+
 
                 if len(result) == 0:
                     sql = "INSERT INTO daily (id, Chores) VALUES (%s, %s)"
@@ -451,7 +623,7 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
-    async def quitCreative(self, member, x):
+    async def quitCreative(self, member, x, channel):
         if x.creative == True:
             x.creative = False
             x.EndStudy = datetime.datetime.now()
@@ -460,16 +632,33 @@ class tracking(commands.Cog):
                 print(f"{x.name} has been creative for {int(x.StudyIntervall)} minutes")
                 Id = member.id
                 Time = x.StudyIntervall
-                channel = self.client.get_channel(vc.bot_id)
-                await channel.send(f"yeeeah, {x.name}!you've been producing for {int(Time)} minutes!")
 
                 sql = "SELECT Creative FROM users.daily WHERE ID = %s"
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
-                newID = result[0] + 1
-                print(newID)
+
+                if result[0] == 0:
+
+                    Embed = discord.Embed()
+                    Embed.set_thumbnail(url="https://wallpaperaccess.com/poseidon-statue")
+                    Embed.add_field(name=f"{member.name}, Producing for {int(Time)} minutes!",
+                                    value="+ 80xp",
+                                    inline=False)
+                    await tracking.sendMessage(self, member, channel, Embed)
+
+                    # add xp
+                    xp = 80
+                    try:
+                        await levels.addXP(self.client, member, xp)
+                    except:
+                        await levels.addXP(self, member, xp)
+
+                sql = "SELECT Creative FROM users.daily WHERE ID = %s"
+                val = (Id,)
+                db.cur.execute(sql, val)
+                result = db.cur.fetchone()
+                newID = result[0]
                 NewResult = newID + int(Time)
 
                 sql = "UPDATE users.daily SET Creative = %s WHERE ID = %s"
@@ -486,8 +675,10 @@ class tracking(commands.Cog):
                 val = (Id,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                print(result)
-                await tracking.UpdateTotal(self, member, Time)
+                try:
+                    await tracking.UpdateTotal(self, member, Time)
+                except:
+                    await tracking.UpdateTotal(self.client, member, Time)
 
                 if len(result) == 0:
                     sql = "INSERT INTO users.daily (id, Creative) VALUES (%s, %s)"
@@ -498,16 +689,46 @@ class tracking(commands.Cog):
             x.EndStudy = None
             return
 
+    async def startStudy(self, x, member ):
+        if x.name == member.name:
+            if x.studying == True:
+                return
+            x.StartStudy = datetime.datetime.now()
+            print(f"{x.name} is studying or producing since {x.StartStudy}")
+            if (member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id):
+                x.studying = True
+            elif (member.voice.channel.id == vc.producing_id):
+                x.creative = True
+            return
+
+    async def reboot1(self, guild):
+        #for member in server
+        for member in guild.members:
+            await tracking.QuitSomething(self, member)
+
+        print(guild.voice_client)
 
 
+    async def reboot2(self, guild):
+        for channel in guild.voice_channels:
+            for member in channel.members:
+                if member.voice is not None:
+                    await tracking.StartSomething(self, member)
+
+                if (member.voice.self_video is True or member.voice.self_stream is True) or (
+                        member.id == 744545219260842014):
+                    for x in User.Users:
+                        if x.id == member.id:
+                            await tracking.startStudy(self, x, member)
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # ALL THE START AND STOP STATEMENTS
 
+
         if member.bot:
             return
-        channel = self.client.get_channel(id=vc.sparta_id)
+        channel = self.client.get_channel(vc.sparta_id)
 
         # Make new user if not in there yet
         Nome = member.name
@@ -523,6 +744,7 @@ class tracking(commands.Cog):
             if (after.channel.id == vc.sparta_id) or (after.channel.id == vc.study_id) or (
                     after.channel.id == vc.producing_id):
                 await tracking.QuitSomething(self, member)
+
 
         # If the member just joined a channel
         if (before.channel is not None) and (before.channel.id != after.channel.id):
@@ -542,29 +764,35 @@ class tracking(commands.Cog):
         if ((((after.self_video == True or after.self_stream == True)) and (
                 before.self_video == False and before.self_stream == False))) or (member.id == 744545219260842014):
 
-            # Exclude the chilling channels
-            if (member.voice.channel.id == vc.doing_drugs_id) or (member.voice.channel.id == vc.vibing_id):
-                return
+
 
             for x in User.Users:
-                if x.name == member.name:
-                    if x.studying == True:
-                        return
-                    x.StartStudy = datetime.datetime.now()
-                    print(f"{x.name} is studying or producing since {x.StartStudy}")
-                    if (member.voice.channel.id == vc.study_id) or (member.voice.channel.id == vc.sparta_id):
-                        x.studying = True
-                    if (member.voice.channel.id == vc.producing_id):
-                        x.creative = True
-                    return
+                await tracking.startStudy(self, x, member)
+
+    async def sendMessage(self, member, channel, Embed):
+        if member.voice is None:
+            try:
+                guild = self.client.get_guild(vc.guild_id)
+            except:
+                guild = self.get_guild(vc.guild_id)
+            channel = guild.get_channel(vc.lions_cage_text_id)
+            message = await channel.send(embed=Embed)
+
+        else:
+            try:
+                message = await channel.send(embed=Embed)
+                await asyncio.sleep(4)
+                await message.delete()
+            except:
+                print('couldnt send the +xp message')
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        sleeptime = 2
         # SHOW STATS OF THE DAY
         if message.author.bot:
             return
         if message.content.startswith('!day'):
-
             #get stats of users day from DB
             sql = "SELECT * FROM users.daily WHERE ID = %s"
             val = (message.author.id,)
@@ -586,7 +814,7 @@ class tracking(commands.Cog):
 
             #check if currently in a vc
             CurrentlyIn = ""
-            for i in range(len(L1)):
+            for i in range(len(L1) - 1):
                 if extratime is not None:
                     if i == 0:
                         if x.studying == True:
@@ -620,7 +848,7 @@ class tracking(commands.Cog):
                         L1[i] = L1[i] + extratime
                 if L1[i] > 0:
                     # TODO mache embed schöner
-                    Results.append(f" {ThingsDone[i]}: {await self.ToHours(L1[i])}")
+                    Results.append(f" {ThingsDone[i]}: {await tracking.ToHours(self, L1[i])}")
                 print(Results)
 
             # Total Time
@@ -628,15 +856,12 @@ class tracking(commands.Cog):
 
             # Title
             embedVar = discord.Embed(title=f"{message.author.name}'s day", color=0xe86a75)
-
             #load the message with content of Total ---
-
-            MessageEmoji = {"Study": "- :book: ", "Workout" : "- :muscle:  ", "Yoga" : "- :sunny: ", "Reading " : "- :green_book: ", "Meditation" : "- :cyclone: ", "Chores" : "- :gem: ", "Creative" : "- :art: "}
+            MessageEmoji = {"Study": "- :book: ", "Workout": "- :muscle:  ", "Yoga" : "- :sunny: ", "Reading " : "- :blue_book: ", "Meditation" : "- :cyclone: ", "Chores" : "- :gem: ", "Creative" : "- :art: "}
             messageTodayDone = ""
             for i in Results:
                 for j in MessageEmoji:
                     if j in i:
-                        print("fuck")
                         messageTodayDone = messageTodayDone + MessageEmoji[j]
             embedVar.add_field(name="Things Done Today", value=f"{messageTodayDone}", inline=False)
             Message = ""
@@ -656,12 +881,368 @@ class tracking(commands.Cog):
             sql = "SELECT (@row_number:=@row_number + 1) AS row_num, Total, ID  FROM users.daily, (SELECT @row_number:=0) AS temp ORDER BY Total DESC;"
             db.cur.execute(sql)
             result = db.cur.fetchall()
-            print(result)
 
-            await message.channel.send(embed=embedVar)
+            try:
+                Messsage = await message.channel.send(embed=embedVar)
+            except:
+                Messsage = await message.channel.send("you need to have some minutes tracked first")
+            if message.channel.id == (vc.lions_cage_text_id):
+                return
+            else:
+                await asyncio.sleep(4)
+                await Messsage.delete()
             return
 
+        if message.content.startswith('!workout'):
+            member = message.author
+            result = message.content.split(" ")
+            try:
+                Time = int(result[1])
+            except:
+                await message.channel.send(f"you have to type !workout <minutes>.   like !workout 30")
+                return
+            if Time > 60:
+                await message.channel.send("nice try, more than 60 minutes of manual logging is not allowed")
+                return
 
+            if message.channel.id == (vc.lions_cage_text_id):
+                pass
+            else:
+                try:
+                    await message.delete()
+                except:
+                    pass
+
+            Id = member.id
+            channel = message.channel
+            sql = "SELECT Workout FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+
+            if result[0] == 0:
+                xp = 20 + (int(round(Time / 5.0) * 5.0))
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+                Embed.add_field(name=f"{message.author.name}, Working out for {int(Time)} minutes! 20xp bonus for doing it today!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+
+
+                # add xp
+                await levels.addXP(self.client, member, xp)
+
+
+            elif result[0] != 0 and Time >= 10:
+                xp = int(round(Time / 5.0) * 5.0)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+                Embed.add_field(name=f"{member.name}, Working out for {int(Time)} minutes!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+                message = await channel.send(embed=Embed)
+
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                # add xp
+                await levels.addXP(self.client, member, xp)
+
+
+            newID = result[0]
+            NewResult = newID + int(Time)
+            sql = "UPDATE users.daily SET Workout = %s WHERE ID = %s"
+            val = (NewResult, member.id)
+            db.cur.execute(sql, val)
+            db.mydb.commit()
+
+            sql = "SELECT Workout FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            await tracking.UpdateTotal(self, member, Time)
+
+            if len(result) == 0:
+                sql = "INSERT INTO daily (id, Workout) VALUES (%s, %s)"
+                val = (Id, Time)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+            await heatmap.commandHeatmap(self.client, "WORKOUT", message.channel, member)
+        if message.content.startswith('!meditation'):
+            member = message.author
+            result = message.content.split(" ")
+            try:
+                Time = int(result[1])
+            except:
+                await message.channel.send(f"you have to type !meditation <minutes>.   like !meditation 30")
+                return
+            if Time >= 60:
+                await message.channel.send("nice try, more than 60 minutes of manual logging is not allowed")
+
+            Id = message.author.id
+            channel = message.channel
+            sql = "SELECT Meditation FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            if message.channel.id == (vc.lions_cage_text_id):
+                pass
+            else:
+                try:
+                    await message.delete()
+                except:
+                    pass
+
+            if result[0] == 0 and Time > 5:
+                xp = 30 + (int(round(Time / 5.0) * 5.0) * 2)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                Embed.add_field(
+                    name=f"{member.name}, Meditating for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                    value=f"+ {xp}xp",
+                    inline=False)
+                message = await message.channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+
+                # add xp
+                await levels.addXP(self.client, member, xp)
+
+            elif result[0] != 0 and Time > 5:
+                xp = (int(round(Time / 5.0) * 5.0) * 2)
+                channel = self.client.get_channel(vc.chores_vc_id)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/1364027.jpg")
+                Embed.add_field(name=f"{member.name}, Meditating for {int(Time)} minutes!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                # add xp
+                await levels.addXP(self.client, member, xp)
+
+            newID = result[0]
+            NewResult = newID + int(Time)
+            sql = "UPDATE users.daily SET Meditation = %s WHERE ID = %s"
+            val = (NewResult, Id)
+            db.cur.execute(sql, val)
+            db.mydb.commit()
+
+            sql = "SELECT Meditation FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            await tracking.UpdateTotal(self, member, Time)
+
+            if len(result) == 0:
+                sql = "INSERT INTO daily (id, Meditation) VALUES (%s, %s)"
+                val = (Id, Time)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+            await heatmap.commandHeatmap(self.client, "MEDITATION", message.channel, member)
+        if message.content.startswith('!reading'):
+            member = message.author
+            result = message.content.split(" ")
+            try:
+                Time = int(result[1])
+            except:
+                await message.channel.send(f"you have to type !reading <minutes>.   like !reading 30")
+                return
+            if Time >= 60:
+                await message.channel.send("nice try, more than 60 minutes of manual logging is not allowed")
+
+            Id = message.author.id
+            channel = message.channel
+            sql = "SELECT Reading FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            if message.channel.id == (vc.lions_cage_text_id):
+                pass
+            else:
+                try:
+                    await message.delete()
+                except:
+                    pass
+
+
+
+            if result[0] == 0 and Time > 5:
+                xp = 15 + (int(round(Time / 5.0) * 5.0))
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                Embed.add_field(
+                    name=f"{member.name}, Reading for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                    value=f"+ {xp}xp",
+                    inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                await levels.addXP(self.client, member, xp)
+
+            elif result[0] != 0 and Time > 5:
+                xp = int(round(Time / 5.0) * 5.0)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                Embed.add_field(name=f"{message.author.name}, Reading for {int(Time)} minutes!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                await levels.addXP(self.client, member, xp)
+
+
+
+            newID = result[0]
+            print(newID)
+            # TODO Turn result into int
+            NewResult = newID + int(Time)
+            sql = "UPDATE users.daily SET Reading = %s WHERE ID = %s"
+            val = (NewResult, Id)
+            db.cur.execute(sql, val)
+            db.mydb.commit()
+
+            sql = "SELECT Reading FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            await tracking.UpdateTotal(self, member, Time)
+
+            if len(result) == 0:
+                sql = "INSERT INTO daily (id, Reading) VALUES (%s, %s)"
+                val = (Id, Time)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+            await heatmap.commandHeatmap(self.client, "READING", message.channel, member)
+        if message.content.startswith('!yoga'):
+            member = message.author
+            result = message.content.split(" ")
+            try:
+                Time = int(result[1])
+            except:
+                await message.channel.send(f"you have to type !yoga <minutes>.   like !yoga 30")
+                return
+            if Time >= 60:
+                await message.channel.send("nice try, more than 60 minutes of manual logging is not allowed")
+
+            Id = message.author.id
+            channel = message.channel
+            sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            if message.channel.id == (vc.lions_cage_text_id):
+                pass
+            else:
+                try:
+                    await message.delete()
+                except:
+                    pass
+
+
+
+            if result[0] == 0 and Time > 5:
+                xp = 15 + (int(round(Time / 5.0) * 5.0))
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                Embed.add_field(
+                    name=f"{member.name}, Yoga for {int(Time)} minutes! +15 xp bonus for doing it today!",
+                    value=f"+ {xp}xp",
+                    inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                await levels.addXP(self.client, member, xp)
+
+            elif result[0] != 0 and Time > 5:
+                xp = int(round(Time / 5.0) * 5.0)
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://wallpaperaccess.com/thumb/4434519.jpg")
+                Embed.add_field(name=f"{message.author.name}, Yoga for {int(Time)} minutes!",
+                                value=f"+ {xp}xp",
+                                inline=False)
+                message = await channel.send(embed=Embed)
+                if message.channel.id == (vc.lions_cage_text_id):
+                    pass
+                else:
+                    await asyncio.sleep(sleeptime)
+                    await message.delete()
+                await levels.addXP(self.client, member, xp)
+
+
+
+            newID = result[0]
+            print(newID)
+            # TODO Turn result into int
+            NewResult = newID + int(Time)
+            sql = "UPDATE users.daily SET Yoga = %s WHERE ID = %s"
+            val = (NewResult, Id)
+            db.cur.execute(sql, val)
+            db.mydb.commit()
+
+            sql = "SELECT Yoga FROM users.daily WHERE ID = %s"
+            val = (Id,)
+            db.cur.execute(sql, val)
+            result = db.cur.fetchone()
+            await tracking.UpdateTotal(self, member, Time)
+
+            if len(result) == 0:
+                sql = "INSERT INTO daily (id, Yoga) VALUES (%s, %s)"
+                val = (Id, Time)
+                db.cur.execute(sql, val)
+                db.mydb.commit()
+
+            await heatmap.commandHeatmap(self.client, "YOGA", message.channel, member)
+
+
+
+
+        if message.content.startswith('!reboot'):
+            guild = self.client.get_guild(vc.guild_id)
+            await tracking.reboot1(self, guild)
+            await tracking.reboot2(self, guild)
+
+        if message.channel.id == vc.tasks_id:
+            # add xp
+            if message.content.startswith('🔳'):
+                Embed = discord.Embed()
+                Embed.set_thumbnail(url="https://i.pinimg.com/564x/01/3b/89/013b894d6afc51d286cdc3adbb6ffbe8.jpg")
+                Embed.add_field(name="setting a goal for the day!",
+                                value="+20xp",
+                                inline=False)
+                Message = await message.channel.send(embed=Embed)
+                await asyncio.sleep(1)
+                await Message.delete()
+                xp = 25
+                await levels.addXP(self.client, message.author, xp)
 
 def setup(client):
     client.add_cog(tracking(client))

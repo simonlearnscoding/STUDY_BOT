@@ -1,0 +1,3571 @@
+python3: can't open file '/home/code/14_11_21/CogTester.pz': [Errno 2] No such file or directory
+bot ready
+update went through
+Traceback (most recent call last):
+  File "/home/code/14_11_21/CogTester.py", line 64, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.9/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 629, in run_until_complete
+    self.run_forever()
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 596, in run_forever
+    self._run_once()
+  File "/usr/lib/python3.9/asyncio/base_events.py", line 1854, in _run_once
+    event_list = self._selector.select(timeout)
+  File "/usr/lib/python3.9/selectors.py", line 469, in select
+    fd_event_list = self._selector.poll(timeout, max_ev)
+KeyboardInterrupt
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Unhandled exception in internal background task 'checkupdate'.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/mysql/connector/connection_cext.py", line 535, in cmd_query
+    self._cmysql.query(query,
+_mysql_connector.MySQLInterfaceError: Unknown column 'failed' in 'where clause'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/ext/tasks/__init__.py", line 241, in _loop
+    await self.coro(*args, **kwargs)
+  File "/home/code/14_11_21/CogTester.py", line 50, in checkupdate
+    await updateNew.update(client)
+  File "/home/code/14_11_21/cogs/updateNew.py", line 84, in update
+    await challenge.NewDay(self, vc.guild)
+  File "/home/code/14_11_21/cogs/challenge.py", line 44, in NewDay
+    db.cur.execute(sql, )
+  File "/usr/local/lib/python3.9/dist-packages/mysql/connector/cursor_cext.py", line 269, in execute
+    result = self._cnx.cmd_query(stmt, raw=self._raw,
+  File "/usr/local/lib/python3.9/dist-packages/mysql/connector/connection_cext.py", line 540, in cmd_query
+    raise errors.get_mysql_exception(exc.errno, msg=exc.msg,
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'failed' in 'where clause'
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/levels.py", line 99, in on_message
+    await levels.levelFunction(self, message.author, message.channel)
+  File "/home/code/14_11_21/cogs/levels.py", line 45, in levelFunction
+    await workaround.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
+  File "/home/code/14_11_21/cogs/levels.py", line 263, in displayMessage
+    return await levels.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
+  File "/home/code/14_11_21/cogs/levels.py", line 230, in displayMessage
+    pic = await load_image_async("https://c4.wallpaperflare.com/wallpaper/193/219/663/black-background-marcus-aurelius-statue-hd-wallpaper-preview.jpg")
+  File "/usr/local/lib/python3.9/dist-packages/easy_pil/utils.py", line 60, in load_image_async
+    image = Image.open(_bytes).convert("RGBA")
+  File "/usr/local/lib/python3.9/dist-packages/PIL/Image.py", line 3030, in open
+    raise UnidentifiedImageError(
+PIL.UnidentifiedImageError: cannot identify image file <_io.BytesIO object at 0x7ff344cf2900>
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+bot ready
+update went through
+update went through
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Dutch Guy#4047
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+o
+NeilaPiela - 0
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+fern - 0
+user update
+🗣-vc-chat
+t
+🗣-vc-chat
+ 
+update went through
+Dutch Guy - 95
+update went through
+user update
+user update
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+e
+Dutch girl#2443 couldnt update  minutes(?)
+didnt work for Dutch girl#2443
+user update
+Dutch Guy#4047 couldnt update  minutes(?)
+didnt work for Dutch Guy#4047
+user update
+update went through
+update went through
+update went through
+update went through
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+SPQR
+update went through
+update went through
+update went through
+update went through
+update went through
+update went through
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+update went through
+user update
+Ella Edward - 60
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Ella Edward - 5
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+e
+🗣-vc-chat
+b
+Dutch girl - 25
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+h
+🗣-vc-chat
+o
+Dutch Guy#4047
+Aya#6916
+user update
+Ella Edward - 130
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Ella Edward - 5
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+'
+user update
+Ella Edward - 5
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+h
+🗣-vc-chat
+r
+Abs#3646 couldnt update  minutes(?)
+didnt work for Abs#3646
+user update
+🗣-vc-chat
+@
+🗣-vc-chat
+e
+🗣-vc-chat
+u
+🗣-vc-chat
+a
+🗣-vc-chat
+o
+🗣-vc-chat
+'
+🗣-vc-chat
+D
+Dutch Guy - 65
+🗣-vc-chat
+i
+🗣-vc-chat
+y
+🗣-vc-chat
+e
+🗣-vc-chat
+u
+🗣-vc-chat
+user update
+Aya - 65
+Direct Message with Unknown User
+a
+🗣-vc-chat
+a
+🗣-vc-chat
+e
+🗣-vc-chat
+e
+🗣-vc-chat
+e
+🗣-vc-chat
+i
+🗣-vc-chat
+@
+ Dutch Guy current level: 11  next level: 12  1780
+50%
+🗣-vc-chat
+<discord.embeds.Embed object at 0x7ff344d14430>
+d
+🗣-vc-chat
+🗣-vc-chat
+m
+🗣-vc-chat
+l
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+📚 | STVDY
+r
+📚 | STVDY
+f
+Simon M#5206
+Dutch girl - 60
+user update
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+y
+Aya - 35
+🗣-vc-chat
+o
+🗣-vc-chat
+a
+🗣-vc-chat
+o
+🗣-vc-chat
+k
+🗣-vc-chat
+o
+🗣-vc-chat
+e
+🗣-vc-chat
+e
+🗣-vc-chat
+e
+🗣-vc-chat
+t
+Aya#6916 couldnt update  minutes(?)
+didnt work for Aya#6916
+user update
+Dutch Guy#4047
+Dutch girl#2443
+🗣-vc-chat
+h
+Dutch girl - 35
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+i
+Dutch Guy#4047
+🗣-vc-chat
+o
+Dutch Guy#4047
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+y
+🗣-vc-chat
+r
+Dutch Guy - 175
+Boris - 40
+Boris - 5
+🗣-vc-chat
+r
+Boris - 0
+Dutch girl - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Ella Edward - 5
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+user update
+Ella Edward - 5
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Dutch Guy - 30
+Simon M - 65
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+🗣-vc-chat
+e
+user update
+Boris - 20
+Dutch Guy#4047
+Dutch Guy#4047
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Abs#3646 couldnt update  minutes(?)
+didnt work for Abs#3646
+user update
+Ella Edward#9451
+Ella Edward#9451
+user update
+Dutch Guy - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Dutch girl - 0
+🗣-vc-chat
+o
+Dutch girl - 0
+🗣-vc-chat
+p
+🗣-vc-chat
+t
+user update
+Ella Edward - 20
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+s
+🗣-vc-chat
+r
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Dutch Guy#4047
+🗣-vc-chat
+e
+🗣-vc-chat
+S
+Dutch Guy - 15
+🗣-vc-chat
+r
+🗣-vc-chat
+o
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Farahxoxo#9055 couldnt update  minutes(?)
+didnt work for Farahxoxo#9055
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+i
+🗣-vc-chat
+y
+🗣-vc-chat
+n
+🗣-vc-chat
+a
+🗣-vc-chat
+🗣-vc-chat
+e
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+Dutch girl#2443
+🗣-vc-chat
+e
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+a
+🗣-vc-chat
+u
+user update
+Ella Edward - 60
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Dutch girl#2443
+Ella Edward#9451
+Carol Edward#7079
+Ella Edward#9451
+Dutch Guy - 25
+🗣-vc-chat
+'
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+Ella Edward#9451
+Farahxoxo - 5
+Yaya#9050
+user update
+Yaya - 30
+Dutch girl#2443
+user update
+Ella Edward - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Dutch girl - 40
+user update
+Simon M - 15
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+user update
+Ella Edward - 35
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Farahxoxo - 25
+🗣-vc-chat
+t
+user update
+Ella Edward - 15
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+@
+\/OSID#6370
+user update
+Ella Edward - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+r
+🗣-vc-chatIgnoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 76, in on_voice_state_update
+    await start.conditions(member, before, after)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 167, in conditions
+    if (await start.lifestyle(member, before, after)):
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 181, in lifestyle
+    Activity = channels.checkifChannel(after.channel.id, channels.lifestyle)
+AttributeError: 'NoneType' object has no attribute 'id'
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 107, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+
+c
+Dutch Guy - 5
+Farahxoxo#9055 couldnt update  minutes(?)
+didnt work for Farahxoxo#9055
+user update
+Simon M - 35
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+i
+🗣-vc-chat
+'
+🗣-vc-chat
+o
+🗣-vc-chat
+e
+user update
+Ella Edward - 15
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+r
+user update
+Omar ッ - 10
+user update
+SwazMoh - 45
+🗣-vc-chat
+a
+🗣-vc-chat
+o
+🗣-vc-chat
+n
+🗣-vc-chat
+a
+🗣-vc-chat
+k
+🗣-vc-chat
+r
+🗣-vc-chat
+l
+🗣-vc-chat
+a
+🗣-vc-chat
+t
+🗣-vc-chat
+a
+🗣-vc-chat
+a
+🗣-vc-chat
+k
+🗣-vc-chat
+e
+🗣-vc-chat
+/
+🗣-vc-chat
+a
+🗣-vc-chat
+a
+🗣-vc-chat
+n
+🗣-vc-chat
+a
+🗣-vc-chat
+j
+🗣-vc-chat
+n
+user update
+Dutch girl - 20
+Simon M - 55
+🗣-vc-chat
+o
+🗣-vc-chat
+t
+🗣-vc-chat
+e
+user update
+Simon M - 10
+Simon M - 10
+🗣-vc-chat
+r
+🗣-vc-chat
+@
+📚-events-🌊
+9
+🗣-vc-chat
+o
+🗣-vc-chat
+ 
+🗣-vc-chat
+ 
+🗣-vc-chat
+o
+🗣-vc-chat
+n
+🗣-vc-chat
+t
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+🗣-vc-chat
+b
+🗣-vc-chat
+ 
+🗣-vc-chat
+h
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+k
+user update
+Dutch girl - 25
+Dutch Guy#4047
+🗣-vc-chat
+'
+🗣-vc-chat
+e
+user update
+Dutch Guy - 150
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+user update
+Simon M - 5
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Aya#6916 couldnt update  minutes(?)
+didnt work for Aya#6916
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+e
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+e
+Aya#6916 couldnt update  minutes(?)
+didnt work for Aya#6916
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Aya#6916 couldnt update  minutes(?)
+didnt work for Aya#6916
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+e
+user update
+Ella Edward - 35
+user update
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+l
+user update
+Ella Edward - 15
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Ella Edward - 0
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+Dutch Guy#4047
+🗣-vc-chat
+o
+Dutch girl#2443
+🗣-vc-chat
+u
+Simon M - 50
+Ella Edward - 10
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+f
+🗣-vc-chat
+u
+🗣-vc-chat
+i
+🗣-vc-chat
+e
+🗣-vc-chat
+ 
+🗣-vc-chat
+l
+🗣-vc-chat
+@
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+0
+🗣-vc-chat
+e
+🗣-vc-chat
+🗣-vc-chat
+u
+🗣-vc-chat
+r
+🗣-vc-chat
+o
+Ella Edward#9451
+Dutch Guy#4047
+Simon M - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=826513250975744031 name='PRODVCER'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+user update
+Simon M - 25
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+l
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+🗣-vc-chat
+e
+🗣-vc-chat
+h
+🗣-vc-chat
+u
+🗣-vc-chat
+b
+Dutch girl - 90
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+i
+Simon M - 15
+🗣-vc-chat
+y
+🗣-vc-chat
+o
+Dutch Guy#4047
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+🗣-vc-chat
+'
+🗣-vc-chat
+e
+Dutch Guy - 105
+🗣-vc-chat
+t
+🌊Shadowdark🌊#1696
+🗣-vc-chat
+'
+user update
+Ella Edward - 110
+🗣-vc-chat
+e
+🌊Shadowdark🌊#1696 couldnt update  minutes(?)
+didnt work for 🌊Shadowdark🌊#1696
+user update
+🗣-vc-chat
+f
+[<Role id=789814373434654731 name='@everyone'>, <Role id=939465659211984936 name='challenge-2'>, <Role id=939465581936144405 name='challenge-1'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+t
+🗣-vc-chat
+ 
+🗣-vc-chat
+t
+🗣-vc-chat
+e
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+t
+Aya#6916 couldnt update  minutes(?)
+didnt work for Aya#6916
+user update
+SwazMoh - 55
+SwazMoh#2188 couldnt update  minutes(?)
+didnt work for SwazMoh#2188
+user update
+Dutch Guy#4047
+🗣-vc-chat
+o
+🗣-vc-chat
+e
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+l
+🗣-vc-chat
+@
+🗣-vc-chat
+e
+Simon M#5206 couldnt update  minutes(?)
+didnt work for Simon M#5206
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Simon M - 0
+Simon M - 0
+Simon M - 0
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+SwazMoh#2188
+🗣-vc-chat
+:
+🗣-vc-chat
+l
+🗣-vc-chat
+y
+🗣-vc-chat
+l
+🗣-vc-chat
+e
+🗣-vc-chat
+o
+🗣-vc-chat
+a
+🗣-vc-chat
+h
+🗣-vc-chat
+‍
+🗣-vc-chat
+r
+🗣-vc-chat
+e
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+i
+🗣-vc-chat
+e
+🗣-vc-chat
+h
+🗣-vc-chat
+h
+🗣-vc-chat
+ 
+🗣-vc-chat
+w
+🗣-vc-chat
+ 
+🗣-vc-chat
+ 
+🗣-vc-chat
+h
+🗣-vc-chat
+e
+🗣-vc-chat
+o
+🗣-vc-chat
+a
+🗣-vc-chat
+r
+🗣-vc-chat
+@
+SwazMoh - 55
+🗣-vc-chat
+ 
+🗣-vc-chat
+i
+🗣-vc-chat
+i
+🗣-vc-chat
+h
+🗣-vc-chat
+e
+🗣-vc-chat
+n
+🗣-vc-chat
+e
+🗣-vc-chat
+'
+🗣-vc-chat
+ 
+🗣-vc-chat
+ 
+Dutch girl#2443
+🗣-vc-chat
+e
+🗣-vc-chat
+🗣-vc-chat
+o
+🗣-vc-chat
+i
+Dutch girl#2443
+user update
+Simon M - 75
+Simon M#5206
+user update
+SwazMoh - 35
+user update
+Dutch girl - 100
+Dutch Guy - 45
+Dutch Guy - 85
+🗣-vc-chat
+@
+Dutch girl - 70
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+l
+🗣-vc-chat
+l
+🗣-vc-chat
+@
+Dutch girl#2443 couldnt update  minutes(?)
+didnt work for Dutch girl#2443Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 107, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 107, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 76, in on_voice_state_update
+    await start.conditions(member, before, after)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 167, in conditions
+    if (await start.lifestyle(member, before, after)):
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 181, in lifestyle
+    Activity = channels.checkifChannel(after.channel.id, channels.lifestyle)
+AttributeError: 'NoneType' object has no attribute 'id'
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 76, in on_voice_state_update
+    await start.conditions(member, before, after)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 167, in conditions
+    if (await start.lifestyle(member, before, after)):
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 181, in lifestyle
+    Activity = channels.checkifChannel(after.channel.id, channels.lifestyle)
+AttributeError: 'NoneType' object has no attribute 'id'
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+
+Dutch girl - 0
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+a
+🗣-vc-chat
+h
+🗣-vc-chat
+0
+🗣-vc-chat
+a
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+l
+🗣-vc-chat
+l
+AHCat#7093
+AHCat#7093
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+i
+Dutch girl - 10
+Dutch girl#2443 couldnt update  minutes(?)
+didnt work for Dutch girl#2443
+Dutch Guy#4047
+Dutch girl - 0
+🗣-vc-chat
+i
+🗣-vc-chat
+e
+Dutch Guy - 35
+user update
+SwazMoh - 35
+gamma3#3181 couldnt update  minutes(?)
+didnt work for gamma3#3181
+user update
+AHCat#7093
+AHCat#7093 couldnt update  minutes(?)
+didnt work for AHCat#7093
+user update
+✅-daily-goals
+i
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+🗣-vc-chat
+i
+🗣-vc-chat
+r
+Boris - 25
+🗣-vc-chat
+h
+🗣-vc-chat
+t
+🗣-vc-chat
+o
+🗣-vc-chat
+a
+Dutch girl - 65
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Ella Edward - 0
+user update
+🗣-vc-chat
+k
+Dutch Guy - 70
+📚-events-🌊
+6
+Dutch Guy#4047 couldnt update  minutes(?)
+didnt work for Dutch Guy#4047
+user update
+🗣-vc-chat
+y
+Boris - 5
+Boris - 5
+🗣-vc-chat
+y
+user update
+Dutch girl - 20
+🗣-vc-chat
+y
+user update
+Boris - 20
+user update
+didnt work again...
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+user update
+Ella Edward - 15
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+user update
+Ella Edward - 20
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+SwazMoh - 5
+user update
+Ella Edward - 55
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+e
+🗣-vc-chat
+i
+🗣-vc-chat
+o
+🗣-vc-chat
+l
+🗣-vc-chat
+x
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+_
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+o
+🗣-vc-chat
+h
+user update
+Ella Edward - 50
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+user update
+Ella Edward - 10
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+SwazMoh - 50
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+o
+[<Role id=789814373434654731 name='@everyone'>, <Role id=826513250975744031 name='PRODVCER'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+o
+Dutch girl#2443
+Ella Edward#9451
+Ella Edward#9451
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+🗣-vc-chat
+o
+user update
+Dutch girl - 65
+🗣-vc-chat
+o
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+Dutch Guy#4047
+SwazMoh#2188
+SwazMoh#2188
+SwazMoh#2188
+SwazMoh#2188 couldnt update  minutes(?)
+didnt work for SwazMoh#2188
+user update
+Dutch Guy#4047
+🗣-vc-chat
+l
+Lauren_#7009 couldnt update  minutes(?)
+didnt work for Lauren_#7009
+user update
+Ella Edward#9451
+🗣-vc-chat
+'
+user update
+Dutch Guy - 85
+Dutch Guy - 85
+[<Role id=789814373434654731 name='@everyone'>, <Role id=826513250975744031 name='PRODVCER'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+🗣-vc-chat
+r
+Lauren_#7009 couldnt update  minutes(?)
+didnt work for Lauren_#7009
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=826513250975744031 name='PRODVCER'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+user update
+Simon M - 125
+user update
+user update
+Simon M - 125
+user update
+Ella Edward - 175
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+🗣-vc-chat
+ 
+🗣-vc-chat
+o
+user update
+Ella Edward - 10
+Lauren_#7009
+rj#1790
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+rj - 0
+rj - 5
+rj#1790 couldnt update  minutes(?)
+didnt work for rj#1790
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+rj - 5
+rj#1790 couldnt update  minutes(?)
+didnt work for rj#1790
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+rj - 0
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+🗣-vc-chat
+J
+🗣-vc-chat
+o
+🗣-vc-chat
+n
+rj - 20
+🗣-vc-chat
+h
+🗣-vc-chat
+t
+rj#1790 couldnt update  minutes(?)
+didnt work for rj#1790
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=951153782178349097 name='praetor'>, <Role id=946152663576367174 name='admin'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Boris - 25
+Boris#2483 couldnt update  minutes(?)
+didnt work for Boris#2483
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+Lauren_#7009
+🗣-vc-chat
+r
+🦅-general-🗡
+u
+user update
+Ella Edward - 40
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946785770327384095 name='Gladiator'>]
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+Dutch girl#2443 couldnt update  minutes(?)
+didnt work for Dutch girl#2443
+user update
+Dutch Guy#4047 couldnt update  minutes(?)
+didnt work for Dutch Guy#4047
+user update
+Carol Edward#7079 couldnt update  minutes(?)
+didnt work for Carol Edward#7079
+user update
+user update
+Ella Edward - 85
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Amar#3184
+Amar#3184
+Amar#3184
+🗣-vc-chat
+'
+🗣-vc-chat
+y
+user update
+Ella Edward - 20
+Lauren_#7009 couldnt update  minutes(?)
+didnt work for Lauren_#7009
+user update
+Dutch girl#2443
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786075274272838 name='Freedman'>]
+user update
+user update
+Dutch girl - 40
+Simon M#5206
+Simon M#5206
+Simon M#5206
+Simon M#5206
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Carol Edward#7079
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+Dutch Guy#4047
+user update
+user update
+Ella Edward - 230
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+user update
+Ella Edward - 40
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user update
+Ella Edward - 5
+user update
+[<Role id=789814373434654731 name='@everyone'>, <Role id=946786188348502076 name='Plebeian'>]
+user updateIgnoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_remove
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 464, in on_raw_reaction_remove
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 107, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_message
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/tasks.py", line 847, in on_message
+    print(message.content[1])
+IndexError: string index out of range
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_raw_reaction_add
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/challenge.py", line 419, in on_raw_reaction_add
+    challenge.Message1 = await challenge.fillMessages(self, 3)
+  File "/home/code/14_11_21/cogs/challenge.py", line 395, in fillMessages
+    return vc.challenge_1.fetch_message(result[0])
+TypeError: 'NoneType' object is not subscriptable
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment
+Ignoring exception in on_voice_state_update
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/dist-packages/discord/client.py", line 393, in _run_event
+    await coro(*args, **kwargs)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 67, in on_voice_state_update
+    if await channels.quitConditions(member, before, after) is True:
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 95, in quitConditions
+    await timeTrack.quitSomething(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 377, in quitSomething
+    await start.addSessionTime(member)
+  File "/home/code/14_11_21/cogs/trackingsessions.py", line 156, in addSessionTime
+    await levels.giveXP(member, timeInterval, Activity)
+UnboundLocalError: local variable 'timeInterval' referenced before assignment

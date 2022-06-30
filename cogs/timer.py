@@ -283,19 +283,14 @@ class timer(commands.Cog):
                 InLoop = False
                 running = False
                 Leave = False
-                try: 
-                   if Message is not None:
-                      await Message.delete()
-                except:
-                   pass
 
 
 
 
 
 
+async def setup(client):
+    await client.add_cog(timer(client))
 
-def setup(client):
-   client.add_cog(timer(client))
-
-
+async def teardown(client):
+    return

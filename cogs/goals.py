@@ -1,19 +1,16 @@
 import discord
-from discord import client
-from discord.ext import commands
-from discord.ext.commands import bot
 from discord.ext import commands, tasks
-import datetime
+from datetime import datetime
 import asyncio
 import re
 import sys
-import User
-import emoji
+from cogs.levels import levels
 sys.path.append('/.../')
-from vc import vc
+from cogs.vc import vc
 from mydb import db
-from User import userfunction, user, User, Users
-import itertools
+from User import userfunction
+from cogs.trackingsessions import timeTrack
+
 
 
 NameCheck = False
@@ -33,9 +30,11 @@ class goals(commands.Cog):
         sql = "SELECT ID, TOTAL FROM users.daily"
         db.cur.execute(sql, )
         result = db.cur.fetchall()
+
         sql = "SELECT ID, NAME FROM users.user"
         db.cur.execute(sql, )
         result2 = db.cur.fetchall()
+
         sql = "SELECT ID, TOTAL FROM users.weekly"
         db.cur.execute(sql, )
         result3 = db.cur.fetchall()
@@ -43,6 +42,7 @@ class goals(commands.Cog):
         RankingList = []
         RankingWeek = []
         for i, j in result:
+
             for x, y in result2:
                 if i == x:
                     RankingList.append([y, j, x, 0])
@@ -51,22 +51,23 @@ class goals(commands.Cog):
                 if i == x:
                     RankingWeek.append([y, j, x])
 
-        for x in Users:
-            # add current study time
-            if x.StartStudy is not None:
-                extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
-                extratime = extratimesec / 60
-                for i in range(len(RankingList)):
-                    for j in range(len(RankingList[i])):
-                        if RankingList[i][j] == x.id:
-                            RankingList[i][1] = int(RankingList[i][1] + extratime)
-                            RankingList[i][3] = 1
+
+        sql = "Select ID, Start, Activity from users.sessionlog"
+        db.cur.execute(sql, )
+        Result = db.cur.fetchall()
+        for i in range(len(Result)):
+            extratime = timeTrack.calculateTime(Result[i][1], datetime.now())
+
+            for j in range(len(RankingList)):
+                    if Result[i][0] == RankingList[j][2]:
+                        RankingList[j][1] = int(RankingList[j][1] + extratime)
+                        RankingList[j][3] = 1
 
         for i in range(len(RankingWeek)):
             for j in range(len(RankingList)):
                 if RankingWeek[i][2] == RankingList[j][2]:
                     RankingWeek[i][1] += RankingList[j][1]
-                    RankingWeek[i][1] =round((RankingWeek[i][1] / 60), 1)
+                    RankingWeek[i][1] = round((RankingWeek[i][1] / 60), 1)
 
         minutes = lambda RankingList: RankingList[1]
         hours =  lambda RankingWeek: RankingWeek[1]
@@ -75,12 +76,6 @@ class goals(commands.Cog):
         return RankingList, RankingWeek
 
     async def displayranking(client, list, week):
-
-        """
-        # SEND MSG
-        channel = client.get_channel(vc.leaderboard)
-        await channel.send(".")
-        """
 
         Embed = discord.Embed()
         embed = discord.Embed(
@@ -117,150 +112,157 @@ class goals(commands.Cog):
 
         Message = channel.get_partial_message(vc.daily_message)
         Messsage = channel.get_partial_message(vc.weekly_message)
-        await Message.edit(embed=Embed)
-        await Messsage.edit(embed=embed)
+        try:
+            await Message.edit(embed=Embed)
+            await Messsage.edit(embed=embed)
+        except:
+            print('didnt work again...')
     # add their current time
+    def seeifInDB(id):
+        sql = f"SELECT * FROM users.goal WHERE ID = {id}"
+        db.cur.execute(sql, )
+        result = db.cur.fetchone()
+        if result is None:
+            return False
+        else:
+            return True
+
+    def getUsersInChallenge():
+        sql = "SELECT * FROM users.goal WHERE Won = 0"
+        db.cur.execute(sql, )
+        result = db.cur.fetchall()
+        return list(result)
+
+    def getUsersInSession():
+        sql = "Select ID, Start from users.sessionlog"
+        db.cur.execute(sql, )
+        return db.cur.fetchall()
+
+    def getUserTime(id, inSession):
+        sql = f"SELECT Total FROM users.daily WHERE ID = {id}"
+        db.cur.execute(sql, )
+        time = db.cur.fetchone()
+        time = time[0]
+        # add time if user in Session
+        for i in range(len(inSession)):
+            inSessionId = (int(inSession[i][0]))
+            if id == inSessionId:
+                extratime = timeTrack.calculateTime(inSession[i][1], datetime.now())
+                time = time + extratime
+                return time
+        return time
+
+
+    def updateUserTime(newTime, id):
+        # set user measuredmin, user current
+        newHours = int(newTime / 60)
+        sql = f"UPDATE users.goal SET Current = {newHours}, measuredMin = {newTime} WHERE ID = {id}"
+        db.cur.execute(sql, )
+        db.mydb.commit()
+
+    async def changeUserNick(newTime, id):
+        sql = f"SELECT NickName, Goal FROM users.goal WHERE ID = {id}"
+        db.cur.execute(sql,)
+        User = db.cur.fetchone()
+
+        Nick = str(User[0])
+        Goal = int(User[1])
+        newHours = int(newTime / 60)
+        member = vc.guild.get_member(id)
+
+        if newHours >= Goal:
+            await vc.vc_chat.send(f"good job on reaching your daily goal, {Nick}")
+
+            sql = f"UPDATE users.goal SET Won = 1 WHERE ID = {id}"
+            db.cur.execute(sql, )
+            db.mydb.commit()
+
+            #rename member to his original Name
+            Nick = f"{member.name}"
+            await asyncio.sleep(5)
+            try:
+                await member.edit(nick=Nick)
+            except:
+                pass
+
+            xp = 50
+            Embed = discord.Embed()
+            Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
+            Embed.add_field(
+                name=f"{Nick} Sticking to your Goals! +50xp!",
+                value=f"+ {xp}xp",
+                inline=False)
+            message = await vc.vc_chat.send(embed=Embed)
+            await asyncio.sleep(4)
+            await message.delete()
+            # add xp
+            await levels.addXP(member, xp)
+
+        Nick = f"{Nick} {newHours}/{Goal}"
+        await asyncio.sleep(5)
+        try:
+            await member.edit(nick=Nick)
+        except:
+            (f"can't rename member{member.name}")
+
     async def check_goals(client):
         global NameCheck
         # for rows in goals:
 
-        sql = "SELECT * FROM users.goal WHERE Won is False"
-        db.cur.execute(sql, )
-        result = db.cur.fetchall()
-        result = list(result)
-        for i in (range(len(list(result)))):
+        Users = goals.getUsersInChallenge()
+        inSession = goals.getUsersInSession()
+        timeDiv = 60
+        #for every user currently in challenge
+        for i in (range(len(Users))):
+            id = Users[i][0]
+            #get User Time
+            OldCurrent = Users[i][4]
+            NewCurrent = goals.getUserTime(id, inSession)
+            oldHours = int(OldCurrent / timeDiv)
+            newHours= int( NewCurrent/ timeDiv)
+            if (oldHours!= newHours):
 
-            # get user total
-            sql = "SELECT total FROM users.daily WHERE ID = %s"
-            val = (result[i][0],)
-            db.cur.execute(sql, val)
-            totaltime = db.cur.fetchone()
-            totaltime = int(totaltime[0])
-            print(totaltime)
-            for x in Users:
-                if x.id == val:
-                    # add current study time
-                    if x.StartStudy is not None:
-                        extratimesec = (int((datetime.datetime.now() - x.StartStudy).total_seconds()))
-                        extratime = extratimesec / 60
-                        totaltime = totaltime + extratime
-                        print("totaltime")
-                        # get user OldCurrent
-            sql = "SELECT Current FROM users.goal WHERE ID = %s"
-            db.cur.execute(sql, val)
-            OldCurrent = db.cur.fetchone()
-            OldCurrent = int(OldCurrent[0])
-            NewCurrent = int(totaltime / 50)  # TODO add / 50
-            if OldCurrent != NewCurrent:
-                UserId = result[i][0]
-                # set user measuredmin, user current
-                sql = "UPDATE users.goal SET Current = %s, measuredMin = %s WHERE ID = %s"
-                val = (NewCurrent, totaltime, UserId)
-                db.cur.execute(sql, val)
-                db.mydb.commit()
-                guild = client.get_guild(vc.guild_id)
-                member = guild.get_member(UserId)
-
-                sql = "SELECT NickName FROM users.goal WHERE ID = %s"
-                val = (UserId,)
-                db.cur.execute(sql, val)
-                Nick = db.cur.fetchone()
-                Nick = str(Nick[0])
-
-                sql = "SELECT Goal FROM users.goal WHERE ID = %s"
-                val = (UserId,)
-                db.cur.execute(sql, val)
-                Goal = db.cur.fetchone()
-                Goal = int(Goal[0])
-                if NewCurrent >= Goal:
-                    channel = client.get_channel(vc.chores_vc_id)
-                    await channel.send(f"good job on reaching your daily goal, {Nick}")
-
-                    # Set Won to true 
-                    sql = "UPDATE users.goal SET Won = True WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
-
-                    sql = "UPDATE users.achievements SET Won = Won + 1 WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
+                goals.updateUserTime(NewCurrent,id)
+                await goals.changeUserNick(NewCurrent, id)
 
 
-                    Nick = f"{Nick} done"
-                    await asyncio.sleep(5)
-                    NameCheck = True
-                    await member.edit(nick=Nick)
-
-                    role = discord.utils.get(member.guild.roles, id=vc.challenge_role_id)
-                    await asyncio.sleep(5)
-                    await member.remove_roles(role)
-                    role = discord.utils.get(member.guild.roles, name="winner")
-                    await asyncio.sleep(5)
-                    await member.add_roles(role)
-                    # TODO EXP
-
-                    #REMOVE HIM FROM DB
-                    sql = "DELETE users.goal WHERE ID = %s"
-                    val = (member.id,)
-                    db.cur.execute(sql, val)
-                    db.mydb.commit()
-
-                NameCheck = True
-                Nick = f"{Nick} {NewCurrent}/{Goal}"
-                await asyncio.sleep(5)
-                try:
-                    await member.edit(nick=Nick)
-                except:
-                    (f"can't rename member{member.name}")
-
-                #   FROM user.total table days reached goal += 1
-                #   give user some XP
-                #   give user role
 
     # CHECK IF MEMBER CHANGED NAME
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        global NameCheck
-        if NameCheck == True:
-            NameCheck = False
-            return
         print("user update")
         if before.display_name != after.display_name:
             print(f"{after.name} changed name")
+            if goals.seeifInDB(after.id):
+                return
             Nick = after.display_name
             txt = str.split(Nick)
             name = txt[0]
-            print(name)
             ID = after.id
 
             # get current minutes
             try:
                 sql = "SELECT Total FROM users.daily WHERE ID = %s"
-                print(after.id)
                 val = (ID,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-                if result is None:
+                if result is None:      #Add member if not in goals DB
                     guild = self.client.get_guild(vc.guild_id)
                     member = guild.get_member(ID)
                     await userfunction.AddMember(self, member)
                     sql = "SELECT Total FROM users.daily WHERE ID = %s"
-                    print(after.id)
                     val = (after.id,)
                     db.cur.execute(sql, val)
                     result = db.cur.fetchone()
-                    print(result)
-                print(result)
+
             except Exception as e:
                 print("Error looking up user id %s", (e))
 
-            print(result)
+
             # print(result[8])
             measuredMin = int(result[0])
             # get user value
-            current = int(measuredMin / 50)  # TODO add /50
+            current = int(measuredMin / 60)  # TODO add /50
 
             # see if id in datenbank
             try:
@@ -268,7 +270,6 @@ class goals(commands.Cog):
                 val = (ID,)
                 db.cur.execute(sql, val)
                 result = db.cur.fetchone()
-
                 if not result:
                     print("user not in goal db yet: %s", ID)
                     # add row if user not in db
@@ -276,8 +277,9 @@ class goals(commands.Cog):
                     number = txt[-1]
                     x = re.split("/", number)
                     Goal = int(x[1])
-                    print(Goal)
 
+
+                    #Instert into Goals db
                     sql = "INSERT INTO goal (ID, Goal, Current, NickName, measuredMin, Won) VALUES (%s, %s, %s, %s, %s, %s)"
                     val = (ID, Goal, current, name, measuredMin, False)
                     db.cur.execute(sql, val)
@@ -287,13 +289,7 @@ class goals(commands.Cog):
                     guild = self.client.get_guild(vc.guild_id)
                     member = guild.get_member(ID)
 
-                    role = discord.utils.get(member.guild.roles, name="winner")
-                    await asyncio.sleep(5)
-                    await member.remove_roles(role)
 
-                    role = discord.utils.get(member.guild.roles, id=vc.challenge_role_id)
-                    await asyncio.sleep(5)
-                    await member.add_roles(role)
 
                     channel = self.client.get_channel(vc.chores_vc_id)
                     await channel.send(f"{name} you've set your goal of the day to be {Goal} hours, good luck")
@@ -309,7 +305,6 @@ class goals(commands.Cog):
                     result = db.cur.fetchone()
                     result = int(result[0])
                     print(result)
-                    # TODO change channel into after.channel or whatever it is
 
                     channel = self.client.get_channel(vc.chores_vc_id)
                     guild = self.client.get_guild(vc.guild_id)
@@ -338,5 +333,10 @@ class goals(commands.Cog):
                 print("Error looking up userid %s", (e))
 
 
-def setup(client):
-    client.add_cog(goals(client))
+
+
+async def setup(client):
+    await client.add_cog(goals(client))
+
+async def teardown(client):
+    return

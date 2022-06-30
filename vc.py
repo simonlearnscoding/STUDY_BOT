@@ -1,4 +1,9 @@
+from discord.ext import commands
+
 class vc():
+
+    def __init__(self, client):
+        self.client = client
 
     Testing = True
 
@@ -26,13 +31,24 @@ class vc():
         meditation_id = 790609301911502908
         doing_drugs_id = 840346309470322738
         creative_id = 824040394761306192
-        bots_id = 827601223317585991
         gestapo = 842832674543501353
         leaderboard = 916484382091513917
         vibing_id = 789814373870075932
+        challenge_1 = 937645950695010315
+        challenge_2 = 937646602527588352
+
+        challenge_role_1 = 939465581936144405
+        challenge_role_2 = 939465659211984936
+
+        Augustus = "assets/font/Augustus.ttf"
+        SmallFont = "assets/font/Romanica.ttf"
+        SmallerFont = "assets/font/Romanica.ttf"
 
     else:
         # TESTING
+        Augustus = "C:/Code/SPQR_VPS/assets/font/Augustus.ttf"
+        SmallFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
+        SmallerFont = "C:/Code/SPQR_VPS/assets/font/Romanica.ttf"
         general_id = 917547601753178207
         guild_id = 917547601539264623
         tasks_id = 917547601753178210
@@ -42,12 +58,13 @@ class vc():
         challenge_role_id = 917547601564426297
         weekly_message = 923155569932664842
         daily_message = 923131822999736340
-
+        challenge_1 = 939252150385655838
+        challenge_2 = 939252226118013019
 
         #TODO: change with this when done:  826514598709690388
         bot_id = 827601223317585991
         lions_cage_id = 834118898836045894
-        lions_cage_text_id = 917547602277453864
+        lions_cage_text_id = 917547602277453862
         chores_vc_id = 917547601753178211
         workout_id = 917547601904148526
         timer_id = 917547601753178205
@@ -61,3 +78,6 @@ class vc():
         gestapo = 917547602277453859
         leaderboard = 917547601753178209
         vibing_id = 917547602076135478
+        challenge_role_1 = 939464453357994014
+        challenge_role_2 = 939464510425665606
+
