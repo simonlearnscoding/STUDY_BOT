@@ -29,27 +29,10 @@ class userfunction(commands.Cog):
         db.cur.execute(sql, val)
         db.mydb.commit()
 
-        sql = "INSERT INTO Monthly (ID, Study, Workout, Yoga, Reading, Meditation, Chores, Creative, Total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        sql = "INSERT INTO monthly (ID, Study, Workout, Yoga, Reading, Meditation, Chores, Creative, Total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         val = (member.id, 0, 0, 0, 0, 0, 0, 0, 0)
         db.cur.execute(sql, val)
         db.mydb.commit()
-
-        sql = "INSERT INTO Streaks (ID, Study, Workout, Yoga, Reading, Meditation, Chores, Creative, Boots, LongestSession) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (member.id, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-        db.cur.execute(sql, val)
-        db.mydb.commit()
-
-        sql = "INSERT INTO Week (ID, Study, Workout, Yoga, Reading, Meditation, Chores,  Creative) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (member.id, 0, 0, 0, 0, 0, 0, 0)
-        db.cur.execute(sql, val)
-        db.mydb.commit()
-
-        sql = "INSERT INTO Achievements (ID, Cage, Won, Lost) VALUES (%s, %s, %s, %s)"
-        val = (member.id, 0, 0, 0)
-        db.cur.execute(sql, val)
-        db.mydb.commit()
-
-
 
 
 # CHECK IF THE USER IS ALREADY IN THE DATABASE

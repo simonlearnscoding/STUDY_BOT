@@ -9,7 +9,7 @@ sys.path.append('/.../')
 from cogs.vc import vc
 from mydb import db
 from User import userfunction
-from trackingsessions import timeTrack
+from cogs.trackingsessions import timeTrack
 
 
 

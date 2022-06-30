@@ -40,9 +40,9 @@ class vc():
         challenge_role_1 = 939465581936144405
         challenge_role_2 = 939465659211984936
 
-        Augustus = "C:/Code/14_11_21/assets/font/Augustus.ttf"
-        SmallFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
-        SmallerFont = "C:/Code/14_11_21/assets/font/Romanica.ttf"
+        Augustus = "assets/font/Augustus.ttf"
+        SmallFont = "assets/font/Romanica.ttf"
+        SmallerFont = "assets/font/Romanica.ttf"
 
     else:
         # TESTING

@@ -6,7 +6,7 @@ from cogs.challenge import challenge
 sys.path.append('/.../')
 from mydb import db
 from cogs.tasks import tasks
-from trackingsessions import timeTrack
+from cogs.trackingsessions import timeTrack
 from cogs.heatmap import heatmap
 from cogs.questions import questions
 
