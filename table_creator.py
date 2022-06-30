@@ -7,10 +7,8 @@ class db():
     password="12345678",
     database="users")
     cur = mydb.cursor(buffered=True)
-    def drop_tables(self):
-        pass
 
-    def drop_tables(self):
+    def create_db():
         sql = ("DROP TABLE IF EXISTS User;")
         db.cur.execute(sql, )
         sql = ("DROP TABLE IF EXISTS Goal;")
@@ -51,3 +49,5 @@ class db():
         db.cur.execute(sql, )
         sql = ("CREATE TABLE IF NOT EXISTS achievements (ID bigint, Cage int, Won int, Lost int);")
         db.cur.execute(sql, )
+
+db.create_db()
