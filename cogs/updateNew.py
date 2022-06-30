@@ -86,10 +86,10 @@ class updateNew(commands.Cog):
         if message.author.bot:
             return
         if message.content.startswith("!resetday"):
-            result = updateNew.selectAll()
+            result = await updateNew.selectAll()
             for i in range(len(result)):
                 await updateNew.updateTables(result[i], "daily", "weekly")
-        updateNew.switchToTrue()
+        await updateNew.switchToTrue()
 
     async def selectAll():
         # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
