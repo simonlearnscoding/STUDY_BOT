@@ -21,7 +21,7 @@ class updateNew(commands.Cog):
         monthday = time.localtime().tm_mday
         switchtime = 30 #TODO: fix switchtime
 
-        if minute < switchtime:
+        if minute < switchtime and hour == 0:
             Timezone = hour
             if updateNew.Switch == False:
                 print("update went through")
