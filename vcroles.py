@@ -1,3 +1,5 @@
+# THIS FILE IS RESPONSIBLE FOR THE FUNCTION THAT GIVES YOU A ROLE WHEN YOU ENTER OR EXIT A VC
+
 import discord
 from discord.ext import commands
 from cogs.vc import vc

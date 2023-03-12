@@ -1,4 +1,6 @@
+# THIS FILE WILL RECREATE THE ENTIRE DATABASE DO NOT JUST RUN IT!!
 import mysql.connector
+
 
 class db():
     mydb = mysql.connector.connect(
