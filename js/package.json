@@ -1,7 +1,6 @@
 {
   "name": "discord",
   "version": "1.0.0",
-  "description": "",
   "main": "ORM/prisma.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,5 +21,6 @@
   },
   "devDependencies": {
     "prisma": "^4.7.1"
-  }
+  },
+  "description": ""
 }

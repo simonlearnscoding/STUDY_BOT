@@ -2,12 +2,18 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Events, GatewayIntentBits, Collection } = require("discord.js");
+
+// GET THE TOKEN FROM CONFIG.JSON
 const { TOKEN } = require("./config.json");
 console.log({ TOKEN });
+
+
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
+
+// LOADS ALL COMMAND FILES THAT END WITH JS
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync(commandsPath)
