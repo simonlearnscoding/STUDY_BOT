@@ -1,0 +1,10 @@
+{
+  "features" : {
+    "vcPlanMessage" : {
+      "enabled" : true
+    },
+    "test" : {
+      "enabled" : true
+    }
+  }
+}
