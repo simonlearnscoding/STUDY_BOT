@@ -19,7 +19,7 @@ class MyCog(commands.Cog):
             #  print yo if the message was written in generalText
             if message.channel == server.getChannel("generalText"):
                 print("yo")
-
+                # server.getChannel.send("yoo")
 
 async def setup(client):
     # RENAME MYCOG TO THE NAME OF THE MODULE
