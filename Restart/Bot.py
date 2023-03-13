@@ -15,10 +15,8 @@ async def main():
 
         await loop.run_until_complete(await client.start(token))
 
-
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user.name}")
-
 
 asyncio.run(main())
