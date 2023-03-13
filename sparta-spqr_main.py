@@ -28,7 +28,6 @@ if __name__ == '__main__':
 # STARTING EVENT
 @client.event
 async def on_ready():
-    #TODO Switch with timer inbreak
     cogs.timer.InBreak = False
     print("bot is ready.")
     #await runschedule()

@@ -38,7 +38,7 @@ class heatmap(commands.Cog):
 
     def selectAll(Timezone):
         # Select entire Daily DB
-        sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"#todo:
+        sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
         sql = str(sql)
         db.cur.execute(sql)
         result = db.cur.fetchall()

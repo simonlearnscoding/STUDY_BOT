@@ -41,11 +41,11 @@ class update(commands.Cog):
                 print("update passed")
                 update.switch = False
 
-                if monthday == 1: #TODO: Test this
+                if monthday == 1:
                     print("rewardchallengewinner")
                     challenge.challengeWinners(guild)
 
-                sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}" #Todo:
+                sql = f"SELECT * FROM users.daily Where Timezone = {Timezone}"
                 sql = str(sql)
                 db.cur.execute(sql)
 
@@ -70,15 +70,14 @@ class update(commands.Cog):
                             await tracking.QuitSomething(self, member)
                             await tracking.StartSomething(self, member)
                         except Exception as e: print(e)
-                #await tracking.reboot1(self, guild) #TODO: Reboot function fix
+                #await tracking.reboot1(self, guild)
                 heatmap.addDataDaily(self, Timezone)
 
 
 
                 await update.updateTables("daily", "weekly", Timezone)
-                #TODO: adapt user goals to timezone
 
-                if hour == 5: #todo
+                if hour == 5:
                     await challenge.NewDay(self, guild)
 
                     # Reward Daily Winners
@@ -106,20 +105,20 @@ class update(commands.Cog):
         print("one")
         column = ("STUDY", "WORKOUT", "YOGA", "READING", "MEDITATION", "CHORES", "CREATIVE", "TOTAL")
         for j in range(len(column)):
-            sql = f"SELECT ID, {column[j]} FROM users.{time1} WHERE {column[j]} > 0 AND Timezone = {TimeZone}" #TODO:
+            sql = f"SELECT ID, {column[j]} FROM users.{time1} WHERE {column[j]} > 0 AND Timezone = {TimeZone}"
             sql = str(sql)
             db.cur.execute(sql)
             result = db.cur.fetchall()
             for i in range(len(result)):
                 ID = int(result[i][0])
                 value = int(result[i][1])
-                sql = f"UPDATE users.{time2} SET {column[j]} = {column[j]} + %s WHERE ID = %s AND Timezone = {TimeZone}" #TODO:
+                sql = f"UPDATE users.{time2} SET {column[j]} = {column[j]} + %s WHERE ID = %s AND Timezone = {TimeZone}"
                 sql = str(sql)
                 val = (value, ID)
                 db.cur.execute(sql, val)
                 db.mydb.commit()
 
-                sql = f"UPDATE users.{time1} SET {column[j]} = 0 WHERE ID = %s AND Timezone = {TimeZone}" #TODO:
+                sql = f"UPDATE users.{time1} SET {column[j]} = 0 WHERE ID = %s AND Timezone = {TimeZone}"
                 sql = str(sql)
                 val = (ID,)
                 db.cur.execute(sql, val)
