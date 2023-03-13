@@ -64,7 +64,7 @@ async def checkupdate(client):
     await updateNew.update(client)
 
 
-@tasks.loop(seconds=20)  # TODO: change the intervall here
+@tasks.loop(seconds=20)
 async def checkem(client):
     await goals.check_goals(client)
 

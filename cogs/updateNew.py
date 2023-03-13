@@ -19,7 +19,7 @@ class updateNew(commands.Cog):
         hour = time.localtime().tm_hour
         weekday = time.localtime().tm_wday
         monthday = time.localtime().tm_mday
-        switchtime = 30 #TODO: fix switchtime
+        switchtime = 30
 
         if minute < switchtime and hour == 0:
             Timezone = hour
@@ -27,12 +27,12 @@ class updateNew(commands.Cog):
                 print("update went through")
                 updateNew.Switch = True
 
-                #if monthday == 1:  # TODO: change this to 1
+                #if monthday == 1:
                  #   print("rewardchallengewinner")
                    # await challenge.challengeWinners(self, vc.guild)
 
                 # Challenge New Message
-                # if hour == 7: #todo change hour
+                # if hour == 7:
                 #
                 #     await challenge.NewDay(self, vc.guild)
                 #     await questions.postQuestion(questions)
@@ -92,20 +92,20 @@ class updateNew(commands.Cog):
         await updateNew.switchToTrue()
 
     async def selectAll():
-        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
-        sql = f"SELECT * FROM users.daily"  # Todo:
+        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"
+        sql = f"SELECT * FROM users.daily"
         db.cur.execute(sql, )
         return db.cur.fetchall()
 
     async def switchToTrue():
-        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
-        sql = f"UPDATE users.daily set Switch = True"  # Todo:
+        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"
+        sql = f"UPDATE users.daily set Switch = True"
         db.cur.execute(sql, )
         return db.cur.fetchall()
 
     async def selectPeople(Timezone):
-        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"  # Todo:
-        sql = f"SELECT * FROM users.daily Where Switch = False"  # Todo:
+        # sql = f"SELECT * FROM users.daily Where Timezone = {Timezone} and Switch = False"
+        sql = f"SELECT * FROM users.daily Where Switch = False"
         db.cur.execute(sql, )
         return db.cur.fetchall()
 

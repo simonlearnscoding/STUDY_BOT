@@ -166,7 +166,6 @@ class timer(commands.Cog):
 
             await message.channel.send(f'{Mention.mention} good job! The Break starts now')
             await asyncio.sleep(1) #das sind 5 sek mal 60 also 5 minute
-            #TODO delete and repost the timer message maybe
         
             minutes = SessionBreak
             await channel.edit(name=f"Break: {minutes}m")

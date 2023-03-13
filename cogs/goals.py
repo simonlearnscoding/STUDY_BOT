@@ -262,7 +262,7 @@ class goals(commands.Cog):
             # print(result[8])
             measuredMin = int(result[0])
             # get user value
-            current = int(measuredMin / 60)  # TODO add /50
+            current = int(measuredMin / 60)
 
             # see if id in datenbank
             try:
