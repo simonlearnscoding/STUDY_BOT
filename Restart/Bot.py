@@ -4,7 +4,7 @@ import asyncio
 from settings import client, token
 
 # Load the cogs
-extensions = ["cogs.test", "cogs.TestFeature"]
+extensions = ["cogs.test", "cogs.feature_idea1"]
 
 
 async def main():
