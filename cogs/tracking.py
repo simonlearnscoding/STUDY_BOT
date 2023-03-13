@@ -134,7 +134,7 @@ class tracking(commands.Cog):
         db.cur.execute(sql, val)
         result = db.cur.fetchone()
         newID = result[0]
-        # TODO Turn result into int
+
         NewResult = newID + int(Time)
         sql = "UPDATE users.daily SET Total = %s WHERE ID = %s"
         val = (NewResult, member.id)
@@ -169,7 +169,6 @@ class tracking(commands.Cog):
             x.studying = False
             x.EndStudy = datetime.datetime.now()
             if x.StartStudy is not None:
-                # TODO TOTAL MINUTES?
                 x.StudyIntervall = (int((x.EndStudy - x.StartStudy).total_seconds() / 60))
                 print(f"{x.name} has been studying for {int(x.StudyIntervall)} minutes")
                 Id = member.id
@@ -187,7 +186,6 @@ class tracking(commands.Cog):
 
                 newID = result[0]
 
-                # TODO Turn result into int
                 NewResult = newID + int(Time)
 
                 sql = "UPDATE users.daily SET Study = %s WHERE ID = %s"
@@ -201,7 +199,6 @@ class tracking(commands.Cog):
                     xp = 5
 
                 #if xp > 20:
-                                            #TODO: await MessageXP(member, activity, Time, xp, channel)
                 Embed = discord.Embed()
                 Embed.set_thumbnail(url="https://i.pinimg.com/564x/43/08/c9/4308c9c4a2b3db835f739c9ee612dae0.jpg")
                 Embed.add_field(name=f"{member.name}, Studying for {int(Time)} minutes!",
@@ -355,7 +352,6 @@ class tracking(commands.Cog):
                         await levels.addXP(self, member, xp)
 
                 newID = result[0]
-                # TODO Turn result into int
                 NewResult = newID + int(Time)
 
                 sql = "UPDATE users.daily SET Reading = %s WHERE ID = %s"
@@ -847,7 +843,6 @@ class tracking(commands.Cog):
                     if i == 7:
                         L1[i] = L1[i] + extratime
                 if L1[i] > 0:
-                    # TODO mache embed schöner
                     Results.append(f" {ThingsDone[i]}: {await tracking.ToHours(self, L1[i])}")
                 print(Results)
 
@@ -1119,7 +1114,6 @@ class tracking(commands.Cog):
 
             newID = result[0]
             print(newID)
-            # TODO Turn result into int
             NewResult = newID + int(Time)
             sql = "UPDATE users.daily SET Reading = %s WHERE ID = %s"
             val = (NewResult, Id)
@@ -1201,7 +1195,6 @@ class tracking(commands.Cog):
 
             newID = result[0]
             print(newID)
-            # TODO Turn result into int
             NewResult = newID + int(Time)
             sql = "UPDATE users.daily SET Yoga = %s WHERE ID = %s"
             val = (NewResult, Id)

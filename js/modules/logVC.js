@@ -25,9 +25,6 @@ function writeintoJSONFile(path, data) {
     prisma.logsNow.create({
         data: {
             user : data.user_id,
-            // TODO: activity
-            // TODO: type
-            
             timestamp: data.time,
 
 }

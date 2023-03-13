@@ -244,7 +244,6 @@ class timeTrack():
         ThingsDone = ["Study", "Workout", "Yoga", "Reading", "Meditation", "Chores", "Creative", "Total"]
         for i in range(len(ThingsDone) - 1):
             if Activities[i] > 0:
-                # TODO mache embed schöner
                 if CurrentlySomewhere is True:
                     CurrentlySomewhere = False
                     if Activity == ThingsDone[i]:
@@ -309,7 +308,7 @@ class timeTrack():
 
     def calculateTime(start, end):
 
-        return (int((end - start).total_seconds() / 60)) #TODO: add / 60
+        return (int((end - start).total_seconds() / 60))
 
     async def addTime(time, id, Activity):
         sql = f"UPDATE users.daily SET {Activity} = {Activity} + {time}, Total = Total + {time} WHERE ID = {id}"

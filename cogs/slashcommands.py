@@ -64,8 +64,6 @@ class slashcommands(commands.Cog):
         await levels.levelFunction(self, interaction.user, interaction.channel)
 
 
-
-    #TODO: Focus
     @app_commands.command(
         name="focus",
         description="will temporarily hide all textchannels so you can focus on your work"
