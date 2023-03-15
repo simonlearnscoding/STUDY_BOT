@@ -3,12 +3,11 @@
 
 # testing
 # SPQR
-
-serverName = "testing"  #testing and SPQR server
-
-
 import discord
 from discord.ext import commands
+
+serverName = "testing"  # testing and SPQR server
+
 
 intents = discord.Intents.all()
 intents.message_content = True
