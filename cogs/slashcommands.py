@@ -11,7 +11,6 @@ from cogs.trackingsessions import timeTrack
 from cogs.levels import levels
 
 
-
 class slashcommands(commands.Cog):
 
 

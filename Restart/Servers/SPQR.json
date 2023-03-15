@@ -1,7 +1,53 @@
 {
-  "generalText": "797837772005179433",
   "serverId": "789814373434654731",
+  "generalText": "797837772005179433",
+  "Events": "825415932352528425",
+  "bot_spamText": "838840054125297664",
   "spartaVoice": "834144065133740102",
   "studyVoice": "819680519063207966",
-  "producingVoice": "825827777671593994"
+  "producingVoice": "825827777671593994",
+  "daily_goals": "915180477269299201",
+      "Exams": "1028407986646949899",
+      "monthly_goals": "1025710306833485824",
+      "weekly_goals": "1025710053237465138",
+  "leaderboard": "916484382091513917",
+
+
+  "study-chat": "829061149986914345",
+  "vc_STVDY": "819680519063207966",
+  "vc_SPARTA": "834144065133740102",
+      "challenge_role_1": "939465581936144405",
+      "challenge_role_2": "939465659211984936",
+
+      "Augustus": "assets/font/Augustus.ttf",
+      "SmallFont": "assets/font/Romanica.ttf",
+      "SmallerFont": "assets/font/Romanica.ttf",
+
+
+  "vc_meditation": "790609301911502908",
+  "vc_WORKOVT": "789814373870075931",
+  "CHORES": "845241122116075520",
+  "READING": "820760890093338634",
+  "CREATIVE_HOBBIES": "824040394761306192",
+  "VIBING": "789814373870075932",
+
+
+  "suggestions": "824617348224122881",
+      "challenge_1": "937645950695010315",
+      "challenge_2": "937646602527588352",
+
+
+  "distraction_count": "1022574079523422218",
+  "workout": "789814373870075925",
+  "manual": "844548716295094322",
+  "dailyQuestions": "960144604206858320",
+  "spirituality": "827597766024364052",
+  "memes": "838825040493543424",
+  "projects-and-things-we-learn": "840612268261638164",
+  "food_pics": "851273449368584192",
+  "starboard": "854336881236115476",
+  "media-recommendations": "840612180654686278",
+  "exchange-and-advice": "951746959700553738",
+  "vc_YOGA": "793533479476264970",
+  "LIONS_CAGE": "834118898836045894"
 }

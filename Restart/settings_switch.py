@@ -4,7 +4,7 @@
 # testing
 # SPQR
 
-serverName = "testing"  #testing and SPQR server
+serverName = "testing" 
 
 
 import discord

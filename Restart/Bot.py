@@ -1,7 +1,7 @@
 # THE BASIC BOT SETUP
 import asyncio
 
-from settings import client, token
+from settings_switch import client, token
 
 # Load the cogs
 extensions = ["cogs.test", "cogs.feature_idea1"]

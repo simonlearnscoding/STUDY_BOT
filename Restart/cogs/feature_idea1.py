@@ -16,9 +16,10 @@ class TestFeature(commands.Cog):
                 return
 
             #  print yo if the message was written in generalText
-            if message.channel == server.getChannel("generalText"):
+            #if message.channel == server.getChannel("botspamText"):
+            if message.channel == server.getChannel("vc_chat") and message.content == "!hello":
                 # reply with hi
-                await message.channel.send("hi from derks new feature")
+                await message.channel.send("Hellow there \n Greets ~Derk")
 
 
 async def setup(client):
