@@ -27,9 +27,9 @@ class serverFetcher:
 
 server = serverFetcher(serverName)
 
-
-async def on_ready():
-    server = serverFetcher(serverName)
+#
+# async def on_ready():
+#     server = serverFetcher(serverName)
 
 
 # NONE OF THE STUFF BELOW HAS TO CONCERN YOU FOR NOW

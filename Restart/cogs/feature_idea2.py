@@ -4,11 +4,11 @@ from vc import server
 
 
 # RENAME MYCOG TO NAME OF THE MODULE
-class TestFeature(commands.Cog):
+class TestFeature2(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        # on message event if message channel is generalText reply with hi
+    # on message event if message channel is generalText reply with hi
     @commands.Cog.listener()
     async def on_message(self, message):
         # ignore messages from the bot
@@ -19,12 +19,12 @@ class TestFeature(commands.Cog):
         #if message.channel == server.getChannel("botspamText"):
         if message.channel == server.getChannel("vc_chat") and message.content == "!hello":
             # reply with hi
-            await message.channel.send("Hellow there \n Greets ~Derk")
+            await message.channel.send("Hello from feature two")
 
 
 async def setup(client):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(TestFeature(client))
+    await client.add_cog(TestFeature2(client))
 
 
 async def teardown(client):
