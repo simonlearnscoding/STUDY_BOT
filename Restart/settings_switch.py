@@ -3,6 +3,13 @@
 
 # testing
 # SPQR
+<<<<<<< HEAD:Restart/settings.py
+=======
+
+serverName = "testing" 
+
+
+>>>>>>> master:Restart/settings_switch.py
 import discord
 from discord.ext import commands
 

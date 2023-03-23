@@ -1,6 +1,6 @@
 import json
 
-from settings import client, serverName
+from settings_switch import client, serverName
 
 import discord
 from discord.ext import commands
@@ -75,9 +75,9 @@ async def on_ready():
 #         challenge_role_1 = 939465581936144405
 #         challenge_role_2 = 939465659211984936
 #
-#         Augustus = "assets/font/Augustus.ttf"
-#         SmallFont = "assets/font/Romanica.ttf"
-#         SmallerFont = "assets/font/Romanica.ttf"
+#         Augustus = "assets/font/Augustus.ttf"         #Font
+#         SmallFont = "assets/font/Romanica.ttf"        #Font
+#         SmallerFont = "assets/font/Romanica.ttf"      #Font
 #
 #     else:
 #         # TESTING
