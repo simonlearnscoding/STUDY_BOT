@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from vc import server
 
-
 # RENAME MYCOG TO NAME OF THE MODULE
 class TestFeature2(commands.Cog):
     def __init__(self, client):

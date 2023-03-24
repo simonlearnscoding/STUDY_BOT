@@ -1,20 +1,23 @@
-from settings_switch import client, db
-
 import discord
 from discord.ext import commands
+from vc import server
+from settings_switch import db, client
+
 
 
 # RENAME MYCOG TO NAME OF THE MODULE
-class MyCog(commands.Cog):
+class DataBase(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # YOUR CODE GOES HERE
+
+    # on message event if message channel is generalText reply with hi
+
 
 
 async def setup(client):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(MyCog(client))
+    await client.add_cog(DataBase(client))
 
 
 async def teardown(client):

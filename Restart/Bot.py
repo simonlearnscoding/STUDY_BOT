@@ -1,10 +1,9 @@
 # THE BASIC BOT SETUP
 import asyncio
-
 from settings_switch import client, token
 
 # Load the cogs
-extensions = ["cogs.feature_idea1", "cogs.feature_idea2", "cogs.slashTemplate"]
+extensions = ["cogs.feature_idea1", "cogs.feature_idea2", "cogs.slashTemplate", "cogs.database_connect"]
 
 
 async def main():
