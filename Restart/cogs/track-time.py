@@ -1,4 +1,4 @@
-from settings_switch import client
+from settings_switch import bot
 
 import discord
 from discord.ext import commands
@@ -6,16 +6,16 @@ from discord.ext import commands
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class trackTime(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     # YOUR CODE GOES HERE
 
 
-async def setup(client):
+async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(trackTime(client))
+    await bot.add_cog(trackTime(bot))
 
 
-async def teardown(client):
+async def teardown(bot):
     return

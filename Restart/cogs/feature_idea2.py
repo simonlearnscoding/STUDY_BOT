@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from vc import server
 
+
 # RENAME MYCOG TO NAME OF THE MODULE
 class TestFeature2(commands.Cog):
     def __init__(self, bot):
@@ -11,12 +12,15 @@ class TestFeature2(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         # ignore messages from the bot
-        if message.author == self.client.user:
+        if message.author == self.bot.user:
             return
 
         #  print yo if the message was written in generalText
-        #if message.channel == server.getChannel("botspamText"):
-        if message.channel == server.getChannel("vc_chat") and message.content == "!hello":
+        # if message.channel == server.getChannel("botspamText"):
+        if (
+            message.channel == server.getChannel("vc_chat")
+            and message.content == "!hello"
+        ):
             # reply with hi
             await message.channel.send("Hello from feature two")
 

@@ -7,16 +7,16 @@ from discord.ext import commands
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class MyCog(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
         # YOUR CODE GOES HERE
 
 
-async def setup(client):
+async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(MyCog(client))
+    await bot.add_cog(MyCog(bot))
 
 
-async def teardown(client):
+async def teardown(bot):
     return
