@@ -24,8 +24,8 @@ class TimeTracking(commands.Cog):
             return
 
         # TODO: We have to test it muting/unmuting counts as a voicestate update
-        print("Voice state update just happened")
         if not await self.isUserInDatabase(member):
+            print("user not in database")
             # TODO: create user in database
             # the function for this is in Backend/database.py)
             pass
