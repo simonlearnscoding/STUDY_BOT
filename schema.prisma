@@ -15,25 +15,24 @@ datasource db {
 }
 
 model User {
-  id   BigInt     @id
-  name String
-  bot  Boolean
-  nick String
+  id      BigInt    @id
+  name    String
+  bot     Boolean
+  nick    String
+  logsNow logsNow[]
+  logsDate logsDate[]
+  historicLogs historicLogs[]
 }
 
 model Activity {
   id      Int              @id @unique @default(autoincrement())
   name    String
   rewards ActivityRewards?
-  // UserActivityLogsToday UserActivityLogsToday[]
-
-  // logsNow           logsNow[]
-  // historicLogs      historicLogs[]
-  // historicQuickLogs historicQuickLogs[]
-  // logsToday         logsToday[]
+  logsNow           logsNow[]
+  logsDate          logsDate[]
+  historicLogs      historicLogs[]
 }
 
-//
 model ActivityRewards {
   Activity        Activity @relation(references: [id], fields: [activityID])
   activityID      Int      @unique
@@ -49,50 +48,44 @@ model ActivityRewards {
 }
 
 model logsNow {
-  id         BigInt          @id @default(autoincrement())
-  // user       User         @relation(fields: [userId], references: [id])
-  // activity   Activity     @relation(fields: [activityId], references: [id])
-  // guild      Guild        @relation(fields: [guildId], references: [id])
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(fields: [userId], references: [id])
+  activity   Activity     @relation(fields: [activityId], references: [id])
   timestamp  DateTime     @default(now())
   type       ActivityType
-  userId     Int
+  userId     BigInt
   activityId Int
-  guildId    String
 }
 
-//
-//
-// model logsToday {
-//   id         Int      @id @default(autoincrement())
-//   // user       User      @relation(references: [id], fields: [userId])
-//   activity   Activity @relation(references: [id], fields: [activityId])
-//   date       DateTime
-//   Type       String
-//   minutes    Int      @default(0)
-//   userId     Int
-//   activityId Int
-// }
+model logsDate {
+  id         Int      @id @default(autoincrement())
+  user       User      @relation(references: [id], fields: [userId])
+  activity   Activity @relation(references: [id], fields: [activityId])
+  date       DateTime
+  Type       String
+  minutes    Int      @default(0)
+  userId     BigInt
+  activityId Int
+ }
 
-//
-// model UserActivityLogsToday {
-//   id         Int          @id @default(autoincrement())
-//   user       User         @relation(references: [id], fields: [userId])
-//   type       ActivityType
-//   // guild      Guild        @relation(references: [id], fields: [guildId])
-//   activity   Activity     @relation(references: [id], fields: [activityId])
-//   startedAt  DateTime
-//   endedAt    DateTime
-//   userId     Int
-//   guildId    String
-//   activityId Int
-// }
+
+model historicLogs {
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(references: [id], fields: [userId])
+  type       ActivityType
+  activity   Activity     @relation(references: [id], fields: [activityId])
+  startedAt  DateTime
+  endedAt    DateTime
+  userId     BigInt
+  activityId Int
+}
 
 model LevelRole {
   name     levelRole @id
   minlevel Int
 }
 
-//
+
 enum levelRole {
   GLADIATOR
   FREEDMAN
@@ -103,24 +96,11 @@ enum levelRole {
   EMPEROR
 }
 
-//
-enum role {
-  ADMIN
-  MODERATOR
-  USER
-}
-
-//
 enum ActivityType {
   CAM
+  TOTAL
   LOG
   SS
   BOTH
   VC
 }
-
-// enum Timeframe {
-//   DAY
-//   WEEK
-//   MONTH
-// }
