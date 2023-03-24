@@ -1,6 +1,6 @@
 import json
 
-from settings_switch import client, serverName
+from settings_switch import bot, serverName
 
 import discord
 from discord.ext import commands
@@ -10,7 +10,7 @@ from discord.ext import commands
 
 class serverFetcher:
     def __init__(self, serverName):
-        self.client = client  # discord client object
+        self.bot = bot  # discord bot object
         self.channel_id = {}  # dictionary of channel ids
         # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
         with open(f"Servers/{serverName}.json") as f:
@@ -22,7 +22,7 @@ class serverFetcher:
             self.channel_id[name] = int(id)
 
     def getChannel(self, name):
-        return self.client.get_channel(self.channel_id[name])
+        return self.bot.get_channel(self.channel_id[name])
 
 
 server = serverFetcher(serverName)
@@ -39,8 +39,8 @@ server = serverFetcher(serverName)
 
 #
 # class vc:
-#     def __init__(self, client):
-#         self.client = client
+#     def __init__(self, bot):
+#         self.bot = bot
 #
 #     if Testing is False:
 #         general_id = 797837772005179433

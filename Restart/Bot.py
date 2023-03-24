@@ -1,24 +1,24 @@
 # THE BASIC BOT SETUP
 import asyncio
 
-from settings_switch import client, token
+from settings_switch import bot, token
 
 # Load the cogs
 extensions = ["cogs.feature_idea1", "cogs.feature_idea2", "cogs.slashTemplate"]
 
 
 async def main():
-    async with client:
+    async with bot:
         for ext in extensions:
-            await client.load_extension(ext)
+            await bot.load_extension(ext)
         loop = asyncio.get_event_loop()
 
-        await loop.run_until_complete(await client.start(token))
+        await loop.run_until_complete(await bot.start(token))
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f"Logged in as {client.user.name}")
+    print(f"Logged in as {bot.user.name}")
 
     # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
     # THEN ONCE YOU'VE SYNCED THE NEW SLASH COMMAND YOU CAN RECOMMENT THIS LINE
