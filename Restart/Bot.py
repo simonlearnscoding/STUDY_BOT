@@ -3,8 +3,16 @@ import asyncio
 
 from settings_switch import bot, token
 
+import discord
+
 # Load the cogs
-extensions = ["cogs.feature_idea1", "cogs.feature_idea2", "cogs.slashTemplate", "cogs.database_connect"]
+extensions = [
+    "cogs.feature_idea1",
+    "cogs.feature_idea2",
+    "cogs.slashTemplate",
+    "cogs.database_connect",
+    "cogs.timeTracking",
+]
 
 
 async def main():
@@ -12,7 +20,6 @@ async def main():
         for ext in extensions:
             await bot.load_extension(ext)
         loop = asyncio.get_event_loop()
-
         await loop.run_until_complete(await bot.start(token))
 
 
@@ -22,7 +29,7 @@ async def on_ready():
 
     # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
     # THEN ONCE YOU'VE SYNCED THE NEW SLASH COMMAND YOU CAN RECOMMENT THIS LINE
-    #await client.tree.sync()
+    # await client.tree.sync()
 
 
 asyncio.run(main())
