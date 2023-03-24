@@ -5,14 +5,14 @@ from vc import server
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class TestFeature(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
         # on message event if message channel is generalText reply with hi
     @commands.Cog.listener()
     async def on_message(self, message):
         # ignore messages from the bot
-        if message.author == self.client.user:
+        if message.author == self.bot.user:
             return
 
         #  print yo if the message was written in generalText
@@ -22,10 +22,10 @@ class TestFeature(commands.Cog):
             await message.channel.send("Hellow there \n Greets ~Derk")
 
 
-async def setup(client):
+async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(TestFeature(client))
+    await bot.add_cog(TestFeature(bot))
 
 
-async def teardown(client):
+async def teardown(bot):
     return

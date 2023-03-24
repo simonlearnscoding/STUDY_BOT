@@ -17,11 +17,11 @@ intents.message_content = True
 application_id = 839089655189864508
 
 
-client = commands.Bot(command_prefix="~", intents=intents)
 
 
 @client.event
 async def on_ready():
     db = await Database()
+bot = commands.Bot(command_prefix="~", intents=intents)
 # tree = app_commands.CommandTree(client)
 token = "ODM5MDg5NjU1MTg5ODY0NTA4.YJElIw.8v1pOwMXScG-HF7LCQnDAybNiQk"

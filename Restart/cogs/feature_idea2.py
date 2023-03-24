@@ -4,8 +4,8 @@ from vc import server
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class TestFeature2(commands.Cog):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot = bot
 
     # on message event if message channel is generalText reply with hi
     @commands.Cog.listener()
@@ -21,10 +21,10 @@ class TestFeature2(commands.Cog):
             await message.channel.send("Hello from feature two")
 
 
-async def setup(client):
+async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE
-    await client.add_cog(TestFeature2(client))
+    await bot.add_cog(TestFeature2(bot))
 
 
-async def teardown(client):
+async def teardown(bot):
     return
