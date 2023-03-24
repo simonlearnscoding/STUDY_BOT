@@ -1,20 +1,18 @@
 // This is your Prisma schema file
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-
 // THIS IS WHERE WE CAN SET UP THE ARCHITECTURE OF OUR DB
 // https://prisma-client-py.readthedocs.io/en/stable/getting_started/quickstart/
 generator db {
-    interface = "asyncio"
-    recursive_type_depth = 5
-    provider = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+  provider             = "prisma-client-py"
 }
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:12345678@192.53.122.228/discordjs"
+  url      = "mysql://simon:spqr-server@192.53.122.228/discordjs"
 }
-
 
 model Post {
   id         String   @id @default(cuid())
@@ -24,7 +22,6 @@ model Post {
   published  Boolean
   desc       String?
 }
-
 
 //
 // model User {

@@ -1,0 +1,21 @@
+from settings_switch import client
+
+import discord
+from discord.ext import commands
+
+
+# RENAME MYCOG TO NAME OF THE MODULE
+class trackTime(commands.Cog):
+    def __init__(self, client):
+        self.client = client
+
+    # YOUR CODE GOES HERE
+
+
+async def setup(client):
+    # RENAME MYCOG TO THE NAME OF THE MODULE
+    await client.add_cog(trackTime(client))
+
+
+async def teardown(client):
+    return
