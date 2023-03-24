@@ -1,14 +1,14 @@
 import asyncio
 from contextlib import asynccontextmanager
+
 from prisma import Prisma
+
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
 # adthedocs.io/en/stable/getting_started/quickstart/
 
 
-
 class Database:
-
     # Establishing a connection to the DB when an instance of the db is created
     def __init__(self, db):
         self.db = db
@@ -29,7 +29,6 @@ class Database:
         return instance
 
     async def create_user(self, user):
-
         user_data = {
             "id": user["id"],
             "name": user["username"],
@@ -38,7 +37,6 @@ class Database:
         }
         created_user = await self.db.user.create(user_data)
         return created_user
-
 
 
 user = {
@@ -55,10 +53,3 @@ user = {
     "premium_type": 1,
     "public_flags": 64,
 }
-
-async def createDatabase():
-    return await Database.create()
-db = asyncio.run(createDatabase())
-
-
-
