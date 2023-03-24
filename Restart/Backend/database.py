@@ -9,7 +9,6 @@ from prisma import Prisma
 
 
 class Database:
-    # Establishing a connection to the DB when an instance of the db is created
     def __init__(self, db):
         self.db = db
 
@@ -27,6 +26,45 @@ class Database:
         instance = cls(db)
         await instance.connect()
         return instance
+
+    async def createMomentLogEntry(self, member, after):
+        # TODO: Create a log entry for the user in the database
+        pass
+
+    def getUserMomentLog(self, member, after):
+        # TODO GET FROM DB
+        return {}
+
+    def deleteMomentLog(self, log):
+        # TODO delete user log
+        pass
+
+    async def isUserInDatabase(self, member):
+        # TODO: Check if the user is in the database
+        pass
+
+    def getUserDailyLog(self, member, ActivityType):
+        # TODO: Find user object in Daily logs of Today where ActivityType == the activity he just did
+        pass
+
+    def countSumOfToday(self, member):
+        # TODO:
+        # after we update the daily log, we have to count the sum
+        # of all the minutes of different activity types for the leaderboard
+        pass
+
+    def updateUserDailyLog(self, log, member):
+        TodayLog = self.getUserTodayLog(member, log["activityType"])
+        # TODO: if TodayLog is None, create a new log entry for the user
+        if TodayLog is None:
+            TodayLog = {
+                "user": member.id,
+                "activityType": log["activityType"],
+                "minutes": log["minutes"],
+            }
+        else:
+            TodayLog["minutes"] += log["minutes"]
+        # TODO: update the log entry in the database
 
     async def create_user(self, user):
         user_data = {

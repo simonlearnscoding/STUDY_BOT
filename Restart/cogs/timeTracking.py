@@ -1,3 +1,4 @@
+from activities import VC_to_Activity
 from settings_switch import db
 
 import discord
@@ -14,27 +15,27 @@ class TimeTracking(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # TODO:
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        # TODO: remove this after it's been tested
+        print(self.getActivity(after.channel.id))
         if is_mute_or_deafen_update(before, after):
             return
         if member.bot:
             return
 
-        # TODO: We have to test it muting/unmuting counts as a voicestate update
-        if not await self.isUserInDatabase(member):
+        if not await db.isUserInDatabase(member):
             print("user not in database")
-            # TODO: create user in database
-            # the function for this is in Backend/database.py)
-            pass
+            # TODO: Test
+            await db.create_user(member)
 
         # IF USER JUST JOINED A CHANNEL
         if self.userJoinedChannel(before, after):
             print("User joined a channel")
             # CREATE A LOG ENTRY WITH LOG THE TIME THEY JOINED
-            await self.createLogEntry(member, after)
+            await db.createMomentLogEntry(member, after)
+            return
 
         # IF HE DIDNT JUST JOIN A CHANNEL IT MEANS
         # HE EITHER JUST LEFT A CHANNEL OR
@@ -42,56 +43,36 @@ class TimeTracking(commands.Cog):
         # SO WE HAVE TO LOG THIS IN THE DAILY LOGS
         # AND DELETE THE OLD LOG ENTRY
 
-        Log = self.GetUserMomentLog(member, after)
+        Log = db.getUserMomentLog(member, after)
         Now = None  # TODO: replace with timestamp of now
         Log["minutes"] = self.countMinutesPassed(Log["whenJoined"], Now)
 
-        self.updateDailyLog(Log, member)
-        self.deleteMomentLog(Log)
-        self.CountSumOfToday(member)
+        db.updateUserDailyLog(Log, member)
+        db.deleteMomentLog(Log)
+        db.countSumOfToday(member)
 
-    def updateDailyLog(self, log, member):
-        TodayLog = self.getUserTodayLog(member, log["activityType"])
-        # TODO: if TodayLog is None, create a new log entry for the user
-        if TodayLog is None:
-            TodayLog = {
-                "user": member.id,
-                "activityType": log["activityType"],
-                "minutes": log["minutes"],
-            }
-        else:
-            TodayLog["minutes"] += log["minutes"]
-        # TODO: update the log entry in the database
+        if userLeftChannel:
+            return
 
-    def CountSumOfToday(self, member):
-        # TODO:
-        # after we update the daily log, we have to count the sum
-        # of all the minutes of different activity types for the leaderboard
-        pass
+        db.createMomentLogEntry(member, after)
 
-    def deleteMomentLog(self, log):
-        pass
+    def userLeftChannel(after):
+        # TODO: TEST
+        if after.channel == None:
+            return True
 
     def userJoinedChannel(self, before, after):
         # A function that returns true if the user just joined a channel
         if before.channel is None and after.channel is not None:
+            print("user joined a channel")
+            # TODO: Test
             return True
 
-    def GetUserMomentLog(self, member, after):
-        # TODO GET FROM DB
-        return {}
-
-    def getUserTodayLog(self, member, ActivityType):
-        # TODO: Find user object in Daily logs of Today where ActivityType == the activity he just did
-        pass
-
-    async def isUserInDatabase(self, member):
-        # TODO: Check if the user is in the database
-        pass
-
-    async def createLogEntry(self, member, after):
-        # TODO: Create a log entry for the user in the database
-        pass
+    # TODO: test
+    def getActivity(self, id):
+        activity = VC_to_Activity[id]
+        print(activity)
+        return activity
 
     async def countMinutesPassed(self, whenJoined, whenLeft):
         # TODO: This function will take two dateTimes and return the number of minutes that have passed between them
