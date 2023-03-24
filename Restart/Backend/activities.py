@@ -22,7 +22,7 @@ class workoutRewards(defaultRewards):
         self.firstOfDay = (15,)
 
 
-class Activity:
+class ActivityCreator:
     def __init__(self, name, reward=defaultRewards(), vcName=None):
         self.name = name
         self.reward = reward
@@ -35,13 +35,13 @@ VC_to_Activity = {}
 
 # TODO: check if this compares to the vc names
 Activities = {
-    "Study": Activity("Study", defaultRewards, ["VC_STUDY", "VC_SPARTA"]),
-    "Workout": Activity("Workout", workoutRewards, ["VC_WORKOUT"]),
-    "Meditation": Activity("Meditation", defaultRewards, ["VC_MEDITATION"]),
-    "Yoga": Activity("Yoga", defaultRewards, ["VC_YOGA"]),
-    "Reading": Activity("Reading", defaultRewards, ["VC_READING"]),
-    "Chores": Activity("Chores", defaultRewards, ["VC_CHORES"]),
-    "Creative": Activity(
+    "Study": ActivityCreator("Study", defaultRewards, ["VC_STUDY", "VC_SPARTA"]),
+    "Workout": ActivityCreator("Workout", workoutRewards, ["VC_WORKOUT"]),
+    "Meditation": ActivityCreator("Meditation", defaultRewards, ["VC_MEDITATION"]),
+    "Yoga": ActivityCreator("Yoga", defaultRewards, ["VC_YOGA"]),
+    "Reading": ActivityCreator("Reading", defaultRewards, ["VC_READING"]),
+    "Chores": ActivityCreator("Chores", defaultRewards, ["VC_CHORES"]),
+    "Creative": ActivityCreator(
         "Creative", defaultRewards, ["VC_CREATIVE"]
     ),  # TODO: Add producing vc here
 }
