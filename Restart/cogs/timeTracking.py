@@ -1,11 +1,12 @@
-# TODO: Here I will create the functions that track every time a user joins a voice channel and leaves a voice channel
-# AND LOG ONE OF THE FOLLOWING FOR STATES: 1. no cam and no ss, 2. no cam and ss, 3. cam and no ss, 4. cam and ss
-from settings_switch import db
-
 import discord
 from discord.ext import commands
+from settings_switch import db
 from vc import server
 
+
+#TODO: Use snake_case for function and variable names instead of camelCase
+# as per Python's PEP 8 style guide.
+# For example, change GetUserMomentLog to get_user_moment_log
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class TimeTracking(commands.Cog):
@@ -16,10 +17,15 @@ class TimeTracking(commands.Cog):
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
+        if(is_mute_or_deafen_update(before, after)):
+            print("mute, deafen or something like that")
+            return
+        if member.bot:
+            return
+
         # TODO: We have to test it muting/unmuting counts as a voicestate update
         print("Voice state update just happened")
-
-        if not self.isUserInDatabase(member):
+        if not await self.isUserInDatabase(member):
             # TODO: create user in database
             # the function for this is in Backend/database.py)
             pass
@@ -95,6 +101,28 @@ class TimeTracking(commands.Cog):
         # TODO: Depending on the VC channel they are in, return the activity type
         pass
 
+def is_mute_or_deafen_update(before, after):
+    # Check if the user joined or left a voice channel
+    if before.channel != after.channel:
+        return False
+
+    # Check if the user started or stopped streaming
+    if before.self_stream != after.self_stream:
+        return False
+
+    # Check if the user started or stopped video
+    if before.self_video != after.self_video:
+        return False
+
+    # Check if the user muted or unmuted themselves
+    if before.self_mute != after.self_mute:
+        return True
+
+    # Check if the user deafened or undeafened themselves
+    if before.self_deaf != after.self_deaf:
+        return True
+
+    return False
 
 async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE
