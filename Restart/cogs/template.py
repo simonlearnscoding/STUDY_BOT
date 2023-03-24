@@ -9,7 +9,7 @@ class MyCog(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-        # YOUR CODE GOES HERE
+    # YOUR CODE GOES HERE
 
 
 async def setup(client):
