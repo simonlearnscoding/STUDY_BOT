@@ -1,12 +1,13 @@
+from settings_switch import db
+
 import discord
 from discord.ext import commands
-from settings_switch import db
 from vc import server
 
-
-#TODO: Use snake_case for function and variable names instead of camelCase
+# TODO: Use snake_case for function and variable names instead of camelCase
 # as per Python's PEP 8 style guide.
 # For example, change GetUserMomentLog to get_user_moment_log
+
 
 # RENAME MYCOG TO NAME OF THE MODULE
 class TimeTracking(commands.Cog):
@@ -17,8 +18,7 @@ class TimeTracking(commands.Cog):
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        if(is_mute_or_deafen_update(before, after)):
-            print("mute, deafen or something like that")
+        if is_mute_or_deafen_update(before, after):
             return
         if member.bot:
             return
@@ -101,6 +101,7 @@ class TimeTracking(commands.Cog):
         # TODO: Depending on the VC channel they are in, return the activity type
         pass
 
+
 def is_mute_or_deafen_update(before, after):
     # Check if the user joined or left a voice channel
     if before.channel != after.channel:
@@ -123,6 +124,7 @@ def is_mute_or_deafen_update(before, after):
         return True
 
     return False
+
 
 async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE

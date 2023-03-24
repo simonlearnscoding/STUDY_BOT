@@ -1,4 +1,4 @@
-from Backend.database import Database
+from Restart.Backend.database import Database
 
 import discord
 from discord import app_commands
