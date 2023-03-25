@@ -11,7 +11,7 @@ extensions = [
     "cogs.feature_idea2",
     "cogs.slashTemplate",
     "cogs.database_connect",
-    "cogs.timeTracking",
+    "cogs.TimeTracking.timeTracking",
 ]
 
 

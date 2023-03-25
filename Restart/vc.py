@@ -1,6 +1,6 @@
 import json
 
-from Restart.settings_switch import bot, serverName
+from settings_switch import bot, serverName
 import discord
 from discord.ext import commands
 

@@ -1,5 +1,5 @@
 import discord
-from Restart.vc import server
+from vc import server
 
 
 class defaultRewards:
