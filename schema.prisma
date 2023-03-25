@@ -25,13 +25,12 @@ model User {
 }
 
 model logsNow {
-  id         Int          @id @default(autoincrement())
-  user       User         @relation(fields: [userId], references: [id])
-  activity   String
-  timestamp  DateTime     @default(now())
-  type       ActivityType
-  userId     BigInt
-  activityId Int
+  id        Int          @id @default(autoincrement())
+  user      User         @relation(fields: [userId], references: [id])
+  activity  String
+  timestamp DateTime     @default(now())
+  type      ActivityType
+  userId    BigInt
 }
 
 model logsDate {

@@ -1,10 +1,9 @@
 # THE BASIC BOT SETUP
 import asyncio
 
-from settings_switch import bot, token
 
 import discord
-
+from settings_switch import bot, token
 # Load the cogs
 extensions = [
     "cogs.feature_idea1",
@@ -26,7 +25,8 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
-
+    # prisma = await Database.create()
+    # db = LogOperations(prisma)  # Set the 'db' instance as an attribute of the 'bot'
     # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
     # THEN ONCE YOU'VE SYNCED THE NEW SLASH COMMAND YOU CAN RECOMMENT THIS LINE
     # await client.tree.sync()

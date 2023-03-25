@@ -1,6 +1,5 @@
 import discord
 
-
 class Conditionals:
     def userChangedActivityType(self, before, after):
         if (

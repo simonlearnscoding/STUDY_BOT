@@ -1,4 +1,4 @@
-from settings_switch import bot, db
+
 
 import discord
 from discord.ext import commands
