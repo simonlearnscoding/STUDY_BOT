@@ -1,7 +1,7 @@
-from activities import VC_to_Activity
 from settings_switch import db
 
 import discord
+from cogs.activities.activities import VC_to_Activity
 from discord.ext import commands
 from vc import server
 
@@ -19,7 +19,6 @@ class TimeTracking(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # TODO: remove this after it's been tested
-        print(self.getActivity(after.channel.id))
         if is_mute_or_deafen_update(before, after):
             return
         if member.bot:
@@ -34,7 +33,9 @@ class TimeTracking(commands.Cog):
         if self.userJoinedChannel(before, after):
             print("User joined a channel")
             # CREATE A LOG ENTRY WITH LOG THE TIME THEY JOINED
-            await db.createMomentLogEntry(member, after)
+            activityType = await self.getActivityType(after)
+            await db.createMomentLogEntry(member, after, activityType)
+            await db.createMomentLogEntry(member, after, "total")
             return
 
         # IF HE DIDNT JUST JOIN A CHANNEL IT MEANS
@@ -43,7 +44,8 @@ class TimeTracking(commands.Cog):
         # SO WE HAVE TO LOG THIS IN THE DAILY LOGS
         # AND DELETE THE OLD LOG ENTRY
 
-        Log = db.getUserMomentLog(member, after)
+        activityType = await self.getActivityType(after)
+        Log = db.GetUserMomentLog(member, after, activityType)
         Now = None  # TODO: replace with timestamp of now
         Log["minutes"] = self.countMinutesPassed(Log["whenJoined"], Now)
 
@@ -71,7 +73,6 @@ class TimeTracking(commands.Cog):
     # TODO: test
     def getActivity(self, id):
         activity = VC_to_Activity[id]
-        print(activity)
         return activity
 
     async def countMinutesPassed(self, whenJoined, whenLeft):

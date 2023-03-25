@@ -27,7 +27,7 @@ class Database:
         await instance.connect()
         return instance
 
-    async def createMomentLogEntry(self, member, after):
+    async def createMomentLogEntry(self, member, after, type):
         # TODO: Create a log entry for the user in the database
         pass
 

@@ -8,7 +8,7 @@ from discord.ext import commands
 # CHOOSE BETWEEN THE FOLLOWING OPTIONS:
 # testing
 # SPQR
-serverName = "testing"  # testing and SPQR server
+serverName = "SPQR"  # testing and SPQR server
 
 db = None
 
