@@ -47,12 +47,6 @@ class Database:
         # TODO: Find user object in Daily logs of Today where ActivityType == the activity he just did
         pass
 
-    def countSumOfToday(self, member):
-        # TODO:
-        # after we update the daily log, we have to count the sum
-        # of all the minutes of different activity types for the leaderboard
-        pass
-
     def updateUserDailyLog(self, log, member):
         TodayLog = self.getUserTodayLog(member, log["activityType"])
         # TODO: if TodayLog is None, create a new log entry for the user
