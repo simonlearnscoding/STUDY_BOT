@@ -1,10 +1,10 @@
 import datetime
 
+import utils.Conditionals as cnd
 # from vc import server
 from Database import queries as db
 
-
-import utils.Conditionals as cnd
+import cogs.TimeTracking.activities as act
 import discord
 from discord.ext import commands
 
@@ -23,6 +23,10 @@ class TimeTracking(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         # await db.delete_all()
+
+        if not act.getActivity(after.channel.id):
+            return
+
         if cnd.is_mute_or_deafen_update(before, after):
             return
 
@@ -32,32 +36,31 @@ class TimeTracking(commands.Cog):
         # await timelogs.makeMemberIfNotExists(member)
 
         if cnd.userJoinedChannel(before, after):
-            user = await db.get_user(member)
-            print(user)
-            if user is None:
-                await db.create_user(member)
-            await db.createMomentLogs(db, member, after)
+            await self.createIfNotExist(member)
+            await db.create_moment_log(member, after)
+
             return
 
         if cnd.userChangedActivityType(before, after):
-            if not await db.isUserInDatabase(member):
-                await db.create_user(member)
-            # await timelogs.updateDailyLogActivity(member, after)
+            await self.createIfNotExist(member)
             return
 
         if cnd.userLeftChannel(after):
-            if not await db.isUserInDatabase(member):
-                await db.create_user(member)
+            await self.createIfNotExist(member)
             return
 
         if cnd.userChangedChannel:
-            if not await db.isUserInDatabase(member):
-                await db.create_user(member)
+            await self.createIfNotExist(member)
             return
 
     async def countMinutesPassed(self, whenJoined, whenLeft):
         # TODO: This function will take two dateTimes and return the number of minutes that have passed between them
         pass
+
+    async def createIfNotExist(self, member):
+        user = await db.get_user(member)
+        if user is None:
+            await db.create_user(member)
 
 
 async def setup(bot):

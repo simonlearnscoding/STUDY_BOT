@@ -1,5 +1,14 @@
 import discord
+from Restart.Settings import server
 
+
+def getActivity(id):
+    try:
+        ac = VC_to_Activity[id]
+        return ac
+    except Exception as e:
+        print(e)
+        return None
 
 
 class defaultRewards:
@@ -29,6 +38,17 @@ class ActivityCreator:
         for channel in vcName:
             id = server.channel_id[channel]
             VC_to_Activity[id] = name
+
+
+def getActivityType(after):
+    if after.self_stream and after.self_video:
+        return "BOTH"
+    if not after.self_stream and not after.self_video:
+        return "VC"
+    if after.self_stream:
+        return "SS"
+    if after.self_video:
+        return "CAM"
 
 
 VC_to_Activity = {}

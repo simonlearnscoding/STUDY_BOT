@@ -1,41 +1,60 @@
 import asyncio
-from datetime import datetime, timezone
 
+from utils.time import timestamp
+
+import Restart.cogs.TimeTracking.activities as act
 from Restart.Database.connector import create_query
 
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
 # adthedocs.io/en/stable/getting_started/quickstart/
 
+
 async def delete_all():
     try:
         await create_query("user", "delete_many")
     except Exception as e:
         print(e)
+
+
 async def get_all(table):
     try:
         all = await create_query(table, "find_many", take=5)
     except Exception as e:
         print(e)
     return all
+
+
 async def get_user(member):
-    where = {
-    'id': int(member.id) }
+    where = {"id": int(member.id)}
     try:
         user = await create_query("user", "find_first", where=where)
     except Exception as e:
         print(e)
     return user
 
+
 async def create_user(member):
     data = {
-            "id": member.id,
-            "name": member.name,
-            "bot": member.bot,
-            "nick": member.nick
-        }
-    await create_object('user', data)
+        "id": member.id,
+        "name": member.name,
+        "bot": member.bot,
+    }
+    await create_object("user", data)
     print(data)
+
+
+async def create_moment_log(member, after):
+    data = {
+        "type": act.getActivityType(after),
+        "activity": act.getActivity(after.channel.id),
+        "timestamp": timestamp(),
+        "userId": member.id,
+    }
+    await create_object("logsnow", data)
+    print(await get_all("logsnow"))
+    return
+
 
 async def create_object(table, data):
     try:

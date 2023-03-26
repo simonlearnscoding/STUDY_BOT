@@ -18,7 +18,6 @@ model User {
   id           BigInt         @id
   name         String
   bot          Boolean
-  nick         String
   logsNow      logsNow[]
   logsDate     logsDate[]
   historicLogs historicLogs[]
