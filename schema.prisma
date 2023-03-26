@@ -1,79 +1,87 @@
-// This is your Prisma schema file
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// THIS IS WHERE WE CAN SET UP THE ARCHITECTURE OF OUR DB
-// https://prisma-client-py.readthedocs.io/en/stable/getting_started/quickstart/
-generator db {
-  interface            = "asyncio"
-  recursive_type_depth = 5
-  provider             = "prisma-client-py"
+enum SessionStatus {
+  ONGOING
+  COMPLETED
 }
 
-datasource db {
-  provider = "mysql"
-  url      = "mysql://simon:spqr-server@192.53.122.228/discordjs"
+enum Pillar {
+  THINKER
+  DISCIPLINE
+  PHYSICAL_WORK
 }
 
 model User {
-  id           BigInt         @id
+  id           BigInt        @id @default(autoincrement())
   name         String
-  bot          Boolean
-  logsNow      logsNow[]
-  logsDate     logsDate[]
-  historicLogs historicLogs[]
+  sessions     Session[]
+  activityLogs ActivityLog[]
+  userLevels   UserLevel[]
 }
 
-model logsNow {
-  id        Int          @id @default(autoincrement())
-  user      User         @relation(fields: [userId], references: [id])
-  activity  String
-  timestamp DateTime     @default(now())
-  type      ActivityType
-  userId    BigInt
+model ActivityType {
+  id           BigInt        @id @default(autoincrement())
+  name         String
+  pillar       Pillar
+  activityLogs ActivityLog[]
 }
 
-model logsDate {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(references: [id], fields: [userId])
-  activity   String
-  date       DateTime
-  Type       String
-  minutes    Int      @default(0)
-  userId     BigInt
-  activityId Int
+model VCType {
+  id           BigInt        @id @default(autoincrement())
+  name         String
+  activityLogs ActivityLog[]
 }
 
-model historicLogs {
-  id         Int          @id @default(autoincrement())
-  user       User         @relation(references: [id], fields: [userId])
-  type       ActivityType
-  activity   String
-  startedAt  DateTime
-  endedAt    DateTime
-  userId     BigInt
-  activityId Int
+model Session {
+  id           BigInt        @id @default(autoincrement())
+  user         User          @relation(fields: [userId], references: [id])
+  joinedAt     DateTime      @default(now())
+  leftAt       DateTime?
+  activityLogs ActivityLog[]
+  duration     Int           @default(0)
+  userId       BigInt
+  status       SessionStatus @default(ONGOING)
 }
 
-model LevelRole {
-  name     levelRole @id
-  minlevel Int
+model ActivityLog {
+  id             BigInt        @id @default(autoincrement())
+  user           User          @relation(fields: [userId], references: [id])
+  session        Session       @relation(fields: [sessionId], references: [id])
+  activityType   ActivityType  @relation(fields: [activityTypeId], references: [id])
+  vcType         VCType        @relation(fields: [vcTypeId], references: [id])
+  joinedAt       DateTime      @default(now())
+  leftAt         DateTime?
+  duration       Int           @default(0)
+  xp             Int
+  status         SessionStatus @default(ONGOING)
+  userId         BigInt
+  sessionId      BigInt
+  activityTypeId BigInt
+  vcTypeId       BigInt
 }
 
-enum levelRole {
-  GLADIATOR
-  FREEDMANEEDMAN
-  PLEBEIAN
-  PATRICIAN
-  SENATOR
-  CONSUL
-  EMPEROR
+model UserLevel {
+  id     BigInt @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  pillar Pillar
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId BigInt
 }
 
-enum ActivityType {
-  CAM
-  TOTAL
-  LOG
-  SS
-  BOTH
-  VC
+model Role {
+  id       BigInt @id @default(autoincrement())
+  name     String
+  minLevel Int
+  pillar   Pillar
 }
+
+enum RoleName {
+  INERTUS // Consistent with nothing
+  GLADIATOR // Consistent with PHYSICAL_WORK
+  LEGIONARY // Consistent with DISCIPLINE
+  PHILOSOPHER // Consistent with THINKER
+  SENATOR // Consistent with DISCIPLINE and THINKER
+  CENTURION // Consistent with DISCIPLINE and PHYSICAL_WORK
+  ATHENAEUM // Consistent with PHYSICAL_WORK and THINKER
+  IMPERATOR // Consistent with everything
+}
+
