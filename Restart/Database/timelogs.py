@@ -1,7 +1,7 @@
 import datetime
 
-from Backend.activities.activities import VC_to_Activity
-from settings_switch import db
+# from Backend.activities.activities import VC_to_Activity
+# from settings_switch import db
 
 
 async def makeMemberIfNotExists(member):

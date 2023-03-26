@@ -3,7 +3,7 @@ import asyncio
 import unittest
 from unittest.mock import AsyncMock, MagicMock
 
-from database import Database
+from Restart.Database.connector import Database
 
 
 def async_test(func):

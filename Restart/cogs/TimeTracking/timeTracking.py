@@ -1,17 +1,20 @@
 import datetime
 
+# from vc import server
+from Database import db
+
+
+import utils.Conditionals as cnd
 import discord
-from cogs.TimeTracking.Conditionals import Conditionals
 from discord.ext import commands
-from vc import server
-from Backend.database import db
 
 # TODO: Use snake_case for function and variable names instead of camelCase
 # as per Python's PEP 8 style guide.
 # For example, change GetUserMomentLog to get_user_moment_log
 
+
 # RENAME MYCOG TO NAME OF THE MODULE
-class TimeTracking(commands.Cog, Conditionals):
+class TimeTracking(commands.Cog):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
@@ -19,7 +22,7 @@ class TimeTracking(commands.Cog, Conditionals):
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        if self.is_mute_or_deafen_update(before, after):
+        if cnd.is_mute_or_deafen_update(before, after):
             return
 
         if member.bot:
@@ -27,20 +30,20 @@ class TimeTracking(commands.Cog, Conditionals):
 
         # await timelogs.makeMemberIfNotExists(member)
 
-        if self.userJoinedChannel(before, after):
+        if cnd.userJoinedChannel(before, after):
             if not await db.isUserInDatabase(db, member):
                 await db.create_user(db, member)
             await db.createMomentLogs(db, member, after)
             return
 
-        if self.userChangedActivityType(before, after):
+        if cnd.userChangedActivityType(before, after):
             # await timelogs.updateDailyLogActivity(member, after)
             return
 
-        if self.userLeftChannel(after):
+        if cnd.userLeftChannel(after):
             return
 
-        if self.userChangedChannel:
+        if cnd.userChangedChannel:
             return
 
     async def countMinutesPassed(self, whenJoined, whenLeft):

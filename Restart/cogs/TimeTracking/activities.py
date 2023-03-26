@@ -1,5 +1,5 @@
 import discord
-from vc import server
+
 
 
 class defaultRewards:

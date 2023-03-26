@@ -1,8 +1,7 @@
 import json
 
-from settings_switch import bot, serverName
-import discord
-from discord.ext import commands
+from Restart.Settings.main_settings import bot, serverName
+
 
 # replace with bot object if using a bot account
 
@@ -13,7 +12,7 @@ class serverFetcher:
         self.channel_id = {}  # dictionary of channel ids
         self.channel_name = {}
         # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
-        with open(f"Servers/{serverName}.json") as f:
+        with open(f"Settings/server_ids/{serverName}.json") as f:
             channel_ids = json.load(f)
 
         # GET THE tEXTcHANNEL OBJECTS FOR EACH CHANNEL id

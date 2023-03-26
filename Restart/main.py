@@ -1,15 +1,10 @@
 # THE BASIC BOT SETUP
 import asyncio
 
-
-import discord
-from settings_switch import bot, token
+from Restart.Settings.main_settings import bot, token
 # Load the cogs
 extensions = [
-    "cogs.feature_idea1",
-    "cogs.feature_idea2",
-    "cogs.slashTemplate",
-    "cogs.database_connect",
+
     "cogs.TimeTracking.timeTracking",
 ]
 
