@@ -1,7 +1,6 @@
 import json
 
-from Restart.Settings.main_settings import bot, serverName
-
+from Settings.main_settings import bot, serverName
 
 # replace with bot object if using a bot account
 

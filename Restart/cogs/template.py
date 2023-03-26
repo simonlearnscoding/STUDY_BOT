@@ -1,4 +1,3 @@
-from settings_switch import bot, db
 
 import discord
 from discord.ext import commands
@@ -8,6 +7,7 @@ from discord.ext import commands
 class MyCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
 
     # YOUR CODE GOES HERE
 

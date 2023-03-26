@@ -1,10 +1,10 @@
 # THE BASIC BOT SETUP
 import asyncio
 
-from Restart.Settings.main_settings import bot, token
+from Settings.main_settings import bot, token
+
 # Load the cogs
 extensions = [
-
     "cogs.TimeTracking.timeTracking",
 ]
 

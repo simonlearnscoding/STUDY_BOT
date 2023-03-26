@@ -17,7 +17,6 @@ def userLeftChannel(after):
 def userJoinedChannel(before, after):
     # A function that returns true if the user just joined a channel
     if before.channel is None and after.channel is not None:
-        # TODO: Test
         return True
 
 

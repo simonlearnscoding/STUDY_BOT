@@ -1,4 +1,4 @@
-
+from prisma import Prisma
 class Database:
     def __init__(self, db):
         self.db = db
@@ -20,3 +20,14 @@ class Database:
         instance = cls(db)
         await instance.connect()
         return instance
+
+async def create_query(table, action, **options):
+    db = await Database.create()
+    try:
+        taybl = getattr(db.db, table)
+        method = getattr(taybl, action) # Get the method from the db instance
+        return await method(**options)  # Call the method with the given arguments
+    except Exception as e:
+        print(e)
+    await db.disconnect()
+
