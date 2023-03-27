@@ -1,11 +1,31 @@
 import discord
+
+from Database 
+
+from Database import queries as db
+
 from Restart.Settings import server
 
+PILLARS = {
+    "PHYSICAL_WORK": "Physical Work",
+    "DISCIPLINE": "Discipline",
+    "THINKER": "Thinker"
+}
+
+# Mapping of activities to pillars
+ACTIVITY_TO_PILLAR = {
+    "Study": PILLARS["THINKER"],
+    "Workout": PILLARS["PHYSICAL_WORK"],
+    "Meditation": PILLARS["DISCIPLINE"],
+    "Yoga": PILLARS["PHYSICAL_WORK"],
+    "Reading": PILLARS["THINKER"],
+    "Chores": PILLARS["DISCIPLINE"],
+    "Creative": PILLARS["THINKER"]
+}
 
 def getActivity(id):
     try:
-        ac = VC_to_Activity[id]
-        return ac
+        return VC_to_Activity[id]
     except Exception as e:
         print(e)
         return None
@@ -35,6 +55,7 @@ class ActivityCreator:
     def __init__(self, name, reward=defaultRewards(), vcName=None):
         self.name = name
         self.reward = reward
+        self.pillar = ACTIVITY_TO_PILLAR[name]  # Add the associated pillar
         for channel in vcName:
             id = server.channel_id[channel]
             VC_to_Activity[id] = name

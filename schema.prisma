@@ -1,3 +1,19 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// THIS IS WHERE WE CAN SET UP THE ARCHITECTURE OF OUR DB
+// https://prisma-client-py.readthedocs.io/en/stable/getting_started/quickstart/
+generator db {
+  interface            = "asyncio"
+  recursive_type_depth = 5
+  provider             = "prisma-client-py"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://simon:spqr-server@192.53.122.228/discordjs"
+}
+
 enum SessionStatus {
   ONGOING
   COMPLETED
@@ -84,4 +100,3 @@ enum RoleName {
   ATHENAEUM // Consistent with PHYSICAL_WORK and THINKER
   IMPERATOR // Consistent with everything
 }
-

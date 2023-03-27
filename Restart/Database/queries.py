@@ -10,6 +10,31 @@ from Restart.Database.connector import create_query
 # adthedocs.io/en/stable/getting_started/quickstart/
 
 
+async def create_if_not_exist(activity):
+    where = {"name": activity["name"]}
+    try:
+        # Check if the activity already exists
+        existing_activity = await create_query(
+            "ActivityType", "find_first", where=where
+        )
+    except Exception as e:
+        print(e)
+        existing_activity = None
+
+    if existing_activity:
+        print(f"Activity {activity['name']} already exists.")
+        return existing_activity
+    else:
+        try:
+            # Create the activity
+            created_activity = await create_object("ActivityType", activity)
+            print(f"Created activity: {created_activity}")
+            return created_activity
+        except Exception as e:
+            print(e)
+            return None
+
+
 async def delete_all():
     try:
         await create_query("user", "delete_many")

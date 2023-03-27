@@ -1,11 +1,10 @@
 import datetime
 
+import cogs.TimeTracking.activities as act
+import discord
 import utils.Conditionals as cnd
 # from vc import server
 from Database import queries as db
-
-import cogs.TimeTracking.activities as act
-import discord
 from discord.ext import commands
 
 # TODO: Use snake_case for function and variable names instead of camelCase
@@ -24,7 +23,7 @@ class TimeTracking(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         # await db.delete_all()
 
-        if not act.getActivity(after.channel.id):
+        if not act.getActivity(after.id):
             return
 
         if cnd.is_mute_or_deafen_update(before, after):
