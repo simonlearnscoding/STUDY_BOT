@@ -1,6 +1,5 @@
 import discord
 
-from Database 
 
 from Database import queries as db
 
