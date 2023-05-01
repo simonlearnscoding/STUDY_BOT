@@ -1,7 +1,8 @@
 import discord
 
+import cogs.TimeTracking.activities as act
 
-def userChangedActivityType(before, after):
+def user_changed_type_of_tracking(before, after):
     if before.self_video != after.self_video or before.self_stream != after.self_stream:
         return True
     return False
@@ -13,13 +14,28 @@ def userLeftChannel(after):
         return True
     return False
 
-
+def user_joins_tracking_channel(before, after):
+    if userJoinedChannel(before, after):
+        return True
+    if comesFromNonActChannel(before, after):
+        return True
+    return False
 def userJoinedChannel(before, after):
     # A function that returns true if the user just joined a channel
-    if before.channel is None and after.channel is not None:
+
+    if before.channel is not None:
+        return False
+    if act.getActivity(after.channel.id):
         return True
+    return False
 
-
+def comesFromNonActChannel(before, after):
+    if before.channel is None:
+        return False
+    if act.getActivity(before.channel.id):
+        return False
+    if act.getActivity(after.channel.id):
+        return True
 def userChangedChannel(before, after):
     if (
         before.channel.id != after.channel.id

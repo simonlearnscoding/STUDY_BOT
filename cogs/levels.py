@@ -1,19 +1,20 @@
-import discord
-from discord.ext import commands, tasks
 import asyncio
 import sys
-sys.path.append('/.../')
 
-from mydb import db
-from cogs.vc import vc
-from easy_pil import Editor, load_image_async, Font, Canvas
+import discord
+from discord.ext import commands, tasks
+
+sys.path.append("/.../")
+
+from easy_pil import Canvas, Editor, Font, load_image_async
+
 from cogs.heatmap import heatmap
+from cogs.vc import vc
 from discord import File
-
+from mydb import db
 
 
 class levels(commands.Cog):
-
     def __init__(self, client):
         self.client = client
 
@@ -35,20 +36,18 @@ class levels(commands.Cog):
         nextlvlxp = levels[(lvl + 1)]
 
         missingxp = nextlvlxp - curlvlxp
-        alreadydone = (xp - curlvlxp)
+        alreadydone = xp - curlvlxp
         percentage = round((alreadydone / missingxp) * 100)
         if percentage < 0:
             percentage = 0
 
-        print(f" {member.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}")
+        print(
+            f" {member.name} current level: {current_lvl}  next level: {next_lvl}  {nextlvlxp}"
+        )
         print(f"{percentage}%")
         await workaround.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
 
-
-
-
     async def checkNewLevel(member, currentLevel, experience):
-
         # Calculate Levels List
         levels = {1: 100}
         for i in range(2, 100):
@@ -61,12 +60,12 @@ class levels(commands.Cog):
             UserLevel = UserLevel + 1
             i = i + 1
 
-
         if UserLevel > currentLevel:
-
             try:
-                  channel = await member.create_dm()
-                  message = await channel.send(f"good job, {member.mention}! you just reached level {UserLevel}!")
+                channel = await member.create_dm()
+                message = await channel.send(
+                    f"good job, {member.mention}! you just reached level {UserLevel}!"
+                )
             except:
                 pass
 
@@ -76,14 +75,24 @@ class levels(commands.Cog):
             db.cur.execute(sql, val)
             db.mydb.commit()
 
-            socialRank = ["Gladiator", "Freedman", "Plebeian", "Equestrian", "Patrician", "Senator", "Emperor"]
+            socialRank = [
+                "Gladiator",
+                "Freedman",
+                "Plebeian",
+                "Equestrian",
+                "Patrician",
+                "Senator",
+                "Emperor",
+            ]
             levelNum = [2, 5, 10, 20, 30, 40, 50]
 
-            #check if new Rank
+            # check if new Rank
             for i in range(len(levelNum)):
                 if UserLevel == levelNum[i]:
                     try:
-                        role = discord.utils.get(member.guild.roles, name=socialRank[i - 1])
+                        role = discord.utils.get(
+                            member.guild.roles, name=socialRank[i - 1]
+                        )
                         await member.remove_roles(role)
                     except:
                         pass
@@ -95,7 +104,7 @@ class levels(commands.Cog):
         if message.author.bot:
             return
 
-        if message.content.startswith('!day'):
+        if message.content.startswith("!day"):
             await levels.levelFunction(self, message.author, message.channel)
             if message.channel.id == (vc.lions_cage_text_id):
                 pass
@@ -107,29 +116,25 @@ class levels(commands.Cog):
                     pass
 
     async def giveXP(member, time, Activity):
-
         xp = int(round(time / 5.0) * 5.0)
         contentplus = ""
         if Activity != "STUDY":
             xp, contentplus = await levels.multiplier(member, Activity, time, xp)
-        content = f"{member.name}, {Activity.title()} for {int(time)} minutes! {contentplus}"
+        content = (
+            f"{member.name}, {Activity.title()} for {int(time)} minutes! {contentplus}"
+        )
 
-        #create embed if in vc for more than 5m
+        # create embed if in vc for more than 5m
         if time > 4:
             await levels.popupMessage(member, xp, content)
 
-
         await levels.addXP(member, xp)
-
 
     async def popupMessage(member, xp, content):
         sleeptime = 3
         Embed = discord.Embed()
         Embed.set_thumbnail(url="https://wallpaperaccess.com/full/1363541.png")
-        Embed.add_field(
-            name=f"{content}",
-            value=f"+ {xp}xp",
-            inline=False)
+        Embed.add_field(name=f"{content}", value=f"+ {xp}xp", inline=False)
         channel = levels.checkUserVoice(member)
         message = await channel.send(embed=Embed)
         if member.voice is not None:
@@ -138,7 +143,9 @@ class levels(commands.Cog):
 
     def getActivity(Activity, id):
         sql = f"SELECT {Activity} FROM users.daily WHERE ID = {id}"
-        db.cur.execute(sql, )
+        db.cur.execute(
+            sql,
+        )
         return db.cur.fetchone()
 
     def checkifFirst(member, Activity):
@@ -174,13 +181,13 @@ class levels(commands.Cog):
         while xp > levels[i]:
             UserLevel = UserLevel + 1
         return UserLevel
+
     # Updates DB if user Reached a Nev Level
 
     async def selectXPLVL(id):
-
         try:
             sql = "SELECT XP, LVL FROM users.user WHERE ID = %s"
-            val = (id, )
+            val = (id,)
             db.cur.execute(sql, val)
             result = db.cur.fetchone()
             lvl = result[1]
@@ -215,7 +222,7 @@ class levels(commands.Cog):
             print(f"{member} couldnt update level")
 
     async def displayMessage(member, channel, xp, lvl, nextlvlxp, percentage):
-        #Chosen Fonts
+        # Chosen Fonts
         Augustus = Font(vc.Augustus, size=28)
         SmallFont = Font(vc.SmallFont, size=24)
         SmallerFont = Font(vc.SmallerFont, size=16)
@@ -227,7 +234,9 @@ class levels(commands.Cog):
 
         profile = Editor(profile).resize((140, 140)).circle_image()
         editor = Editor(canvas)
-        pic = await load_image_async("https://c4.wallpaperflare.com/wallpaper/193/219/663/black-background-marcus-aurelius-statue-hd-wallpaper-preview.jpg")
+        pic = await load_image_async(
+            "https://c4.wallpaperflare.com/wallpaper/193/219/663/black-background-marcus-aurelius-statue-hd-wallpaper-preview.jpg"
+        )
         background = Editor(pic).resize((550, 300))
         square = Canvas((500, 500), "white")
         square = Editor(square)
@@ -236,12 +245,26 @@ class levels(commands.Cog):
         background.paste(profile.image, (16, 16))
 
         background.rectangle((30, 240), width=490, height=35, fill="white", radius=9)
-        background.bar((30, 240), max_width=490, height=35, percentage=percentage, fill="#84DCCF", radius=9)   #353a47
+        background.bar(
+            (30, 240),
+            max_width=490,
+            height=35,
+            percentage=percentage,
+            fill="#84DCCF",
+            radius=9,
+        )  # 353a47
         background.text((200, 25), str(f"{member.name}"), font=Augustus, color="white")
-        background.rectangle((200, 60), width=220, height=1, fill="#adf7b6", )
+        background.rectangle(
+            (200, 60),
+            width=220,
+            height=1,
+            fill="#adf7b6",
+        )
 
         background.text((40, 210), f"Level: {lvl}", font=SmallFont, color="white")
-        background.text((380, 215), f"XP: {xp}/{nextlvlxp}", font=SmallerFont, color="white")
+        background.text(
+            (380, 215), f"XP: {xp}/{nextlvlxp}", font=SmallerFont, color="white"
+        )
 
         file = discord.File(fp=background.image_bytes, filename="card.png")
         Message = await channel.send(file=file)
@@ -259,13 +282,16 @@ class workaround:
 
     async def checkNewLevel(member, currentLevel, experience):
         return await levels.checkNewLevel(member, currentLevel, experience)
+
     async def displayMessage(member, channel, xp, lvl, nextlvlxp, percentage):
-        return await levels.displayMessage(member, channel, xp, lvl, nextlvlxp, percentage)
+        return await levels.displayMessage(
+            member, channel, xp, lvl, nextlvlxp, percentage
+        )
 
 
 async def setup(client):
     await client.add_cog(levels(client))
 
+
 async def teardown(client):
     return
-

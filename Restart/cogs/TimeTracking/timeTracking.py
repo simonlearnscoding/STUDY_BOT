@@ -1,14 +1,14 @@
 import datetime
 
-import cogs.TimeTracking.activities as act
-import discord
 import utils.Conditionals as cnd
 # from vc import server
 from Database import queries as db
+
+import cogs.TimeTracking.activities as act
+import discord
 from discord.ext import commands
 
 # TODO: Use snake_case for function and variable names instead of camelCase
-# as per Python's PEP 8 style guide.
 # For example, change GetUserMomentLog to get_user_moment_log
 
 
@@ -21,46 +21,68 @@ class TimeTracking(commands.Cog):
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        # await db.delete_all()
-
-        if not act.getActivity(after.id):
-            return
-
-        if cnd.is_mute_or_deafen_update(before, after):
-            return
-
-        if member.bot:
-            return
-
         # await timelogs.makeMemberIfNotExists(member)
-
-        if cnd.userJoinedChannel(before, after):
-            await self.createIfNotExist(member)
-            await db.create_moment_log(member, after)
-
+        if self.excluding_condition_is_met(before, after, member):
+            return
+        await self.create_user_if_not_in_database(member)
+        
+        if cnd.user_joins_tracking_channel(before, after):
+            print(f"{member.name} joined channel")
+            await self.create_new_session(member, after)
             return
 
-        if cnd.userChangedActivityType(before, after):
-            await self.createIfNotExist(member)
+        if cnd.user_changed_type_of_tracking(before, after):
+            print(f"{member.name} changed activity type")
+            try: # WORKS UNTIL HERE
+                await db.complete_activity(member, "activitylog")
+                session = await db.get_ongoing_session(member)
+                await db.create_activity_log(member, after, session.id) 
+            except Exception as e:
+                print(e)
             return
 
         if cnd.userLeftChannel(after):
-            await self.createIfNotExist(member)
+            # TODO: make the message function
+            print('user left')
+            await self.end_session(member)
+            await db.get_all("session")
             return
 
-        if cnd.userChangedChannel:
-            await self.createIfNotExist(member)
+        if cnd.userChangedChannel(before, after):
+            # TODO: make the message function
+            print('user changed channel')
+            await self.end_session(member)        
+            await db.get_all("session")
+            if not act.getActivity(after.channel.id):  # If its not not in the official list of activities
+                return
+            await self.create_new_session(member, after)
             return
+    
+    async def create_new_session(self, member, after):
+        session = await db.create_session_log(member, after)
+        activity = await db.create_activity_log(member, after, session.id)
+        print(f"created a new session for {member.name}")
+    
+    async def end_session(self, member):
+        await db.complete_activity(member, "activitylog")
+        await db.complete_activity(member, "session") #TODO TEST
+        print(f"ended a session for {member.name}")
+        await db.get_all("session")
+        #TODO: send Message
+    
+    def excluding_condition_is_met(self, before, after, member):
+        # EXCLUDING CONDITIONS
 
-    async def countMinutesPassed(self, whenJoined, whenLeft):
-        # TODO: This function will take two dateTimes and return the number of minutes that have passed between them
-        pass
+        if cnd.is_mute_or_deafen_update(before, after):
+            return True
+        if member.bot:
+            return True
+        return False
 
-    async def createIfNotExist(self, member):
+    async def create_user_if_not_in_database(self, member):
         user = await db.get_user(member)
         if user is None:
             await db.create_user(member)
-
 
 async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE

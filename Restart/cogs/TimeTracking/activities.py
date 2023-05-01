@@ -1,14 +1,12 @@
-import discord
-
-
 from Database import queries as db
+from Settings import server
 
-from Restart.Settings import server
+import discord
 
 PILLARS = {
     "PHYSICAL_WORK": "Physical Work",
     "DISCIPLINE": "Discipline",
-    "THINKER": "Thinker"
+    "THINKER": "Thinker",
 }
 
 # Mapping of activities to pillars
@@ -19,9 +17,13 @@ ACTIVITY_TO_PILLAR = {
     "Yoga": PILLARS["PHYSICAL_WORK"],
     "Reading": PILLARS["THINKER"],
     "Chores": PILLARS["DISCIPLINE"],
-    "Creative": PILLARS["THINKER"]
+    "Creative": PILLARS["THINKER"],
 }
 
+def calculate_xp():
+    pass #TODO: make the function that calculates xp
+
+   
 def getActivity(id):
     try:
         return VC_to_Activity[id]
@@ -32,10 +34,10 @@ def getActivity(id):
 
 class defaultRewards:
     def __init__(self):
-        self.perMinute = (1,)
-        self.perMinuteCam = (1.3,)
-        self.perMinuteSS = (1.4,)
-        self.perMinuteBoth = (1.7,)
+        self.VC = (1,)
+        self.CAM = (1.3,)
+        self.SS = (1.4,)
+        self.BOTH = (1.7,)
         self.streakExtra = (0,)
         self.firstOfDay = (0,)
         self.maxReward = 1000

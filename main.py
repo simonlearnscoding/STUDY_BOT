@@ -1,6 +1,6 @@
 import asyncio
-import discord
 
+import discord
 from cogs.goals import goals
 from cogs.trackingsessions import timeTrack, trackings
 from cogs.updateNew import updateNew
@@ -58,6 +58,7 @@ async def on_ready():
     checkrank.start(client)
     checkem.start(client)
     await goals.ranking(client)
+
 
 @tasks.loop(seconds=40)
 async def checkupdate(client):
