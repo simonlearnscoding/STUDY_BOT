@@ -20,10 +20,11 @@ ACTIVITY_TO_PILLAR = {
     "Creative": PILLARS["THINKER"],
 }
 
-def calculate_xp():
-    pass #TODO: make the function that calculates xp
 
-   
+def calculate_xp():
+    pass  # LATER: make the function that calculates xp
+
+
 def getActivity(id):
     try:
         return VC_to_Activity[id]
@@ -75,7 +76,7 @@ def getActivityType(after):
 
 VC_to_Activity = {}
 
-# TODO: check if this compares to the vc names
+# LATER: check if this compares to the vc names
 Activities = {
     "Study": ActivityCreator("Study", defaultRewards, ["VC_STUDY", "VC_SPARTA"]),
     "Workout": ActivityCreator("Workout", workoutRewards, ["VC_WORKOUT"]),
@@ -85,7 +86,7 @@ Activities = {
     "Chores": ActivityCreator("Chores", defaultRewards, ["VC_CHORES"]),
     "Creative": ActivityCreator(
         "Creative", defaultRewards, ["VC_CREATIVE"]
-    ),  # TODO: Add producing vc here
+    ),  # LATER: Add producing vc here
 }
 print(VC_to_Activity)
 print(Activities)

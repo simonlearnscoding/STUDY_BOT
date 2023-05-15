@@ -52,7 +52,7 @@ server = serverFetcher(serverName)
 #         weekly_message = 923159773464121354
 #         daily_message = 916518831676071946
 #
-#         # TODO: change with this when done:  826514598709690388
+#         # LATER: change with this when done:  826514598709690388
 #         bot_id = 827601223317585991
 #         lions_cage_id = 834118898836045894
 #         lions_cage_text_id = 838840054125297664
@@ -95,7 +95,7 @@ server = serverFetcher(serverName)
 #         challenge_1 = 939252150385655838
 #         challenge_2 = 939252226118013019
 #
-#         # TODO: change with this when done:  826514598709690388
+#         # LATER: change with this when done:  826514598709690388
 #         bot_id = 827601223317585991
 #         lions_cage_id = 834118898836045894
 #         lions_cage_text_id = 917547602277453862

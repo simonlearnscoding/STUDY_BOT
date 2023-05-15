@@ -82,9 +82,7 @@ async def raw_query(query):
 async def update(where, data):
     db = await Database.create()
     try:
-        return await db.db.activitylog.update_many(
-            where=where,
-            data=data)
+        return await db.db.activitylog.update_many(where=where, data=data)
     except Exception as e:
         print(e)
 

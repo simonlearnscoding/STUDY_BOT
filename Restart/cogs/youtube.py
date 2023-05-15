@@ -1,4 +1,4 @@
-# TODO: here I will probably write (steal lol) a function that takes a youtube URL and plays that sound in the vc
+# LATER: here I will probably write (steal lol) a function that takes a youtube URL and plays that sound in the vc
 import discord
 from discord.ext import commands
 

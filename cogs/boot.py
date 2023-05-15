@@ -1,16 +1,20 @@
-import discord
-from discord import client
-from discord.ext import commands
-from discord.ext.commands import bot
+import sys
+
 import giphy_client
 from giphy_client.rest import ApiException
-from discord.client import Client
-import sys
-sys.path.append('/.../')
 
-import random
-import giphy_client
+import discord
+from discord import client
+from discord.client import Client
+from discord.ext import commands
+from discord.ext.commands import bot
+
+sys.path.append("/.../")
+
 import asyncio
+import random
+
+import giphy_client
 
 from vc import vc
 
@@ -18,23 +22,21 @@ Array = []
 InSession = False
 IsRunning = False
 running = False
-InLoop = False 
-Giphy="QzcoyBOMjKL0v04krPNXz9A9PSJrg0oG"
+InLoop = False
+Giphy = "QzcoyBOMjKL0v04krPNXz9A9PSJrg0oG"
 
 
 class boot(commands.Cog):
     def __init__(self, client):
         self.client = client
-    
+
     async def InSparta(self, member):
         if member.voice is None:
             return False
         if member.voice.channel.id == vc.sparta_id:
             return True
 
-
     async def wait_then_kick(self, member):
-
         # Making up a random number until kick
         print("kicktimer_started")
         n = random.randint(60, 360)
@@ -43,7 +45,7 @@ class boot(commands.Cog):
         await asyncio.sleep(sleeptime)
 
         # If cam just got turned off
-        if ((member.voice.self_video == False) and (member.voice.self_stream == False)):
+        if (member.voice.self_video == False) and (member.voice.self_stream == False):
             print("turn it on now")
             Channel = self.client.get_channel(id=839100861497606174)
             if Channel.name.startswith("Break"):  # if channel rename = Break
@@ -57,12 +59,18 @@ class boot(commands.Cog):
                 channel = self.client.get_channel(vc.lions_cage_id)
                 text_channel = self.client.get_channel(vc.lions_cage_text_id)
                 DaChannel = self.client.get_channel(vc.chores_vc_id)
-                
+
                 # Print a gif for kicking
                 api_instance = giphy_client.DefaultApi()
                 try:
-                    p = ["kick", "punch", "take out the trash",
-                        "sacked", "get out", "you're fired"]
+                    p = [
+                        "kick",
+                        "punch",
+                        "take out the trash",
+                        "sacked",
+                        "get out",
+                        "you're fired",
+                    ]
                     r = random.randint(0, (len(p) - 1))
                     a = p[r]
                     api_response = api_instance.gifs_search_get(Giphy, a, limit=5)
@@ -73,21 +81,19 @@ class boot(commands.Cog):
                 except ApiException as e:
                     print("Exception when calling Api..")
 
-                #TODO: send a catchphrase:
-                
-                # Send Member to the lions Cage       
+                # Send Member to the lions Cage
                 channel = self.client.get_channel(vc.lions_cage_id)
                 text_channel = self.client.get_channel(vc.lions_cage_text_id)
                 await member.move_to(channel)
-                await text_channel.send(f"{member.mention} funny catchphrase broken for now")
-        
+                await text_channel.send(
+                    f"{member.mention} funny catchphrase broken for now"
+                )
+
     @commands.Cog.listener()
     async def on_guild_channel_update(self, before, after):
-        
         # IF THE SESSION STARTS
         global Array
-        if before.name.startswith("-- Break") and after.name.startswith("-- Sesh:"): 
-            
+        if before.name.startswith("-- Break") and after.name.startswith("-- Sesh:"):
             # EMPTY THE ARRAY OF PEOPLE WHO MESSAGED
             # EMPTY THE ARRAY OF PEOPLE WHO MESSAGED
             print("the Array has been emptied")
@@ -95,7 +101,7 @@ class boot(commands.Cog):
             Array = []
             print(Array)
 
-            # CHECK CAM STATE OF EVERY MEMBER 
+            # CHECK CAM STATE OF EVERY MEMBER
             Sparta = self.client.get_channel(vc.sparta_id)
             Members = Sparta.voice_states
             for i in range(len(Sparta.members)):
@@ -103,15 +109,16 @@ class boot(commands.Cog):
                 await self.wait_then_kick(Sparta.members[i])
 
     @commands.Cog.listener()
-    #start wait then kick if cam turned off
+    # start wait then kick if cam turned off
     async def on_voice_state_update(self, member, before, after):
         if member.bot:
-            return    
+            return
         channel = self.client.get_channel(vc.sparta_id)
-        if (after.self_video == False and after.self_stream == False):
-            if (await self.InSparta(member)):
-                print("LOL")        
+        if after.self_video == False and after.self_stream == False:
+            if await self.InSparta(member):
+                print("LOL")
                 await self.wait_then_kick(member)
+
 
 """  @commands.Cog.listener()
     async def on_message(self, message):
@@ -149,7 +156,6 @@ class boot(commands.Cog):
                         #TODO Replace w array
                         #TODO Add boot count            
         
-            #TODO: SUBMIT A BOOT
             if message.content.startswith('!submit'):
                 Reason = message.content.split()
                 if len(Reason) == 0:
@@ -210,11 +216,9 @@ class boot(commands.Cog):
       """
 
 
-
-
-
 async def setup(client):
     await client.add_cog(boot(client))
+
 
 async def teardown(client):
     return

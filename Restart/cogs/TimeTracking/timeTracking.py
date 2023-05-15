@@ -6,13 +6,16 @@ from Database import queries as db
 
 import cogs.TimeTracking.activities as act
 import discord
+from cogs.leaderboard.temp_leaderboard_class import leaderboard_manager
 from discord.ext import commands
 
-# TODO: Use snake_case for function and variable names instead of camelCase
+# LATER: Use snake_case for function and variable names instead of camelCase
 # For example, change GetUserMomentLog to get_user_moment_log
 
 
-# RENAME MYCOG TO NAME OF THE MODULE
+# TODO: Separate the cogs from my modules
+
+
 class TimeTracking(commands.Cog):
     def __init__(self, bot):
         super().__init__()
@@ -25,51 +28,57 @@ class TimeTracking(commands.Cog):
         if self.excluding_condition_is_met(before, after, member):
             return
         await self.create_user_if_not_in_database(member)
-        
+
         if cnd.user_joins_tracking_channel(before, after):
             print(f"{member.name} joined channel")
             await self.create_new_session(member, after)
+            await leaderboard_manager.create_leaderboard(member)
             return
 
         if cnd.user_changed_type_of_tracking(before, after):
             print(f"{member.name} changed activity type")
-            try: # WORKS UNTIL HERE
+            try:  # WORKS UNTIL HERE
                 await db.complete_activity(member, "activitylog")
                 session = await db.get_ongoing_session(member)
-                await db.create_activity_log(member, after, session.id) 
+                await db.create_activity_log(member, after, session.id)
             except Exception as e:
                 print(e)
             return
 
         if cnd.userLeftChannel(after):
-            # TODO: make the message function
-            print('user left')
+            # LATER: make the message function
+            print("user left")
             await self.end_session(member)
-            await db.get_all("session")
+            # TODO: I need a function to destroy the leaderboard, call that function when the user leaves the channel
+            await leaderboard_manager.destroy_leaderboard(member)
+
+            # await db.get_all("session")
             return
 
         if cnd.userChangedChannel(before, after):
-            # TODO: make the message function
-            print('user changed channel')
-            await self.end_session(member)        
+            # LATER: make the message function
+            print("user changed channel")
+            await self.end_session(member)
             await db.get_all("session")
-            if not act.getActivity(after.channel.id):  # If its not not in the official list of activities
+            if not act.getActivity(
+                after.channel.id
+            ):  # If its not not in the official list of activities
                 return
             await self.create_new_session(member, after)
             return
-    
+
     async def create_new_session(self, member, after):
         session = await db.create_session_log(member, after)
         activity = await db.create_activity_log(member, after, session.id)
         print(f"created a new session for {member.name}")
-    
+
     async def end_session(self, member):
         await db.complete_activity(member, "activitylog")
-        await db.complete_activity(member, "session") #TODO TEST
+        await db.complete_activity(member, "session")  # TODO TEST
         print(f"ended a session for {member.name}")
         await db.get_all("session")
-        #TODO: send Message
-    
+        # LATER: send Message
+
     def excluding_condition_is_met(self, before, after, member):
         # EXCLUDING CONDITIONS
 
@@ -83,6 +92,7 @@ class TimeTracking(commands.Cog):
         user = await db.get_user(member)
         if user is None:
             await db.create_user(member)
+
 
 async def setup(bot):
     # RENAME MYCOG TO THE NAME OF THE MODULE

@@ -16,17 +16,14 @@ from Restart.Database.connector import *
 async def get_ongoing_session(user):
     return await get_ongoing_entry(user, "session")
 
+
 async def get_ongoing_activity(user):
     print("activitylog")
     return await get_ongoing_entry(user, "activitylog")
 
+
 async def get_ongoing_entry(user, tablename):
-    where={
-        'AND': [
-             {"userId": int(user.id)},
-             {"status": "ONGOING"}
-        ]
-    }
+    where = {"AND": [{"userId": int(user.id)}, {"status": "ONGOING"}]}
     try:
         # Find the entry with user id and ONGOING status
         existing_entry = await create_query(tablename, "find_first", where=where)
@@ -38,26 +35,18 @@ async def get_ongoing_entry(user, tablename):
 
 # --- UPDATE STUFF ---
 
+
 async def complete_activity(user, table):
     print(await get_all(table))
 
     activity = await get_ongoing_entry(user, table)
     start = activity.joinedAt
-    where = {
-        'AND': [
-            {"status": "ONGOING"},
-            {"userId": int(user.id)}
-        ]
-    }
+    where = {"AND": [{"status": "ONGOING"}, {"userId": int(user.id)}]}
 
     length = time_difference(start)
     now = timestamp()
-    # xp = calculate_xp() TODO: calculate xp
-    data = {
-        "duration": length,
-        'status': 'COMPLETED',
-        "leftAt": now
-    }
+    # xp = calculate_xp() LATER: calculate xp
+    data = {"duration": length, "status": "COMPLETED", "leftAt": now}
 
     try:
         update = await create_query(table, "update_many", where=where, data=data)
@@ -66,6 +55,7 @@ async def complete_activity(user, table):
         return update
     except Exception as e:
         print(e)
+
 
 # --- DELETE STUFF ---
 

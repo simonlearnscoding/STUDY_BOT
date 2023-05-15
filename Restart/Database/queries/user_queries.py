@@ -20,8 +20,9 @@ async def get_user(member):
         print(e)
 
 
+# REVIEW: Do I need to create a user for py if they don't exist?
 async def create_user(member):
-    # TODO: Debug This
+    # LATER: Debug This
     data = {
         "id": member.id,
         "name": member.name,

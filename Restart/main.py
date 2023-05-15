@@ -7,7 +7,7 @@ from Settings.main_settings import bot, token
 # Load the cogs
 extensions = [
     "cogs.TimeTracking.timeTracking",
-    "cogs.leaderboard",
+    "cogs.leaderboard.leaderboard",
 ]
 
 
@@ -22,9 +22,9 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
-    # TODO: REMOVE THIS WHEN Im DONE TESTING
-    await db.delete_all_sessions()
-    await db.delete_all_activities()
+    # REMOVE THIS WHEN Im DONE TESTING
+    # await db.delete_all_sessions()
+    # await db.delete_all_activities()
     # prisma = await Database.create()
     # db = LogOperations(prisma)  # Set the 'db' instance as an attribute of the 'bot'
     # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
