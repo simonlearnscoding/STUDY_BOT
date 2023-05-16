@@ -4,6 +4,7 @@ from datetime import datetime, time, timedelta, timezone
 import pytz
 import requests
 from Database import queries as db
+from Settings.main_settings import bot
 from utils.time import get_start_end, time_difference
 
 import cogs.TimeTracking.activities as act
@@ -20,7 +21,7 @@ class leaderboard_update(commands.Cog):
         self.update_leaderboard_image_regularly.start()
         # create self.filter = instantiate the filter
 
-    @tasks.loop(seconds=5.0)
+    @tasks.loop(seconds=50.0)
     async def update_leaderboard_image_regularly(self):
         # TODO THIS IS THE MAIN FUNCTION
         # IT NEEDS TO BE DECOUPLED FROM THE UPDATE REGULARLY TASK

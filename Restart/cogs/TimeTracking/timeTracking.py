@@ -3,6 +3,7 @@ import datetime
 import utils.Conditionals as cnd
 # from vc import server
 from Database import queries as db
+from Settings.main_settings import bot
 
 import cogs.TimeTracking.activities as act
 import discord
@@ -20,6 +21,7 @@ class TimeTracking(commands.Cog):
     def __init__(self, bot):
         super().__init__()
         self.bot = bot
+        self.lb = leaderboard_manager
 
     # ON A VOICESTATE EVENT
     @commands.Cog.listener()
@@ -32,7 +34,7 @@ class TimeTracking(commands.Cog):
         if cnd.user_joins_tracking_channel(before, after):
             print(f"{member.name} joined channel")
             await self.create_new_session(member, after)
-            await leaderboard_manager.create_leaderboard(member)
+            await self.lb.create_leaderboard(member)
             return
 
         if cnd.user_changed_type_of_tracking(before, after):
@@ -49,7 +51,6 @@ class TimeTracking(commands.Cog):
             # LATER: make the message function
             print("user left")
             await self.end_session(member)
-            # TODO: I need a function to destroy the leaderboard, call that function when the user leaves the channel
             await leaderboard_manager.destroy_leaderboard(member)
 
             # await db.get_all("session")
