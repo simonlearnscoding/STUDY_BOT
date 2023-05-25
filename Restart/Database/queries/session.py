@@ -1,9 +1,8 @@
 import asyncio
 
-from utils.time import time_difference, timestamp
-
 import cogs.TimeTracking.activities as act
-from Restart.Database.connector import *
+from Database.connector import *
+from utils.time import time_difference, timestamp
 
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re

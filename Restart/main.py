@@ -1,13 +1,15 @@
 # THE BASIC BOT SETUP
 import asyncio
+import sys
 
+print(sys.executable)
 from Database import queries as db
 from Settings.main_settings import bot, token
 
 # Load the cogs
 extensions = [
     "cogs.TimeTracking.timeTracking",
-    "cogs.leaderboard.leaderboard",
+    "cogs.leaderboard.update_every_x_seconds",
 ]
 
 

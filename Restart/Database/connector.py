@@ -16,7 +16,8 @@ class Database:
         db = Prisma(
             datasource={
                 "provider": "mysql",
-                "url": "mysql://simon:spqr-server@192.53.122.228/discordjs",
+                # "url": "mysql://simon:spqr-server@192.53.122.228/discordjs",
+                "url": "mysql://simon:spqr-server@localhost/discordjs",
             }
         )
         instance = cls(db)

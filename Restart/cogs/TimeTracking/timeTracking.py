@@ -3,12 +3,12 @@ import datetime
 import utils.Conditionals as cnd
 # from vc import server
 from Database import queries as db
+from discord.ext import commands
 from Settings.main_settings import bot
 
 import cogs.TimeTracking.activities as act
 import discord
 from cogs.leaderboard.temp_leaderboard_class import leaderboard_manager
-from discord.ext import commands
 
 # LATER: Use snake_case for function and variable names instead of camelCase
 # For example, change GetUserMomentLog to get_user_moment_log

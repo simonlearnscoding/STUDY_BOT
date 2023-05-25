@@ -2,12 +2,16 @@ class SingletonFactoryManager:
     def __init__(self):
         self.instances = {}
 
-    async def create(self, key, instance_class):
+    async def create(self, key, instance_class, data=None):
         if key in self.instances:
             return self.instances[key]
         instance = instance_class(key)
+
         if hasattr(instance, "initialize"):
-            await instance.initialize()
+            if data is not None:
+                await instance.initialize(key, data)
+            else:
+                await instance.initialize(key)
         self.instances[key] = instance
         return instance
 

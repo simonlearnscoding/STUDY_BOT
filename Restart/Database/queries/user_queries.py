@@ -30,7 +30,6 @@ async def create_user(member):
     await db.create_object("user", data)
     print(data)
 
-
 async def delete_all_users():
     try:
         await db.delete_all_from_table("user")
