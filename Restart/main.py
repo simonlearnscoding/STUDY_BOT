@@ -3,12 +3,11 @@ import asyncio
 import sys
 
 print(sys.executable)
-from Database import queries as db
-from Settings.main_settings import bot, token
+from setup.bot_instance import bot, token
 
 # Load the cogs
 extensions = [
-    "cogs.TimeTracking.timeTracking",
+    "cogs.session_tracking.timeTracking",
     "cogs.leaderboard.update_every_x_seconds",
 ]
 
@@ -27,7 +26,7 @@ async def on_ready():
     # REMOVE THIS WHEN Im DONE TESTING
     # await db.delete_all_sessions()
     # await db.delete_all_activities()
-    # prisma = await Database.create()
+    # prisma = await database_queries.create()
     # db = LogOperations(prisma)  # Set the 'db' instance as an attribute of the 'bot'
     # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
     # THEN ONCE YOU'VE SYNCED THE NEW SLASH COMMAND YOU CAN RECOMMENT THIS LINE
