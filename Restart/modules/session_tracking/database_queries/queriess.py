@@ -1,9 +1,6 @@
-from bases.connector import create_query
-from modules.session_tracking.utils.time import timestamp
-
-import modules.session_tracking.activities as act
 from modules.session_tracking.database_queries.queries.session import *
-from modules.session_tracking.database_queries.queries.user_queries import *
+
+
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
 # adthedocs.io/en/stable/getting_started/quickstart/
@@ -150,6 +147,7 @@ async def create_activity_log(member, after, sessionId):
         "activity": act.getActivity(after.channel.id),
         "joinedAt": timestamp(),
         "userId": member.id,
+        "nick": member.name,
     }
     return await create_object("activitylog", data)
 
@@ -161,7 +159,6 @@ async def create_session_log(member, after):
         "userId": member.id,
     }
     table = "session"
-    print(await get_all(table))
     try:
         return await create_object(table, data)
     except Exception as e:

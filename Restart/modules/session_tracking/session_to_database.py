@@ -7,7 +7,7 @@ class session_to_database():
         self.event.subscribe(self)
         pass
     async def user_changed_type_of_tracking(self, data):
-        await self.change_type_of_tracking(data)
+        await self.changed_type_of_tracking(data)
     async def user_joins_tracking_channel(self, data):
         await self.create_new_session(data)
     async def user_left_tracking_channel(self, data):
@@ -20,7 +20,6 @@ class session_to_database():
         session = await db.get_ongoing_session(member)
         await db.create_activity_log(member, state, session.id)
     async def user_changed_tracking_channel(self, data):
-        print("user changed channel")
         member = data['member']
         after = data['state']
 
@@ -39,13 +38,11 @@ class session_to_database():
         after = data["state"]
         session = await db.create_session_log(member, after)
         activity = await db.create_activity_log(member, after, session.id)
-        print(f"created a new session for {member.name}")
 
 
     async def end_session(self, member):
         await db.complete_activity(member, "activitylog")
         await db.complete_activity(member, "session")  # TODO TEST
-        print(f"ended a session for {member.name}")
         await db.get_all("session")
         # LATER: send Message
 

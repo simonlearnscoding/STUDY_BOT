@@ -24,7 +24,6 @@ async def create_user(member):
         "name": member.name,
     }
     await db.create_object("user", data)
-    print(data)
 
 async def delete_all_users():
     try:

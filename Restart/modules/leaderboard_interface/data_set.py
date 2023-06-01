@@ -1,19 +1,30 @@
+from utils.time import get_start_end
 from collections import defaultdict
 from bases.connector import create_query
-from modules.TimeTracking.utils.time import time_difference
-from cogs.leaderboard.filter import Filter_Manager
+from utils.time import time_difference
+# from cogs.leaderboard.filter import Filter_Manager
 from bases.state_manager import SingletonFactoryManager
 
+from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager, destroyWhenNoLb
 
-class Dataset_Data_Manager(SingletonFactoryManager):
+
+class DatasetManager(LifeCycleManager):
     def __init__(self):
-        self.instance_class = dataset_instance
+        self.instance_class = Dataset
+        super().__init__()
 
-    #TODO: is it necessary to have a destroy_dataset method if it inherits the same from its parent class?
-    #TODO: call it every time someone joins or leaves vc
-    async def set_data(self):
-        for dataset in self.instances:
-            dataset.get_data()
+    """
+    this gets triggered when the first lb 
+    instance of one filter 
+    gets created
+    """
+    async def created_instance_filter(self, data):
+        """
+        set filter name as key and create the object
+        """
+        key = data.filter
+        await super().create(data, key)
+
 
 
 class queries:
@@ -21,7 +32,6 @@ class queries:
         filter_copy = filter.copy()
         # TODO: check whats up with create query, is it accessible or not?
         filter_copy["AND"][0] = {"status": "ONGOING"}
-        print(filter_copy)
         return await create_query(
             "activitylog",
             "find_many",
@@ -97,25 +107,13 @@ class utils:
             ongoing_arr.append(self.calculate_duration(entry))
         return ongoing_arr
 
-# class lb_data(queries, utils):
-class dataset_instance(queries, utils):
-    def __init__(self, key):
-        super().__init__()
-        self.name = key
 
-    async def initialize(self, key):
-        self.filter = Filter_Manager.instances[key]
-        self.name = key
-        await self.set_data()
-        self.data = self.calculate_update(self.complete, self.ongoing)
-
-    # TODO: CALL THIS ONE EVERY THIRTY SECONDS OR SO
-    def calculate_update(self, complete, ongoing):
-        all_entries = complete + self.get_active_with_duration(ongoing)
+    def calculate_update(self):
+        all_entries = self.complete + self.get_active_with_duration(self.ongoing)
         return self.sum_and_format(all_entries)
 
 
-    async def set_data(self):
+    async def get_data(self):
         try:
             self.ongoing = await self.get_active(self.filter)
             self.complete = await self.get_completed(self.filter)
@@ -123,4 +121,30 @@ class dataset_instance(queries, utils):
             print(e)
 
 
-Dataset_Manager = Dataset_Data_Manager()
+class Dataset(queries, utils):
+    def __init__(self, data, manager):
+        self.manager = manager
+        self.name = "dataset"
+        # self.filter = data.manager.instances
+        self.key = data.filter
+        self.filter = data.where
+
+    async def create(self, data):
+        await self.update_dataset()
+
+    async def update_dataset(self):
+        await self.get_data()
+        self.data = self.calculate_update()
+        await self.manager.event_manager.publish("updated_dataset", self)
+
+    async def destroyed_instance_filter(self, instance):
+        if instance.key == self.key:
+            await self.manager.destroy(self)
+    async def any_voice_state_update(self, data):
+        await self.update_dataset()
+
+    # TODO: CALL (UPDATE) EVERY THIRTY SECONDS OR SO
+    # self.calculate_update()
+
+# class lb_data(queries, utils):
+

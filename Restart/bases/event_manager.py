@@ -5,8 +5,14 @@ class EventManager:
     def subscribe(self, subscriber):
         self.subscribers.append(subscriber)
 
+    def unsubscribe(self, subscriber):
+        if subscriber in self.subscribers:
+            self.subscribers.remove(subscriber)
+
+    # LATER: if I will scale this I can
+    # consider publishing only to selected subscribers in the future
     async def publish(self, event_name, data):
-        print(f'triggered {event_name}')
+        print(f"event: {event_name}")
 
         try:
             for subscriber in self.subscribers:

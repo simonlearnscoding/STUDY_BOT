@@ -1,7 +1,10 @@
 # THE BASIC BOT SETUP
 import asyncio
 import sys
+import modules.leaderboard_interface
 from modules.session_tracking.session_to_database import session_to_database
+
+from modules.session_tracking.database_queries import queriess as db
 print(sys.executable)
 from setup.bot_instance import bot, token
 
@@ -23,15 +26,13 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
-
+    channel = bot.get_channel(int(834144065133740102))
     # REMOVE THIS WHEN Im DONE TESTING
-    # await db.delete_all_sessions()
-    # await db.delete_all_activities()
-    # prisma = await database_queries.create()
-    # db = LogOperations(prisma)  # Set the 'db' instance as an attribute of the 'bot'
-    # UNCOMMENT THIS WHEN YOU CREATED A NEW SLASH COMMAND
-    # THEN ONCE YOU'VE SYNCED THE NEW SLASH COMMAND YOU CAN RECOMMENT THIS LINE
-    # await client.tree.sync()
+    await db.delete_all_sessions()
+    await db.delete_all_activities()
+
+
+
 
 
 asyncio.run(main())

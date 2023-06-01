@@ -1,6 +1,6 @@
 import modules.session_tracking.activities as act
 from bases.connector import *
-from modules.session_tracking.utils.time import time_difference, timestamp
+from utils.time import time_difference, timestamp
 
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
@@ -34,7 +34,6 @@ async def get_ongoing_entry(user, tablename):
 
 
 async def complete_activity(user, table):
-    print(await get_all(table))
 
     activity = await get_ongoing_entry(user, table)
     start = activity.joinedAt
@@ -47,7 +46,6 @@ async def complete_activity(user, table):
 
     try:
         update = await create_query(table, "update_many", where=where, data=data)
-        print(await get_all(table))
         return update
     except Exception as e:
         print(e)
