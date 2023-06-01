@@ -1,6 +1,6 @@
-import modules.TimeTracking.activities as act
+import modules.session_tracking.activities as act
 from bases.connector import *
-from modules.TimeTracking.utils.time import time_difference, timestamp
+from modules.session_tracking.utils.time import time_difference, timestamp
 
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
@@ -47,7 +47,6 @@ async def complete_activity(user, table):
 
     try:
         update = await create_query(table, "update_many", where=where, data=data)
-        print(f"completed {table}")
         print(await get_all(table))
         return update
     except Exception as e:

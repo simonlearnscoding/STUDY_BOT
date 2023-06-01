@@ -1,4 +1,4 @@
-import modules.TimeTracking.activities as act
+import modules.session_tracking.activities as act
 
 
 def user_changed_type_of_tracking(before, after):

@@ -19,10 +19,13 @@ class SingletonFactoryManager:
         if key not in self.instances:
             return
         instance = self.instances[key]
-        if hasattr(instance, 'destroy'):
+        if hasattr(instance, "destroy"):
             await instance.destroy()
         del self.instances[key]
         return
 
     def get_all(self):
         return self.instances
+
+
+# here I need a state manager that will take any kind of

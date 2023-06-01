@@ -49,10 +49,12 @@ class Leaderboard:
 
     async def create_private_channel(self, member):
         # TODO REMOVE THIS WHEN IM DONE WITH TESTING
+        #TODO  test with multiple users
+        
         if member.id != 366276958566481920:
             return
 
-        guild = self.bot.get_guild(789814373434654731)
+        guild = self.bot.get_guild(789814373434654731) #LATER: I will need to make this scalable if I want to use my bot for multiple servers
         channel_name = f"{member.name}s leaderboard".lower().replace(" ", "-")
         # Check if the channel already exists
         for channel in guild.channels:

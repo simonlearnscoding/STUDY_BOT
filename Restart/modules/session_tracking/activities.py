@@ -1,4 +1,4 @@
-from Settings import server
+from setup.server_object import server
 
 PILLARS = {
     "PHYSICAL_WORK": "Physical Work",

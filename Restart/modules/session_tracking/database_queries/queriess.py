@@ -1,8 +1,9 @@
 from bases.connector import create_query
-from modules.TimeTracking.utils.time import timestamp
+from modules.session_tracking.utils.time import timestamp
 
-import modules.TimeTracking.activities as act
-
+import modules.session_tracking.activities as act
+from modules.session_tracking.database_queries.queries.session import *
+from modules.session_tracking.database_queries.queries.user_queries import *
 # THIS IS AN EXAMPLE SCRIPT FOR INTERACTING WITH THE DB
 # https://prisma-client-py.re
 # adthedocs.io/en/stable/getting_started/quickstart/
@@ -27,7 +28,6 @@ async def create_if_not_exist(activity):
         try:
             # Create the activity
             created_activity = await create_object("ActivityType", activity)
-            print(f"Created activity: {created_activity}")
             return created_activity
         except Exception as e:
             print(e)
@@ -51,7 +51,6 @@ async def create_user(member):
         "bot": member.bot,
     }
     await create_object("user", data)
-    print(data)
 
 
 # --- PLAYGROUND ---
@@ -126,7 +125,6 @@ async def update_user_ongoing_to_completed(user, tablename):
         return None
 
 
-# --- WORKS ---
 
 
 async def delete_all():

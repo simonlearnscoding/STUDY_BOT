@@ -1,15 +1,21 @@
 class EventManager:
     def __init__(self):
-        self.handlers = {}
+        self.subscribers = []
 
-    def subscribe(self, event_name, handler):
-        if event_name not in self.handlers:
-            self.handlers[event_name] = []
-        self.handlers[event_name].append(handler)
+    def subscribe(self, subscriber):
+        self.subscribers.append(subscriber)
 
-    def publish(self, event_name, data):
-        if event_name in self.handlers:
-            for handler in self.handlers[event_name]:
-                handler(data)
+    async def publish(self, event_name, data):
+        print(f'triggered {event_name}')
+
+        try:
+            for subscriber in self.subscribers:
+                if hasattr(subscriber, event_name):
+                    method = getattr(subscriber, event_name)
+                    await method(data)
+        except Exception as e:
+            print(e)
+        return
+
 
 event_manager = EventManager()

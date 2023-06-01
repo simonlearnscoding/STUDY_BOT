@@ -1,14 +1,14 @@
 # THE BASIC BOT SETUP
 import asyncio
 import sys
-
+from modules.session_tracking.session_to_database import session_to_database
 print(sys.executable)
 from setup.bot_instance import bot, token
 
 # Load the cogs
 extensions = [
-    "cogs.session_tracking.timeTracking",
-    "cogs.leaderboard.update_every_x_seconds",
+    "cogs.session_tracking",
+    # "cogs.leaderboard.update_every_x_seconds",
 ]
 
 
@@ -23,6 +23,7 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+
     # REMOVE THIS WHEN Im DONE TESTING
     # await db.delete_all_sessions()
     # await db.delete_all_activities()

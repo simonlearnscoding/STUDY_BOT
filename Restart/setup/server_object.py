@@ -1,4 +1,5 @@
 import json
+import os
 
 from setup.bot_instance import bot, serverName
 
@@ -11,7 +12,10 @@ class serverFetcher:
         self.channel_id = {}  # dictionary of channel ids
         self.channel_name = {}
         # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
-        with open(f"Settings/server_ids/{serverName}.json") as f:
+        # get the cwd
+        cwd = os.path.dirname(os.getcwd())
+        print(cwd)
+        with open(f"{cwd}/Restart/setup/server_ids/{serverName}.json") as f:
             channel_ids = json.load(f)
 
         # GET THE tEXTcHANNEL OBJECTS FOR EACH CHANNEL id
