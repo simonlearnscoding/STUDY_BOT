@@ -6,11 +6,11 @@ class session_to_database():
         self.event = event_manager
         self.event.subscribe(self)
         pass
-    async def user_changed_type_of_tracking(self, data):
+    async def _user_changed_type_of_tracking(self, data):
         await self.changed_type_of_tracking(data)
-    async def user_joins_tracking_channel(self, data):
+    async def _user_joins_tracking_channel(self, data):
         await self.create_new_session(data)
-    async def user_left_tracking_channel(self, data):
+    async def _user_left_tracking_channel(self, data):
         member = data['member']
         await self.end_session(member)
     async def changed_type_of_tracking(self, data):
@@ -19,7 +19,7 @@ class session_to_database():
         await db.complete_activity(member, "activitylog")
         session = await db.get_ongoing_session(member)
         await db.create_activity_log(member, state, session.id)
-    async def user_changed_tracking_channel(self, data):
+    async def _user_changed_tracking_channel(self, data):
         member = data['member']
         after = data['state']
 
@@ -30,7 +30,7 @@ class session_to_database():
         await self.create_new_session(data)
 
     #TODO: listen to
-    async def any_voice_state_update(self, data):
+    async def _any_voice_state_update(self, data):
         member = data['member']
         await self.create_user_if_not_in_database(member)
     async def create_new_session(self, data):

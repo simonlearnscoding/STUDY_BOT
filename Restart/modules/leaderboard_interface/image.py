@@ -7,14 +7,15 @@ from PIL import Image, ImageDraw, ImageFont
 from setup.bot_instance import bot
 
 import discord
-from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager, destroyWhenNoLb
+from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 class ImageManager(LifeCycleManager):
     def __init__(self):
         self.instance_class = ImageClass
         super().__init__()
 
 
-    async def created_instance_dataset(self, data):
+    async def _created_instance_dataset(self, data):
+
         """
         set filter name as key and create the object
         """
@@ -34,16 +35,17 @@ class ImageClass:
         self.data = dataSet.data
     async def create(self, data):
         await self.create_image(data)
-        pass
-    async def updated_dataset(self, data):
+        await self.manager.event_manager.publish("_updated_image", self)
+
+    async def _updated_dataset(self, data):
         await self.create_image(data)
-        await self.manager.event_manager.publish("updated_image", self)
+        await self.manager.event_manager.publish("_updated_image", self)
     async def create_image(self, data):
         data = data.data
         image_filename = self.create_leaderboard_image(data)
         self.url = await self.send_temp_message(image_filename)
 
-    async def destroyed_instance_filter(self, instance):
+    async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
             await self.manager.destroy(self)
 

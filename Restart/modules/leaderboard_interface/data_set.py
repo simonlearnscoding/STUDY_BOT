@@ -5,7 +5,7 @@ from utils.time import time_difference
 # from cogs.leaderboard.filter import Filter_Manager
 from bases.state_manager import SingletonFactoryManager
 
-from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager, destroyWhenNoLb
+from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 
 
 class DatasetManager(LifeCycleManager):
@@ -18,7 +18,7 @@ class DatasetManager(LifeCycleManager):
     instance of one filter 
     gets created
     """
-    async def created_instance_filter(self, data):
+    async def _created_instance_filter(self, data):
         """
         set filter name as key and create the object
         """
@@ -135,12 +135,12 @@ class Dataset(queries, utils):
     async def update_dataset(self):
         await self.get_data()
         self.data = self.calculate_update()
-        await self.manager.event_manager.publish("updated_dataset", self)
+        await self.manager.event_manager.publish("_updated_dataset", self)
 
-    async def destroyed_instance_filter(self, instance):
+    async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
             await self.manager.destroy(self)
-    async def any_voice_state_update(self, data):
+    async def _any_voice_state_update(self, data):
         await self.update_dataset()
 
     # TODO: CALL (UPDATE) EVERY THIRTY SECONDS OR SO

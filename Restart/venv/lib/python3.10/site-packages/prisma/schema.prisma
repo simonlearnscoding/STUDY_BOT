@@ -40,6 +40,14 @@ model ActivityType {
   activityLogs ActivityLog[]
 }
 
+
+model Switches {
+  id           BigInt        @id @default(autoincrement())
+  name         String        
+  switch       DateTime?        
+
+}
+
 model VCType {
   id           BigInt        @id @default(autoincrement())
   name         String

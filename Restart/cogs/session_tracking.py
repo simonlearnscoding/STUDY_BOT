@@ -21,25 +21,25 @@ class user_vc_events(commands.Cog):
                 return
 
             if cnd.user_joins_tracking_channel(before, after):
-                await self.event_manager.publish('user_joins_tracking_channel', {"member": member, "state": after})
-                await self.event_manager.publish('any_voice_state_update', {"member": member})
+                await self.event_manager.publish('_user_joins_tracking_channel', {"member": member, "state": after})
+                await self.event_manager.publish('_any_voice_state_update', {"member": member})
                 return
 
             if cnd.user_changed_type_of_tracking(before, after):
-                await self.event_manager.publish('user_changed_type_of_tracking', {"member": member, "state": after})
-                await self.event_manager.publish('any_voice_state_update', {"member": member})
+                await self.event_manager.publish('_user_changed_type_of_tracking', {"member": member, "state": after})
+                await self.event_manager.publish('_any_voice_state_update', {"member": member})
                 return
 
             if cnd.userLeftChannel(after):
                 # LATER: make the message function
-                await self.event_manager.publish('user_left_tracking_channel', {"member": member})
-                await self.event_manager.publish('any_voice_state_update', {"member": member})
+                await self.event_manager.publish('_user_left_tracking_channel', {"member": member})
+                await self.event_manager.publish('_any_voice_state_update', {"member": member})
                 return
 
             if cnd.userChangedChannel(before, after):
                 # LATER: make the message function
-                await self.event_manager.publish('user_changed_tracking_channel', {"member": member, "state": after})
-                await self.event_manager.publish('any_voice_state_update', {"member": member})
+                await self.event_manager.publish('_user_changed_tracking_channel', {"member": member, "state": after})
+                await self.event_manager.publish('_any_voice_state_update', {"member": member})
         except Exception as e:
             print(e)
 

@@ -10,7 +10,7 @@ class LeaderboardManager(LifeCycleManager):
         self.instance_class = Leaderboard
         super().__init__()
 
-    async def user_joins_tracking_channel(self, data):
+    async def _user_joins_tracking_channel(self, data):
         key = data["member"].id
         await super().create(data, key)
 
@@ -19,13 +19,14 @@ class Leaderboard:
     def __init__(self, data, manager):
         self.bot = bot
         self.manager = manager
+        # self.manager.event_manager.subscribe(self)
         self.member = data["member"]
         self.name = "leaderboard"
         self.key = self.member.id
         # TODO: replace this with the get filter function
         self.filter = "today_study_exclude_no_cam"
 
-    async def user_left_tracking_channel(self, data):
+    async def _user_left_tracking_channel(self, data):
         await self.manager.destroy(self)
 
     async def create(self, data):
@@ -36,6 +37,7 @@ class Leaderboard:
         # await self.update_in_channel(self.image_url)
 
     async def destroy(self):
+        # self.manager.event_manager.unsubscribe(self)
         await self.channel.delete()
 
     # TODO: this probably belongs to the image class
@@ -47,12 +49,11 @@ class Leaderboard:
         await self.message.edit(content="Leaderboard", embed=embed)
         pass
 
-    async def destroyed_instance_filter(self, instance):
+    async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
             await self.manager.destroy(self)
-    async def updated_image(self, imageInstance):
+    async def _updated_image(self, imageInstance):
         await self.update_image_if_filter_lb(imageInstance)
-
     async def update_image_if_filter_lb(self, imageInstance):
         if imageInstance.key == self.filter:
             url = imageInstance.url
@@ -64,9 +65,9 @@ class Leaderboard:
 
     async def create_private_channel(self):
         member = self.member
+
         # TODO REMOVE THIS WHEN IM DONE WITH TESTING
         # TODO  test with multiple users
-
         if member.id != 366276958566481920:
             return
 
@@ -95,8 +96,6 @@ class Leaderboard:
             print(e)
 
     async def write_and_get_message(self):
-        # if there is a message id in the DB and I can fetch it #TODO: create message id in SQL
         url = "https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
         self.message = await self.channel.send(url)
         return self.message
-        # TODO: I need a function to destroy the leaderboard, call that function when the user leaves the channel

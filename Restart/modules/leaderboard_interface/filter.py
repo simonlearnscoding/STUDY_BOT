@@ -1,7 +1,7 @@
 from utils.time import get_start_end
 
 
-from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager, destroyWhenNoLb
+from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 
 
 class FilterManager(LifeCycleManager):
@@ -24,7 +24,7 @@ class FilterManager(LifeCycleManager):
     instance of one filter 
     gets created
     """
-    async def first_instance_with_filter_leaderboard(self, data):
+    async def _first_instance_with_filter_leaderboard(self, data):
         """
         set filter name as key and create the object
         """
@@ -45,7 +45,7 @@ class Filter():
     async def create(self, data):
         self.where = await self.get_filter_where()
 
-    async def last_instance_with_filter_leaderboard(self, instance):
+    async def _last_instance_with_filter_leaderboard(self, instance):
         if instance.filter == self.filter:
             await self.manager.destroy(self)
     async def get_filter_where(self):
