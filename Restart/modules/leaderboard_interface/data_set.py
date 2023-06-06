@@ -135,8 +135,8 @@ class Dataset(queries, utils):
     async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
             await self.manager.destroy(self)
-    async def _any_voice_state_update(self, data):
-        await self.update_dataset()
+    # async def _any_voice_state_update(self, data):
+    #     await self.update_dataset()
 
     async def _updated_filter(self, filter):
         if filter.key == self.key:

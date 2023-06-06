@@ -3,10 +3,11 @@ from datetime import datetime, time, timedelta, timezone
 
 from modules.leaderboard_interface.lifecycle_manager import EventSubscriber
 from modules.session_tracking.database_queries.queriess import (create_object,
-                                                                create_query,
+                                create_query,
                                                                 delete_all,
                                                                 get_all)
 from utils.time import *
+from setup.bot_instance import bot
 
 cet_timezone = pytz.timezone("CET")
 
@@ -105,8 +106,9 @@ class TimeEvents(checkTime):
         await self.update_if_its_overdue("week", timeStamp)
 
     async def functions_to_run(self):
-        await self.check_events()
-        await self.publish("_one_minute_passed", None)
+        if bot.ready != False:
+            await self.check_events()
+            await self.publish("_one_minute_passed", None)
 
 
         """ 

@@ -31,6 +31,10 @@ class FilterManager(LifeCycleManager):
     instance of one filter 
     gets created
     """
+    async def _changed_filter(self, data):
+        key = data.filter
+        await super().create(data, key)
+
     async def _first_instance_with_filter_leaderboard(self, data):
         """
         set filter name as key and create the object
@@ -48,7 +52,8 @@ class Filter():
 
     async def _start_of_hour(self, time):
         # LATER: I should probably leave this at _start of day for now until i choose to implement timezones
-        #TODO: Test
+
+        #TODO: Test this one (it seems not to work yet)
         self.where = await self.get_filter_where()
         await self.manager.publish("_updated_filter", self)
     async def _last_instance_with_filter_leaderboard(self, instance):

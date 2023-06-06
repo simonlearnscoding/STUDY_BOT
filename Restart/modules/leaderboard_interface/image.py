@@ -38,6 +38,8 @@ class ImageClass:
         await self.manager.event_manager.publish("_updated_image", self)
 
     async def _updated_dataset(self, data):
+        if self.key != data.key:
+            return
         await self.create_image(data)
         await self.manager.event_manager.publish("_updated_image", self)
     async def create_image(self, data):
@@ -47,6 +49,7 @@ class ImageClass:
 
     async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
+            print('destroyed image')
             await self.manager.destroy(self)
 
     async def send_temp_message(self, image_filename):
@@ -63,8 +66,8 @@ class ImageClass:
     #TODO: I need to call this
     # and the update in channel every time that the data changed
     def create_leaderboard_image(self, data):
-        ROW_HEIGHT = 40
-        IMAGE_WIDTH = 600
+        ROW_HEIGHT = 80
+        IMAGE_WIDTH = 1200
         IMAGE_HEIGHT = ROW_HEIGHT * len(data) + 10
 
         # Create a new image with a dark background
@@ -73,7 +76,7 @@ class ImageClass:
 
         # Use a default font provided by Pillow
         font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-        font = ImageFont.truetype(font_path, size=20)
+        font = ImageFont.truetype(font_path, size=24)
 
         for i, row_data in enumerate(data):
             y_position = i * ROW_HEIGHT + 5

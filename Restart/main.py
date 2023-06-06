@@ -27,17 +27,10 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+    bot.ready = True
     await event_manager.publish("_bot_ready", bot)
     channel = bot.get_channel(int(834144065133740102))
-    # Time_Events = TimeEvents()
-    # await Time_Events.trigger_at_start_of_minute()
-    # try:
-    #     await run_periodically()
-    # except Exception as e:
-    #     print(e)
-    # REMOVE THIS WHEN Im DONE TESTING
-    # await db.delete_all_sessions()
-    # await db.delete_all_activities()
+
 
 
 

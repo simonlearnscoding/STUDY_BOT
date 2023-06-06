@@ -17,6 +17,8 @@ class LastInstanceHandler:
     def __init__(self):
         pass
 
+#TODO: refactor - I need to put these two methods into the leaderboard object or they will just drive
+#performance down for nothing
     async def handle_last_instance_with_filter(self, instance):
         if instance.name == "leaderboard":
             filter_instances = self.filter_count(instance)

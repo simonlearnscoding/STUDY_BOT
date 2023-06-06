@@ -6,7 +6,6 @@ from modules.session_tracking.database_queries.queries.session import *
 # adthedocs.io/en/stable/getting_started/quickstart/
 
 
-# --- TO BE DEBUGGED ---
 async def create_if_not_exist(activity):
     where = {"name": activity["name"]}
     try:
@@ -39,6 +38,7 @@ async def get_user(member):
     except Exception as e:
         print(e)
 
+#TODO: this function exists twice (in user_queries aswell, I need to refactor the DB module badly!
 
 async def create_user(member):
     # LATER: Debug This
@@ -119,8 +119,6 @@ async def update_user_ongoing_to_completed(user, tablename):
     else:
         print(f"No entry found with user id {user.id} and status ONGOING")
         return None
-
-
 
 
 async def delete_all():

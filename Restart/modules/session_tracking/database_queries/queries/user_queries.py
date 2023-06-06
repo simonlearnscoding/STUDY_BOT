@@ -15,6 +15,13 @@ async def get_user(member):
     except Exception as e:
         print(e)
 
+async def change_user_filter(member, filter):
+    where = {"id": int(member.id)}
+    data = {"filter": filter}
+    try:
+        await db.create_query("user", "update", where=where, data=data)
+    except Exception as e:
+        print(e)
 
 # REVIEW: Do I need to create a user for py if they don't exist?
 async def create_user(member):

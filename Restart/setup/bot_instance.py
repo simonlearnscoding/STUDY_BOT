@@ -18,7 +18,7 @@ application_id = 839089655189864508
 
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
+bot.ready = False
 
 
 token = "ODM5MDg5NjU1MTg5ODY0NTA4.YJElIw.8v1pOwMXScG-HF7LCQnDAybNiQk"
