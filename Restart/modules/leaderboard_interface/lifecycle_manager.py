@@ -10,13 +10,17 @@ class EventSubscriber:
         self.event_manager = event_manager
         self.publish = self.event_manager.publish
         self.unsubscribe = self.event_manager.unsubscribe
+        self.subscribe = self.event_manager.subscribe
+
+
 class LastInstanceHandler:
     def __init__(self):
         pass
+
     async def handle_last_instance_with_filter(self, instance):
         if instance.name == "leaderboard":
             filter_instances = self.filter_count(instance)
-            if filter_instances(instance) == 0:
+            if filter_instances == 0:
                 await self.event_manager.publish(
                     f"_last_instance_with_filter_{instance.name}", instance
                 )
@@ -38,6 +42,7 @@ class LastInstanceHandler:
                 count += 1
         return count
 
+
 class LifeCycleManager(EventSubscriber, LastInstanceHandler):
     def __init__(self):
         self.instances = {}
@@ -51,7 +56,6 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         if key in self.instances:
             return self.instances[key]
         instance = self.instance_class(data, self)
-        self.event_manager.subscribe(instance)
 
         """
         perform instance specific spawn operation
@@ -64,6 +68,8 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         """
         subscribe to the event manager
         """
+        self.event_manager.subscribe(instance)
+        filter_instances = self.filter_count(instance)
 
         """
         publish info to trigger events
@@ -81,8 +87,6 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         """
         remove instance from instance manager
         """
-        to_delete = self.instances[instance.key]
-        self.event_manager.unsubscribe(to_delete)
         del self.instances[instance.key]
         """
         unsubscribe from events
@@ -101,8 +105,3 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         """
 
         await self.handle_last_instance_with_filter(instance)
-
-
-
-
-

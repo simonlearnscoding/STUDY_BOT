@@ -30,7 +30,6 @@ class DatasetManager(LifeCycleManager):
 class queries:
     async def get_active(self, filter):
         filter_copy = filter.copy()
-        # TODO: check whats up with create query, is it accessible or not?
         filter_copy["AND"][0] = {"status": "ONGOING"}
         return await create_query(
             "activitylog",
@@ -49,6 +48,7 @@ class queries:
 
 class utils:
     def sum_and_format(self, input_array):
+        #TODO: its giving me more than top 10 I need to change that
         user_durations = defaultdict(int)
         user_status = defaultdict(bool)  # dictionary to track user status
         user_nicknames = {}  # dictionary to store user nicknames
@@ -129,13 +129,8 @@ class Dataset(queries, utils):
         self.key = data.filter
         self.filter = data.where
 
-    async def create(self, data):
-        await self.update_dataset()
-
-    async def update_dataset(self):
-        await self.get_data()
-        self.data = self.calculate_update()
-        await self.manager.event_manager.publish("_updated_dataset", self)
+    async def _one_minute_passed(self, time):
+        await self.update_active_entries_timing()
 
     async def _destroyed_instance_filter(self, instance):
         if instance.key == self.key:
@@ -143,7 +138,22 @@ class Dataset(queries, utils):
     async def _any_voice_state_update(self, data):
         await self.update_dataset()
 
-    # TODO: CALL (UPDATE) EVERY THIRTY SECONDS OR SO
+    async def _updated_filter(self, filter):
+        if filter.key == self.key:
+            await self.update_dataset()
+    async def create(self, data):
+        await self.update_dataset()
+
+    async def update_dataset(self):
+        await self.get_data()
+        self.data = self.calculate_update()
+        await self.manager.event_manager.publish("_updated_dataset", self)
+    async def update_active_entries_timing(self):
+        self.data = self.calculate_update()
+        await self.manager.event_manager.publish("_updated_dataset", self)
+
+
+
     # self.calculate_update()
 
 # class lb_data(queries, utils):

@@ -7,11 +7,12 @@ from cogs.time_passed import TimeEvents
 from modules.session_tracking.database_queries import queriess as db
 print(sys.executable)
 from setup.bot_instance import bot, token
-
+from bases.event_manager import event_manager
 # Load the cogs
 extensions = [
     "cogs.session_tracking",
-    # "cogs.leaderboard.update_every_x_seconds",
+    "cogs.time_events",
+    "cogs.menu"
 ]
 
 
@@ -26,6 +27,7 @@ async def main():
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
+    await event_manager.publish("_bot_ready", bot)
     channel = bot.get_channel(int(834144065133740102))
     # Time_Events = TimeEvents()
     # await Time_Events.trigger_at_start_of_minute()

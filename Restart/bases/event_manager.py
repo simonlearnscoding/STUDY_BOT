@@ -11,7 +11,7 @@ class EventManager:
             self.subscribers.remove(subscriber)
 
     # LATER: if I will scale this I can
-    # consider publishing only to selected subscribers in the future
+# consider publishing only to selected subscribers in the future
     async def publish(self, event_name, data):
         timestamp = datetime.datetime.now().strftime(" %H:%M:%S")
         print(f"[{timestamp}] - {event_name}")

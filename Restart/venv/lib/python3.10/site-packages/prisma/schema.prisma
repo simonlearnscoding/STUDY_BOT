@@ -28,6 +28,7 @@ enum Pillar {
 model User {
   id           BigInt        @id @default(autoincrement())
   name         String
+  filter       String?
   sessions     Session[]
   activityLogs ActivityLog[]
   userLevels   UserLevel[]

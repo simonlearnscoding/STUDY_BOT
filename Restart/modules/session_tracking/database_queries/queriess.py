@@ -45,7 +45,6 @@ async def create_user(member):
     data = {
         "id": member.id,
         "name": member.name,
-        "bot": member.bot,
     }
     await create_object("user", data)
 
@@ -149,8 +148,10 @@ async def create_activity_log(member, after, sessionId):
         "userId": member.id,
         "nick": member.name,
     }
-    return await create_object("activitylog", data)
-
+    try:
+        await create_object("activitylog", data)
+    except Exception as e:
+        print(e)
 
 async def create_session_log(member, after):
     data = {

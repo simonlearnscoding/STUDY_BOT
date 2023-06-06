@@ -52,5 +52,3 @@ class user_vc_events(commands.Cog):
 
 
 
-async def teardown(bot):
-    return

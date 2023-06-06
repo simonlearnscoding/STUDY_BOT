@@ -18,7 +18,14 @@ class FilterManager(LifeCycleManager):
             "date_range": "today",
             "activity": "Study",
         },
-    }
+        "today_all_both_only": {
+            "date_range": "today",
+            "type_of_activity": "BOTH"
+        },
+        "today_all": {
+            "date_range": "today",
+        },
+        }
     """
     this gets triggered when the first lb 
     instance of one filter 
@@ -39,15 +46,18 @@ class Filter():
         self.filter = data.filter
         self.key = data.filter
 
-    def refresh_filters(self):  # TODO: call this one hourly I guess
-        for filter_name in self.instances:
-            self.instances[filter_name] = self.create_filter(filter_name)
-    async def create(self, data):
+    async def _start_of_hour(self, time):
+        # LATER: I should probably leave this at _start of day for now until i choose to implement timezones
+        #TODO: Test
         self.where = await self.get_filter_where()
-
+        await self.manager.publish("_updated_filter", self)
     async def _last_instance_with_filter_leaderboard(self, instance):
         if instance.filter == self.filter:
             await self.manager.destroy(self)
+    async def create(self, data):
+        self.where = await self.get_filter_where()
+
+
     async def get_filter_where(self):
         # Creating from the filter templates
         filter = self.manager.filter_patterns[self.key]

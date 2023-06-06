@@ -51,7 +51,7 @@ class ImageClass:
 
     async def send_temp_message(self, image_filename):
 #         #TODO: Test what happens if this gets spammed
-         temp_channel_id = 1105618200718221424 #LATER: change if you want to scale multiple servers
+         temp_channel_id = 1105618200718221424 #TODO: this should get the channel by name instead
          with open(image_filename, "rb") as file:
             buffer_channel = await self.bot.fetch_channel(temp_channel_id)
             image_attachment = discord.File(file, image_filename)

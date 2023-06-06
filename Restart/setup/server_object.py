@@ -14,13 +14,11 @@ class serverFetcher:
         # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
         # get the cwd
         cwd = os.path.dirname(os.getcwd())
-        print(cwd)
         with open(f"{cwd}/Restart/setup/server_ids/{serverName}.json") as f:
             channel_ids = json.load(f)
 
         # GET THE tEXTcHANNEL OBJECTS FOR EACH CHANNEL id
         for name, id in channel_ids.items():
-            print(name, id)
             self.channel_id[name] = int(id)
             self.channel_name[id] = name
 

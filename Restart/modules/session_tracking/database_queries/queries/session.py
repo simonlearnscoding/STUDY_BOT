@@ -18,7 +18,6 @@ async def get_ongoing_activity(user):
     print("activitylog")
     return await get_ongoing_entry(user, "activitylog")
 
-
 async def get_ongoing_entry(user, tablename):
     where = {"AND": [{"userId": int(user.id)}, {"status": "ONGOING"}]}
     try:
@@ -30,7 +29,15 @@ async def get_ongoing_entry(user, tablename):
         return None
 
 
+
 # --- UPDATE STUFF ---
+async def complete_all(): 
+    now = timestamp()
+    data = {"status": "COMPLETED", "leftAt": now}
+    where = {"status": "ONGOING"}
+    await create_query("activitylog", "update_many", where=where, data=data)
+    await create_query("session", "update_many", where=where, data=data)
+    
 
 
 async def complete_activity(user, table):
