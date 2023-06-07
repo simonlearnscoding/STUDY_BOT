@@ -2,7 +2,6 @@
 from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 from setup.bot_instance import bot
 from modules.session_tracking.database_queries.queries.user_queries import get_user, change_user_filter
-
 import discord
 from discord.ui import Button, View
 
@@ -26,7 +25,7 @@ class LeaderboardManager(LifeCycleManager):
             await super().create(data, key)
 
 
-class Leaderboard:
+class Leaderboard():
     def __init__(self, data, manager):
         self.bot = bot
         self.manager = manager
@@ -34,6 +33,7 @@ class Leaderboard:
         self.member = data["member"]
         self.name = "leaderboard"
         self.key = self.member.id
+        self.changed_filter = False
         # self.avoid_update_twice = True
     async def _user_left_tracking_channel(self, data):
         if data["member"] != self.member:
@@ -53,15 +53,13 @@ class Leaderboard:
             # and destroy it if it was the last one
             await change_user_filter(self.member, filter)
             # count the amount of instances with instance.filter = self.filter
-            # count = sum(1 for instance in self.manager["instances"] if self.manager[instance].filter == self.filter)
-            count = sum(1 for instance in self.manager.instances.values() if instance.filter == self.filter)
-
+            # count = sum(1 for instance in self.manager.instances.values() if instance.filter == self.filter)
             # count = 0
             # for instance in self.manager.instances:
             #     if instance.filter == self.filter:
             #         count += 1
-            if count == 1:
-               await self.manager.event_manager.publish("_last_instance_with_filter_leaderboard", self)
+            # if count == 1:
+               # await self.manager.event_manager.publish("_last_instance_with_filter_leaderboard", self)
             self.filter = filter
             await self.manager.event_manager.publish("_changed_filter", self)
         except Exception as e:
@@ -70,6 +68,7 @@ class Leaderboard:
         self.channel = await self.create_private_channel()
         self.message = await self.write_and_get_message()
         self.filter = await self.get_user_filter(data)
+        # self.url = Image_Manager.instances
 
         # self.image_url = self.content.image.url
         # await self.update_in_channel(self.image_url)
@@ -81,19 +80,20 @@ class Leaderboard:
         except Exception as e:
             print(e)
     # TODO: this probably belongs to the image class
-    async def update_in_channel(self, image_url):
-        embed = discord.Embed()
-        embed.set_image(url=image_url)
-        # get the leaderboard channel
-        # await channel.send(embed=embed)
-        view = MyView(self)
-        await self.message.edit(content="Leaderboard", embed=embed, view=view)
-        pass
+    # async def update_in_channel(self, image_url):
+    #     embed = discord.Embed()
+    #     embed.set_image(url=image_url)
+    #     # get the leaderboard channel
+    #     # await channel.send(embed=embed)
+    #     view = MyView(self)
+    #     await self.message.edit(content="Leaderboard", embed=embed, view=view)
+    #     pass
 
     # async def _destroyed_instance_filter(self, instance):
     #     if instance.key == self.key:
     #         await self.manager.destroy(self)
     async def _updated_image(self, imageInstance):
+        # I should move this one to the lb manager to improve performance probably
         if imageInstance.key != self.filter:
             return
 
@@ -101,12 +101,27 @@ class Leaderboard:
         #     self.avoid_update_twice = False
         #     return
         await self.update_image_in_lb_message(imageInstance)
-    async def update_image_in_lb_message(self, imageInstance):
-
-            url = imageInstance.url
+    async def update_image_in_lb_message(self, image):
             try:
-                await self.update_in_channel(url)
-                print(imageInstance)
+                """
+                this is to make sure the update never happens right 
+                after the user just changed the filter because that would be 
+                annoying
+                """
+                if self.changed_filter == True:
+                    self.changed_filter = False
+                    return
+
+                # await self.update_in_channel(imageInstance)
+                # print(imageInstance)
+                # embed = discord.Embed(color=0x2f3136)
+                # embed.set_image(url=image.url )
+                # await self.message.edit(content="", embed=embed)
+                embed = discord.Embed()
+                embed.set_image(url=image.url)
+                view = MyView(self)
+                await self.message.edit(content="", embed=embed, view=view)
+                pass
             except Exception as e:
                 print(e)
 
@@ -116,7 +131,8 @@ class Leaderboard:
             366276958566481920,
             248433538938961932,
             476139043768500227,
-            226720984936218624
+            226720984936218624,
+            508711391826280451
         ]
         # TODO REMOVE THIS WHEN IM DONE WITH TESTING
         # TODO  test with multiple users
@@ -150,7 +166,9 @@ class Leaderboard:
     async def write_and_get_message(self):
         url = "https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif"
         try:
+            # self.message = await self.channel.send(".")
             self.message = await self.channel.send(url)
+
         except Exception as e:
             print(e)
         return self.message
@@ -199,8 +217,10 @@ class MyButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         try:
+            self.updated_filter = False
             await self.lb.change_user_filter(self.custom_id)
-            await interaction.response.send_message(f'Showing people with {self.label}.', delete_after=1)
+            # await interaction.response.send_message(f'Showing people with {self.label}.', delete_after=1)
+            self.updated_filter = True
         except Exception as e:
             print(e)
 #TODO: fix- chores is not counting it seems

@@ -31,24 +31,31 @@ class FilterManager(LifeCycleManager):
     instance of one filter 
     gets created
     """
-    async def _changed_filter(self, data):
-        key = data.filter
-        await super().create(data, key)
+    # async def _changed_filter(self, data):
+    #     key = data.filter
+    #     await super().create(data, key)
 
-    async def _first_instance_with_filter_leaderboard(self, data):
-        """
-        set filter name as key and create the object
-        """
-        key = data.filter
-        await super().create(data, key)
+    async def _bot_ready(self, bot):
+        for pattern in self.filter_patterns:
+            data = {}
+            data["data"] = self.filter_patterns[pattern]
+            data["filter"] = pattern
+            await super().create(data=data, key=pattern)
+            pass
+    # async def _first_instance_with_filter_leaderboard(self, data):
+    #     """
+    #     set filter name as key and create the object
+    #     """
+    #     key = data.filter
+    #     await super().create(data, key)
 
 
 class Filter():
     def __init__(self, data, manager):
         self.manager = manager
         self.name = "filter"
-        self.filter = data.filter
-        self.key = data.filter
+        self.filter = data["filter"]
+        self.key = data["filter"]
 
     async def _start_of_hour(self, time):
         # LATER: I should probably leave this at _start of day for now until i choose to implement timezones
@@ -56,9 +63,9 @@ class Filter():
         #TODO: Test this one (it seems not to work yet)
         self.where = await self.get_filter_where()
         await self.manager.publish("_updated_filter", self)
-    async def _last_instance_with_filter_leaderboard(self, instance):
-        if instance.filter == self.filter:
-            await self.manager.destroy(self)
+    # async def _last_instance_with_filter_leaderboard(self, instance):
+    #     if instance.filter == self.filter:
+    #         await self.manager.destroy(self)
     async def create(self, data):
         self.where = await self.get_filter_where()
 

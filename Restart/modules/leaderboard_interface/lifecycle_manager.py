@@ -19,30 +19,30 @@ class LastInstanceHandler:
 
 #TODO: refactor - I need to put these two methods into the leaderboard object or they will just drive
 #performance down for nothing
-    async def handle_last_instance_with_filter(self, instance):
-        if instance.name == "leaderboard":
-            filter_instances = self.filter_count(instance)
-            if filter_instances == 0:
-                await self.event_manager.publish(
-                    f"_last_instance_with_filter_{instance.name}", instance
-                )
+    # async def handle_last_instance_with_filter(self, instance):
+    #     if instance.name == "leaderboard":
+    #         filter_instances = self.filter_count(instance)
+    #         if filter_instances == 0:
+    #             await self.event_manager.publish(
+    #                 f"_last_instance_with_filter_{instance.name}", instance
+    #             )
+    #
+    # async def handle_first_instance_with_filter(self, instance):
+    #     if instance.name == "leaderboard":
+    #         filter_instances = self.filter_count(instance)
+    #         if filter_instances == 1:
+    #             await self.event_manager.publish(
+    #                 f"_first_instance_with_filter_{instance.name}", instance
+    #             )
 
-    async def handle_first_instance_with_filter(self, instance):
-        if instance.name == "leaderboard":
-            filter_instances = self.filter_count(instance)
-            if filter_instances == 1:
-                await self.event_manager.publish(
-                    f"_first_instance_with_filter_{instance.name}", instance
-                )
-
-    def filter_count(self, object):
-        count = 0
-        if len(self.instances) == 0:
-            return count
-        for instance in self.instances:
-            if self.instances[instance].filter == object.filter:
-                count += 1
-        return count
+    # def filter_count(self, object):
+    #     count = 0
+    #     if len(self.instances) == 0:
+    #         return count
+    #     for instance in self.instances:
+    #         if self.instances[instance].filter == object.filter:
+    #             count += 1
+    #     return count
 
 
 class LifeCycleManager(EventSubscriber, LastInstanceHandler):
@@ -71,13 +71,13 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         subscribe to the event manager
         """
         self.event_manager.subscribe(instance)
-        filter_instances = self.filter_count(instance)
+        # filter_instances = self.filter_count(instance)
 
         """
         publish info to trigger events
         """
         await self.event_manager.publish(f"_created_instance_{instance.name}", instance)
-        await self.handle_first_instance_with_filter(instance)
+        # await self.handle_first_instance_with_filter(instance)
         return instance
 
     async def destroy(self, instance):
@@ -106,4 +106,4 @@ class LifeCycleManager(EventSubscriber, LastInstanceHandler):
         counts the amount of instance with this specific filter
         """
 
-        await self.handle_last_instance_with_filter(instance)
+        # await self.handle_last_instance_with_filter(instance)
