@@ -14,7 +14,7 @@ class serverFetcher:
         # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
         # get the cwd
         cwd = os.path.dirname(os.getcwd())
-        with open(f"{cwd}/Restart/setup/server_ids/{serverName}.json") as f:
+        with open(f"setup/server_ids/{serverName}.json") as f:
             channel_ids = json.load(f)
 
         # GET THE tEXTcHANNEL OBJECTS FOR EACH CHANNEL id

@@ -257,6 +257,6 @@ class ImageClass:
         self.draw_current_date_on_image(draw, row_font, PADDING, IMAGE_WIDTH)
 
         random_file_name = f"leaderboard_image_{uuid.uuid4()}.png"
-        image.save(random_file_name)
+        image.save(random_file_name, dpi=(300, 300))
         return random_file_name
 

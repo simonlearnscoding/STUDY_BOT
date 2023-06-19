@@ -18,6 +18,7 @@ class DatasetManager(LifeCycleManager):
     instance of one filter 
     gets created
     """
+    #TODO: on bot ready I need to remove all active entries that are unrealistically old
     async def _created_instance_filter(self, data):
         """
         set filter name as key and create the object
@@ -39,6 +40,7 @@ class queries:
 
     async def get_completed(self, filter):
         filter_copy = filter.copy()
+        #TODO: I need to test if it actually only gets the entries from within the timeframe
         filter_copy["AND"][0] = {"status": "COMPLETED"}
         return await create_query(
             "activitylog",

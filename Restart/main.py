@@ -20,6 +20,8 @@ async def main():
     async with bot:
         for ext in extensions:
             await bot.load_extension(ext)
+        #await db.delete_all_activities()
+        #await db.delete_all_sessions()
         loop = asyncio.get_event_loop()
         await loop.run_until_complete(await bot.start(token))
 
@@ -28,6 +30,7 @@ async def main():
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
     bot.ready = True
+
     await event_manager.publish("_bot_ready", bot)
     channel = bot.get_channel(int(834144065133740102))
 
