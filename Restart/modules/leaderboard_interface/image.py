@@ -112,7 +112,7 @@ class ImageClass:
         total_pixel_space = self.calculate_total_pixel_space(avatar_x_position, time_x_position)
         pixel_per_segment = self.calculate_pixel_per_segment(total_pixel_space)
         green_shades = self.create_green_shades()
-        line_thickness = 14  # Set the thickness of the line here
+        line_thickness = 20  # Set the thickness of the line here
 
         for i, segment_percentage in user_data["segments"].items():
             line_color = green_shades[min(9, int(segment_percentage / 10))]
@@ -147,8 +147,10 @@ class ImageClass:
     def create_leaderboard_image(self, data):
 
         ROW_HEIGHT = 80
+
         TIMELINE_HEIGHT = 60  # Height for the timeline row (increased for more space)
-        IMAGE_HEIGHT = ROW_HEIGHT * len(data) + TIMELINE_HEIGHT + 20  # Add space for the timeline row
+        IMAGE_HEIGHT = ROW_HEIGHT * 10 + TIMELINE_HEIGHT + 20  # Add space for the timeline row
+
         IMAGE_WIDTH = int(IMAGE_HEIGHT * 4 / 3)
         PADDING = 40
         SEGMENTS_PER_HOUR = 4  # Modify this to match your settings
@@ -198,14 +200,14 @@ class ImageClass:
                 outline=(152, 153, 156)
             )
 
-            # Draw small grey dots for every hour
-            for j in range(0, segments_in_24_hours, SEGMENTS_PER_HOUR):
-                dot_center = (j * pixel_per_segment + avatar_x_position, y_position + ROW_HEIGHT - dot_radius * 2)
-                draw.ellipse(
-                    [dot_center[0] - dot_radius, dot_center[1] - dot_radius,
-                     dot_center[0] + dot_radius, dot_center[1] + dot_radius],
-                    fill=(150, 150, 150)  # fill with grey color
-                )
+            # # Draw small grey dots for every hour
+            # for j in range(0, segments_in_24_hours, SEGMENTS_PER_HOUR):
+            #     dot_center = (j * pixel_per_segment + avatar_x_position, y_position + ROW_HEIGHT - dot_radius * 2)
+            #     draw.ellipse(
+            #         [dot_center[0] - dot_radius, dot_center[1] - dot_radius,
+            #          dot_center[0] + dot_radius, dot_center[1] + dot_radius],
+            #         fill=(150, 150, 150)  # fill with grey color
+            #     )
 
             time_text = f"{row_data['hours']:02}:{row_data['minutes']:02}"
 
