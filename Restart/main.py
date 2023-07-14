@@ -1,18 +1,20 @@
 # THE BASIC BOT SETUP
 import asyncio
 import sys
+import os
 import modules.leaderboard_interface
+print(os.getcwd())
 from modules.session_tracking.session_to_database import session_to_database
-from cogs.time_passed import TimeEvents
 from modules.session_tracking.database_queries import queriess as db
 print(sys.executable)
 from setup.bot_instance import bot, token
 from bases.event_manager import event_manager
+from Cogs.time_passed import TimeEvents
 # Load the cogs
 extensions = [
-    "cogs.session_tracking",
-    "cogs.time_events",
-    "cogs.menu"
+    "Cogs.session_tracking",
+    "Cogs.time_events",
+    "Cogs.menu"
 ]
 
 

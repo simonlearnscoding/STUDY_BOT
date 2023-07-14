@@ -1,2 +1,4 @@
 Data
 js/node_modules/
+.env
+Restart/.env

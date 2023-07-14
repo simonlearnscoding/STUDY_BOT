@@ -1,23 +1,29 @@
-# Base image with Python and Node.js
-FROM nikolaik/python-nodejs:python3.9-nodejs14
+# Base image with Python
+FROM python:3.9-buster
 
-RUN apt-get update && \
-    apt-get install -y default-mysql-client
+# Install Node.js
+RUN apt-get update -y --fix-missing && \
+    apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install -y nodejs
+
+RUN apt-get update -y --fix-missing && \
+    apt-get install -y mariadb-client
+
 # Set work directory in Docker
 WORKDIR /app
 
-# Install Python requirements
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Install Prisma and generate Prisma client
 COPY package.json .
 COPY ./prisma ./prisma
 RUN npm install prisma
 RUN npx prisma generate
 
-# Copy the rest of the application
 COPY . .
 
-# Run the Python script
 CMD ["python", "main.py"]
+
+
+
