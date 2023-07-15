@@ -2,10 +2,10 @@
 import asyncio
 import sys
 import os
-import modules.leaderboard_interface
+# import modules.leaderboard_interface
 print(os.getcwd())
-from modules.session_tracking.session_to_database import session_to_database
-from modules.session_tracking.database_queries import queriess as db
+# from modules.session_tracking.session_to_database import session_to_database
+# from modules.session_tracking.database_queries import queriess as db
 print(sys.executable)
 from setup.bot_instance import bot, token
 from bases.event_manager import event_manager

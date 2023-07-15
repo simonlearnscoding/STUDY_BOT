@@ -1,9 +1,7 @@
-from utils.time import get_start_end
 from collections import defaultdict
-from bases.connector import create_query
+from djangotest import create_query
 from utils.time import time_difference
 # from cogs.leaderboard.filter import Filter_Manager
-from bases.state_manager import SingletonFactoryManager
 from setup.bot_instance import bot
 from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 
@@ -86,64 +84,6 @@ class utils:
         # Calculate how many percent of time have been filled in each segment
         segment_percentages = {i: round(value / 900 * 100, 2) for i, value in user_segments.items()}
         return segment_percentages
-    # async def sum_and_format(self, input_array):
-    #     #TODO: its giving me more than top 10 I need to change that
-    #     user_durations = defaultdict(int)
-    #     user_status = defaultdict(bool)  # dictionary to track user status
-    #     user_nicknames = {}  # dictionary to store user nicknames
-    #     user_logs = defaultdict(list) # New dictionary to store user logs
-    #     segments = self.initialize_user_segments()
-    #
-    #     #TODO: I should probably add an array of join time an length for later reference to do cool stuff
-    #     for log in input_array:
-    #         user_id = log.userId
-    #         duration = log.duration
-    #         if log.nick is not None:
-    #             user_nick = log.nick
-    #         else:
-    #             user_nick = f"User {user_id}"
-    #
-    #         user_durations[user_id] += duration
-    #         user_nicknames[user_id] = user_nick  # Store the user_nick
-    #         if log.status == "ONGOING":
-    #             user_status[user_id] = True
-    #         # Add log to user_logs
-    #         segment_index = self.get_segment_index(log.joinedAt)
-    #         segments = self.add_duration_to_segments(segments, segment_index, log.duration)
-    #         user_logs[user_id].append({"joinedAt": log.joinedAt, "duration": duration})
-    #
-    #     output_array = []
-    #     for user_id, duration in user_durations.items():
-    #         online = user_status[user_id]
-    #
-    #         # Get the user_nick from the user_nicknames dictionary
-    #         user_nick = user_nicknames[user_id]
-    #         avatar_url = await self.get_avatar(user_id)
-    #         # Convert duration to hours, minutes, and seconds
-    #         hours, remainder = divmod(duration, 3600)
-    #         minutes, seconds = divmod(remainder, 60)
-    #         segments = self.calculate_segment_percentage(segments)
-    #         output_array.append(
-    #             {
-    #                 "nick": user_nick,
-    #                 "hours": hours,
-    #                 "minutes": minutes,
-    #                 "seconds": seconds,
-    #                 "online": online,
-    #                 "avatar": avatar_url,
-    #                 "user_logs": user_logs,
-    #                 "segments" : segments
-    #             }
-    #         )
-    #
-    #     # Sort the output_array by duration in descending order
-    #     sorted_output_array = sorted(
-    #         output_array,
-    #         key=lambda x: (x["hours"], x["minutes"], x["seconds"]),
-    #         reverse=True,
-    #     )[:10]
-    #
-    #     return sorted_output_array
 
     async def sum_and_format(self, input_array):
         user_durations = defaultdict(int)

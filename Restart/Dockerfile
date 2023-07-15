@@ -1,29 +1,21 @@
-# Base image with Python
-FROM python:3.9-buster
 
-# Install Node.js
-RUN apt-get update -y --fix-missing && \
-    apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get install -y nodejs
 
-RUN apt-get update -y --fix-missing && \
-    apt-get install -y mariadb-client
 
-# Set work directory in Docker
+# Pull base image
+FROM python:3.10
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
 WORKDIR /app
 
-COPY requirements.txt .
+# Install dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-COPY package.json .
-COPY ./prisma ./prisma
-RUN npm install prisma
-RUN npx prisma generate
-
-COPY . .
-
+# Copy project
+COPY . /app/
 CMD ["python", "main.py"]
-
-
-
