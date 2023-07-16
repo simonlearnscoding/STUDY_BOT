@@ -29,7 +29,7 @@ def getActivity(id):
         print(e)
         return None
 
-
+#TODO: this should probably be made into DB models
 class defaultRewards:
     def __init__(self):
         self.VC = (1,)

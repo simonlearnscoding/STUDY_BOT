@@ -1,50 +1,19 @@
 from collections import defaultdict
-from djangotest import create_query
+# from djangotest import queries
 from utils.time import time_difference
-# from cogs.leaderboard.filter import Filter_Manager
 from setup.bot_instance import bot
 from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
-
-
+from djangoproject.spqrapp.models import *
 class DatasetManager(LifeCycleManager):
     def __init__(self):
         self.instance_class = Dataset
         super().__init__()
 
-    """
-    this gets triggered when the first lb 
-    instance of one filter 
-    gets created
-    """
-    #TODO: on bot ready I need to remove all active entries that are unrealistically old
     async def _created_instance_filter(self, data):
-        """
-        set filter name as key and create the object
-        """
+        """ set filter name as key and create the object """
         key = data.filter
         await super().create(data, key)
 
-
-
-class queries:
-    async def get_active(self, filter):
-        filter_copy = filter.copy()
-        filter_copy["AND"][0] = {"status": "ONGOING"}
-        return await create_query(
-            "activitylog",
-            "find_many",
-            where=filter_copy,
-        )
-
-    async def get_completed(self, filter):
-        filter_copy = filter.copy()
-        #TODO: I need to test if it actually only gets the entries from within the timeframe
-        filter_copy["AND"][0] = {"status": "COMPLETED"}
-        return await create_query(
-            "activitylog",
-            "find_many",
-            where=filter_copy,
-        )
 
 class utils:
     def initialize_user_segments(self):
@@ -113,7 +82,7 @@ class utils:
         for user_id, duration in user_durations.items():
             online = user_status[user_id]
             user_nick = user_nicknames[user_id]
-            avatar_url = await self.get_avatar(user_id)
+            avatar_url = await self.get_avatar_url(user_id)
             # Convert duration to hours, minutes, and seconds
             hours, remainder = divmod(duration, 3600)
             minutes, seconds = divmod(remainder, 60)
@@ -140,15 +109,7 @@ class utils:
 
         return sorted_output_array
 
-
-
-
-
-
-
-
-
-    async def get_avatar(self, member_id):
+    async def get_avatar_url(self, member_id):
         guild = bot.get_guild(789814373434654731) #TODO: refactor: guild should probably just be fetched once
         member = guild.get_member(member_id)
 
@@ -166,21 +127,14 @@ class utils:
             ongoing_arr.append(self.calculate_duration(entry))
         return ongoing_arr
 
-
     async def calculate_update(self):
         all_entries = self.complete + self.get_active_with_duration(self.ongoing)
         return await self.sum_and_format(all_entries)
 
 
-    async def get_data(self):
-        try:
-            self.ongoing = await self.get_active(self.filter)
-            self.complete = await self.get_completed(self.filter)
-        except Exception as e:
-            print(e)
 
 
-class Dataset(queries, utils):
+class Dataset(utils):
     def __init__(self, data, manager):
         self.manager = manager
         self.name = "dataset"
@@ -190,12 +144,6 @@ class Dataset(queries, utils):
 
     async def _one_minute_passed(self, time):
         await self.update_active_entries_timing()
-
-    # async def _destroyed_instance_filter(self, instance):
-    #     if instance.key == self.key:
-    #         await self.manager.destroy(self)
-    # async def _any_voice_state_update(self, data):
-    #     await self.update_dataset()
 
     async def _updated_filter(self, filter):
         if filter.key == self.key:
@@ -212,8 +160,18 @@ class Dataset(queries, utils):
         await self.manager.event_manager.publish("_updated_dataset", self)
 
 
+    async def get_data(self):
 
-    # self.calculate_update()
+        """
+        I have to wrap the fetches into a sync_to_async because
+        Django does not support async operations
+        """
+        try:
+            self.ongoing = await ActivityLog.object.get_all_ongoing()
+            self.complete = await ActivityLog.object.get_all_completed()
+        except Exception as e:
+            print(e)
 
-# class lb_data(queries, utils):
+
+
 

@@ -148,7 +148,7 @@ class ImageClass:
 
         ROW_HEIGHT = 80
         TIMELINE_HEIGHT = 60  # Height for the timeline row (increased for more space)
-        IMAGE_HEIGHT = ROW_HEIGHT * len(data) + TIMELINE_HEIGHT + 20  # Add space for the timeline row
+        IMAGE_HEIGHT = 880  # Set a fixed value for the image height
         IMAGE_WIDTH = int(IMAGE_HEIGHT * 4 / 3)
         PADDING = 40
         SEGMENTS_PER_HOUR = 4  # Modify this to match your settings

@@ -1,7 +1,8 @@
 
 from django.db import models
 from django.utils import timezone
-
+from djangoproject.spqrapp.custom_managers.user_manager import UserManager
+from djangoproject.spqrapp.custom_managers.activity_session_manager import ActivityLogManager, SessionManager
 class SessionStatus(models.TextChoices):
     ONGOING = 'ONGOING'
     COMPLETED = 'COMPLETED'
@@ -13,7 +14,9 @@ class Pillar(models.TextChoices):
 
 class User(models.Model):
     name = models.CharField(max_length=255)
+    nick = models.CharField(max_length=255, default="no nick")
     filter = models.CharField(max_length=255, blank=True, null=True)
+    object = UserManager()
 
 class ActivityType(models.Model):
     name = models.CharField(max_length=255)
@@ -34,6 +37,7 @@ class Session(models.Model):
     nick = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=255, choices=SessionStatus.choices, default=SessionStatus.ONGOING)
     duration = models.IntegerField(default=0)
+    object = SessionManager()
 
 class ActivityLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activity_logs')
@@ -48,6 +52,7 @@ class ActivityLog(models.Model):
     status = models.CharField(max_length=255, choices=SessionStatus.choices, default=SessionStatus.ONGOING)
     activity_type = models.ForeignKey(ActivityType, on_delete=models.SET_NULL, blank=True, null=True)
     vc_type = models.ForeignKey(VCType, on_delete=models.SET_NULL, blank=True, null=True)
+    object = ActivityLogManager()
 
 class UserLevel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_levels')

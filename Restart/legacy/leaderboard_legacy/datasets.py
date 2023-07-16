@@ -13,7 +13,7 @@ class Dataset_Data_Manager(SingletonFactoryManager):
     #TODO: call it every time someone joins or leaves vc
     async def set_data(self):
         for dataset in self.instances:
-            dataset.get_data()
+            await dataset.get_data()
 
 
 class queries:

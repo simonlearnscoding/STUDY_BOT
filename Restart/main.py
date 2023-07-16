@@ -2,15 +2,22 @@
 import asyncio
 import sys
 import os
-# import modules.leaderboard_interface
 print(os.getcwd())
-# from modules.session_tracking.session_to_database import session_to_database
 # from modules.session_tracking.database_queries import queriess as db
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'djangoproject.myproject.settings'
+
+import django
+django.setup()
 print(sys.executable)
 from setup.bot_instance import bot, token
 from bases.event_manager import event_manager
 from Cogs.time_passed import TimeEvents
 # Load the cogs
+from modules.session_tracking.sessioneventhandler import session_to_database
 extensions = [
     "Cogs.session_tracking",
     "Cogs.time_events",
