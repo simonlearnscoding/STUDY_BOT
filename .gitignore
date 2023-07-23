@@ -3,3 +3,4 @@ js/node_modules/
 .env
 main-code/.env
 legacy
+__pycache__
