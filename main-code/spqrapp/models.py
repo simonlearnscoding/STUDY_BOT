@@ -1,8 +1,12 @@
 
+import os
+
+print(os.getcwd()) 
+
 from django.db import models
 from django.utils import timezone
-from djangoproject.spqrapp.custom_managers.user_manager import UserManager
-from djangoproject.spqrapp.custom_managers.activity_session_manager import ActivityLogManager, SessionManager
+from spqrapp.custom_managers.user_manager import UserManager
+from spqrapp.custom_managers.activity_session_manager import ActivityLogManager, SessionManager
 class SessionStatus(models.TextChoices):
     ONGOING = 'ONGOING'
     COMPLETED = 'COMPLETED'

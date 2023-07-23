@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class SpqrappConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "djangoproject.spqrapp"
+    name = "spqrapp"
