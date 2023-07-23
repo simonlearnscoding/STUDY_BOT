@@ -43,7 +43,7 @@ class BaseLogManager(models.Manager):
             logs = self.filter(status="ONGOING")
             for log in logs:
                 log.status = "COMPLETED"
-                log.left_at = datetime.now()
+                log.left_at = datetime.now(gmt2)
                 log.duration = (log.left_at - log.joined_at).total_seconds()
                 await sync_to_async(log.save)()
             return logs
