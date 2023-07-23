@@ -1,6 +1,6 @@
 import utils.Conditionals as cnd
 from bases.event_manager import event_manager
-
+from djangoproject.spqrapp.models import User
 from discord.ext import commands
 
 # from Settings.main_settings import bot
@@ -19,7 +19,8 @@ class user_vc_events(commands.Cog):
         try:
             if self.excluding_condition_is_met(before, after, member):
                 return
-
+            # TODO: test
+            member = await User.object.get_or_create_user(member) # fetch the user from DB
             if cnd.user_joins_tracking_channel(before, after):
                 await self.event_manager.publish('_user_joins_tracking_channel', {"member": member, "state": after})
                 await self.event_manager.publish('_any_voice_state_update', {"member": member})

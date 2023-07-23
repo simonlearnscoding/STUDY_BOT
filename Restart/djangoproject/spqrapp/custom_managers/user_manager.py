@@ -1,27 +1,34 @@
 from django.db import models
+from django.apps import apps
 from asgiref.sync import sync_to_async
 from django.core.exceptions import ObjectDoesNotExist
+
+
 class UserManager(models.Manager):
 
+    async def get_user_filter(self, data):
+        #TODO: Test this too
+        default = "today-study-exclude_no_cam"
+        user = await self.get_or_create_user(data["member"])
+        if user.filter is None:
+            return default
+        else:
+            return user.filter
+    def remove_emojis(self, data):
+        if not data:
+            return data
+        if not isinstance(data, str):
+            return data
+        return ''.join(c for c in data if c <= '\uFFFF')
     async def get_or_create_user(self, member):
+        User = apps.get_model('spqrapp', 'User')
         data = {
             "id": member.id,
-            "name": member.name,
-            "nick": member.nick
+            "name": self.remove_emojis(member.name),
+            "nick": self.remove_emojis(member.nick) if member.nick else self.remove_emojis(member.name)
         }
-        all_users = await self.get_all()
         try:
-            user = await sync_to_async(self.get, thread_sensitive=True)(**data)
-        except self.model.DoesNotExist:
-            try:
-                user = await sync_to_async(self.create, thread_sensitive=True)(**data)
-            except Exception as e:
-                print(e)
-        except self.model.MultipleObjectsReturned:
-            users = await sync_to_async(self.filter, thread_sensitive=True)(**data)
-            user = users[0]
-            for extra_user in users[1:]:
-                await sync_to_async(extra_user.delete, thread_sensitive=True)()
+            user, created = await sync_to_async(User.object.get_or_create, thread_sensitive=True)(**data)
         except Exception as e:
             print(e)
         return user
@@ -43,8 +50,9 @@ class UserManager(models.Manager):
             print(e)
 
     async def change_user_filter(self, member, filter):
+        #TODO: Test
         try:
-            user = self.get(id=int(member.id))
+            user = await self.get_or_create_user(member)
             user.filter = filter
             await sync_to_async(user.save)()
         except Exception as e:

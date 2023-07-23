@@ -22,15 +22,15 @@ def time_difference(start):
 
 
 def get_start_end(timeframe):
-    gmt_plus_one = pytz.timezone("etc/gmt-1")
-    now = datetime.now(gmt_plus_one)
+    gmt_plus_two = pytz.timezone("Etc/GMT-2")
+    now = datetime.now(gmt_plus_two)
+    [start, end] = [None, now]  # end is always set as now timestamp
 
-    [start, end] = [None, None]
     if timeframe == "today":
-        start = datetime.combine(now.date(), time(0, 0, tzinfo=gmt_plus_one))
-        end = start + timedelta(days=1)
-    elif timeframe == "week":
-        start_of_week = now - timedelta(days=now.weekday())
-        end_of_week = start_of_week + timedelta(days=7)
+        start = datetime.combine(now.date(), time(0, 0, tzinfo=gmt_plus_two))
+    elif timeframe == "this_week":
+        start = (now - timedelta(days=now.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+    elif timeframe == "this_month":
+        start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
     return {"start": start, "end": end}

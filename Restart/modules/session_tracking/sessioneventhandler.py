@@ -15,12 +15,10 @@ class SessionActions:
     async def changed_type_of_tracking(self, data):
         member = data["member"]
         state = data["state"]
-        #TODO: Test
-
-        # await db.complete_activity(member, "activitylog")
-        await ActivityLog.object.complete_log(member)
+        log = await ActivityLog.object.complete_log(member)
         # TODO: I should be able to just get the session from the activity log actually
         session = await Session.object.get_member_ongoing_log(member)
+        # session2 = log['session']
         # session = await db.get_ongoing_session(member)
         # await db.create_activity_log(member, state, session.id)
         await ActivityLog.object.create_activity_log(member, state, session)
@@ -37,19 +35,13 @@ class SessionActions:
     async def create_new_session(self, data):
         member = data["member"]
         after = data["state"]
-        #TODO: Test
         try:
-            # session = await db.create_session_log(member, after)
-            # activity = await db.create_activity_log(member, after, session.id)
             session = await Session.object.create_session_log(member, after)
             activity = await ActivityLog.object.create_activity_log(member, after, session)
         except Exception as e:
             print(e)
     async def end_session(self, member):
         #TODO: Test
-
-        # await db.complete_activity(member, "activitylog")
-        # await db.complete_activity(member, "session")  # TODO TEST
         await ActivityLog.object.complete_log(member)
         await Session.object.complete_log(member)
 
@@ -71,10 +63,8 @@ class SessionActions:
         members_in_voice = await self.get_all_voice()
         for member in members_in_voice:
             data = {}
-            data["member"] = member
-            data["state"] = member.voice
             data["member"] = await User.object.get_or_create_user(member)
-            # await self.create_user_if_not_in_database(member)
+            data["state"] = member.voice
             await self.create_new_session(data)
 
 

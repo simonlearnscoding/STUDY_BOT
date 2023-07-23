@@ -16,6 +16,7 @@ async def get_user(member):
         print(e)
 
 async def change_user_filter(member, filter):
+    #TODO: I HAVE TO REPLACE THIS WITH
     where = {"id": int(member.id)}
     data = {"filter": filter}
     try:

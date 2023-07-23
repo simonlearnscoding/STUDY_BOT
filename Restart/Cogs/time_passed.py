@@ -1,16 +1,10 @@
 import asyncio
-from datetime import datetime, time, timedelta, timezone
-
+from asgiref.sync import sync_to_async
+from djangoproject.spqrapp.models import Switches
 from modules.leaderboard_interface.lifecycle_manager import EventSubscriber
-from modules.session_tracking.database_queries.queriess import (create_object,
-                                create_query,
-                                                                delete_all,
-                                                                get_all)
 from utils.time import *
 from setup.bot_instance import bot
-
-cet_timezone = pytz.timezone("CET")
-
+gmt2_timezone = pytz.timezone("Etc/GMT-2")
 
 class checkTime(EventSubscriber):
     def __init__(self):
@@ -35,6 +29,23 @@ class checkTime(EventSubscriber):
             "_start_of_month": "month",
         }
 
+    async def update_or_create_switch(self, switch_name, timestamp):
+        #TODO: Test
+        updated = await sync_to_async(Switches.objects.filter(name=switch_name).update, thread_sensitive=True)( switch=timestamp)
+        if updated:
+            print(f"Updated {switch_name} to {timestamp}")
+        else:
+            # If no switch was updated, create a new one
+            print(f"No entries found for {switch_name}, creating new entry...")
+            new_switch = Switches.objects.create(name=switch_name, switch=timestamp)
+            print(f"Created new entry for {switch_name} with timestamp {timestamp}")
+
+        # Print all switches
+        all_switches = Switches.objects.all()
+        for switch in all_switches:
+            print(switch.name, switch.switch)
+
+        return updated
     async def check_events(self):
         """
         this function runs at every  start of the minute
@@ -42,12 +53,12 @@ class checkTime(EventSubscriber):
         If this is the case it will fire the  corresponding event
         for other classes to react to
 
-        then it will up date the time where that event has last been
+        then it will update the time, where that event has last been
         fired. This is needed for other safety checks.
         If for example the last time that the hourly event has been fired is more
         than an hour ago it means something went wrong and I can counteract
         """
-        timeStamp = datetime.now(cet_timezone)  # calculate timestamp here
+        timeStamp = datetime.now(gmt2_timezone)  # calculate timestamp here
         for event, message in self.events.items():
             if event(timeStamp):
                 await self.publish(message, timeStamp)
@@ -61,18 +72,8 @@ class checkTime(EventSubscriber):
         if message == "_fifteen_minutes_passed":
             return
 
-        switchName = self.event_to_name[message]
-        where = {"name": switchName}
-        data = {"switch": timeStamp, "name": switchName}
-        update = await create_query("switches", "update_many", where=where, data=data)
-        print(f"updated {switchName} to {timeStamp}")
-        if update == 0:
-            print(f"No entries found for {switchName}, creating new entry...")
-            # Here, you will need to replace "create_entry" with the actual function name to create a new entry in your database
-            create = await create_query("switches", "create", data=data)
-            print(await get_all("switches"))
-            print(f"Created new entry for {switchName} with timestamp {timeStamp}")
-        return update
+        switch_name = self.event_to_name[message]
+        return self.update_or_create_switch(switch_name, timeStamp)
 
     def is_specific_minute(self, timeStamp, minutes):
         """check if it is currently a specific time"""
@@ -118,7 +119,7 @@ class TimeEvents(checkTime):
         make sure that the  function will never skip
         a minute
         """
-        now = datetime.now(cet_timezone)
+        now = datetime.now(gmt2_timezone)
         seconds_until_next_minute = 60 - now.second
         await asyncio.sleep(seconds_until_next_minute)
 
@@ -137,9 +138,9 @@ class TimeEvents(checkTime):
 
 
     async def get_switch(self, name):
-        where = {"name": name}
-        result = await create_query("switches", "find_first", where=where)
-        return result
+        #TODO: Test
+        switch = await sync_to_async(Switches.objects.filter(name=name).first, thread_sensitive=True)()
+        return switch
 
     def calculate_time_passed(self, timestamp):
         time_passed = time_difference(timestamp)

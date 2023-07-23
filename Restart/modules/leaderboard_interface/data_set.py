@@ -1,18 +1,25 @@
 from collections import defaultdict
-# from djangotest import queries
+from copy import deepcopy
 from utils.time import time_difference
 from setup.bot_instance import bot
 from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 from djangoproject.spqrapp.models import *
+from django.db.models import Q
+from modules.leaderboard_interface.filter_strategy_pattern import FilterManager
+from modules.leaderboard_interface.image_refactored_20_6 import ImageCreator
+
 class DatasetManager(LifeCycleManager):
     def __init__(self):
         self.instance_class = Dataset
         super().__init__()
+        self.image = ImageCreator()
+        self.filter_manager = FilterManager()
 
-    async def _created_instance_filter(self, data):
-        """ set filter name as key and create the object """
-        key = data.filter
-        await super().create(data, key)
+    async def _bot_ready(self, bot):
+        for pattern in self.filter_manager.filter_patterns:
+            await super().create(key=pattern, data=pattern)
+
+
 
 
 class utils:
@@ -55,6 +62,7 @@ class utils:
         return segment_percentages
 
     async def sum_and_format(self, input_array):
+        # Chek if the data is just for today
         user_durations = defaultdict(int)
         user_status = defaultdict(bool)  # dictionary to track user status
         user_nicknames = {}  # dictionary to store user nicknames
@@ -62,7 +70,7 @@ class utils:
         user_segments = defaultdict(self.initialize_user_segments)  # New dictionary to store user segments
 
         for log in input_array:
-            user_id = log.userId
+            user_id = log.user_id
             duration = log.duration
             if log.nick is not None:
                 user_nick = log.nick
@@ -73,10 +81,13 @@ class utils:
             user_nicknames[user_id] = user_nick  # Store the user_nick
             if log.status == "ONGOING":
                 user_status[user_id] = True
-            # Add log to user_logs
-            segment_index = self.get_segment_index(log.joinedAt)
-            user_segments[user_id] = self.add_duration_to_segments(user_segments[user_id], segment_index, log.duration)
-            user_logs[user_id].append({"joinedAt": log.joinedAt, "duration": duration})
+
+            # Use the boolean variable for the check
+            if self.timeframe == 'today':
+                segment_index = self.get_segment_index(log.joined_at)
+                user_segments[user_id] = self.add_duration_to_segments(user_segments[user_id], segment_index,
+                                                                       log.duration)
+            user_logs[user_id].append({"joinedAt": log.joined_at, "duration": duration})
 
         output_array = []
         for user_id, duration in user_durations.items():
@@ -86,7 +97,7 @@ class utils:
             # Convert duration to hours, minutes, and seconds
             hours, remainder = divmod(duration, 3600)
             minutes, seconds = divmod(remainder, 60)
-            segments = self.calculate_segment_percentage(user_segments[user_id])
+            segments = self.calculate_segment_percentage(user_segments[user_id]) if self.timeframe == 'today' else []
             output_array.append(
                 {
                     "nick": user_nick,
@@ -117,7 +128,7 @@ class utils:
         avatar_url = str(member.display_avatar)
         return avatar_url
     def calculate_duration(self, entry):
-        new_duration = time_difference(entry.joinedAt)
+        new_duration = time_difference(entry.joined_at)
         setattr(entry, "duration", new_duration)
         return entry
 
@@ -135,29 +146,59 @@ class utils:
 
 
 class Dataset(utils):
-    def __init__(self, data, manager):
+    def __init__(self, filter_name, manager):
         self.manager = manager
         self.name = "dataset"
         # self.filter = data.manager.instances
-        self.key = data.filter
-        self.filter = data.where
+        self.image = self.manager.image
+        self.filter_manager = self.manager.filter_manager
+        self.filter_pattern = self.manager.filter_manager.filter_patterns[filter_name]
+        self.event_manager = self.manager.event_manager
+        self.key = filter_name
+        self.lb_instances = {}
+        self.timeframe = self.filter_pattern['date_range']
 
+    """ 
+    I had to find a tradeoff between fast reactivity
+    and not creating an unneccessary amount of images
+    so every view will by default be updated every
+    15 minutes.
+
+    when a user is currently viewing one of the views it will be updated
+    every minute
+    """
     async def _one_minute_passed(self, time):
-        await self.update_active_entries_timing()
+        if len(self.lb_instances) > 0:
+            await self.update_active_entries_timing()
+            print(f'updated {self.key}')
+        else:
+            print('no one here')
+    async def _fifteen_minutes_passed(self, time):
+        if len(self.lb_instances) == 0:
+            await self.update_active_entries_timing()
+        else:
+            print('already updated')
 
-    async def _updated_filter(self, filter):
-        if filter.key == self.key:
-            await self.update_dataset()
     async def create(self, data):
         await self.update_dataset()
 
+    """
+    the difference between update_active and
+    update_dataset is that update_dataset 
+    also fetches the data again
+    """
     async def update_dataset(self):
+        print(self.lb_instances)
         await self.get_data()
         self.data = await self.calculate_update()
-        await self.manager.event_manager.publish("_updated_dataset", self)
+        self.image_url = await self.image.create_image(self.data, self.timeframe)
+        await self.manager.event_manager.publish("_updated_image", self)
+
+
     async def update_active_entries_timing(self):
         self.data = await self.calculate_update()
-        await self.manager.event_manager.publish("_updated_dataset", self)
+        self.image_url = await self.image.create_image(self.data, self.timeframe)
+        await self.manager.event_manager.publish("_updated_image", self)
 
 
     async def get_data(self):
@@ -167,8 +208,7 @@ class Dataset(utils):
         Django does not support async operations
         """
         try:
-            self.ongoing = await ActivityLog.object.get_all_ongoing()
-            self.complete = await ActivityLog.object.get_all_completed()
+            self.ongoing, self.complete = await self.manager.filter_manager.get_data(self)
         except Exception as e:
             print(e)
 

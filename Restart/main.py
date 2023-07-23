@@ -18,6 +18,7 @@ from bases.event_manager import event_manager
 from Cogs.time_passed import TimeEvents
 # Load the cogs
 from modules.session_tracking.sessioneventhandler import session_to_database
+from djangoproject.spqrapp.models import *
 extensions = [
     "Cogs.session_tracking",
     "Cogs.time_events",
@@ -39,7 +40,8 @@ async def main():
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
     bot.ready = True
-
+    # await ActivityLog.object.delete_all()
+    # await Session.object.delete_all()
     await event_manager.publish("_bot_ready", bot)
     channel = bot.get_channel(int(834144065133740102))
 
