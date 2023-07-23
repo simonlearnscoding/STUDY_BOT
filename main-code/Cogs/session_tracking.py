@@ -1,6 +1,6 @@
 import utils.Conditionals as cnd
 from bases.event_manager import event_manager
-from djangoproject.spqrapp.models import User
+from spqrapp.models import User
 from discord.ext import commands
 
 # from Settings.main_settings import bot

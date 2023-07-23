@@ -1,6 +1,6 @@
 import asyncio
 from asgiref.sync import sync_to_async
-from djangoproject.spqrapp.models import Switches
+from spqrapp.models import Switches
 from modules.leaderboard_interface.lifecycle_manager import EventSubscriber
 from utils.time import *
 from setup.bot_instance import bot

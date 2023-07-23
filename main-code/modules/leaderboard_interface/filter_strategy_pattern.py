@@ -1,7 +1,7 @@
 from asgiref.sync import async_to_sync
 from django.db.models import Q
 from copy import deepcopy
-from djangoproject.spqrapp.models import *
+from spqrapp.models import *
 from utils.time import get_start_end
 
 class QueryBuilder:

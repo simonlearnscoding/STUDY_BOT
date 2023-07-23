@@ -8,7 +8,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'djangoproject.myproject.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'myproject.settings'
 
 import django
 django.setup()
@@ -18,7 +18,7 @@ from bases.event_manager import event_manager
 from Cogs.time_passed import TimeEvents
 # Load the cogs
 from modules.session_tracking.sessioneventhandler import session_to_database
-from djangoproject.spqrapp.models import *
+from spqrapp.models import *
 extensions = [
     "Cogs.session_tracking",
     "Cogs.time_events",

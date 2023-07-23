@@ -3,7 +3,7 @@ from copy import deepcopy
 from utils.time import time_difference
 from setup.bot_instance import bot
 from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
-from djangoproject.spqrapp.models import *
+from spqrapp.models import *
 from django.db.models import Q
 from modules.leaderboard_interface.filter_strategy_pattern import FilterManager
 from modules.leaderboard_interface.image_refactored_20_6 import ImageCreator

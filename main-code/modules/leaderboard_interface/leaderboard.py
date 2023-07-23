@@ -4,7 +4,7 @@ from modules.leaderboard_interface.lifecycle_manager import LifeCycleManager
 from setup.bot_instance import bot
 import discord
 from discord.ui import Button, View
-from djangoproject.spqrapp.models import User
+from spqrapp.models import User
 
 class LeaderboardManager(LifeCycleManager):
     def __init__(self, datasets):

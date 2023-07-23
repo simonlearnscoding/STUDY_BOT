@@ -1,7 +1,7 @@
 from bases.event_manager import event_manager
 from setup.bot_instance import bot
 from modules.session_tracking.activities import getActivity
-from djangoproject.spqrapp.models import *
+from spqrapp.models import *
 
 class SessionActions:
     def __init__(self, event_manager=event_manager):
