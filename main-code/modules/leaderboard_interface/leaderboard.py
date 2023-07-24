@@ -244,13 +244,13 @@ class MyButton(discord.ui.Button):
 
     async def callback(self, interaction: discord.Interaction):
         try:
+            await interaction.response.defer()
             self.updated_filter = False
             values = self.lb.filter.split('-')
             values[self.i] = self.custom_id
             new_filter = '-'.join(values)
            #TODO: I have to change only one thing not all but how...
             await self.lb.change_user_filter(new_filter)
-            await interaction.response.defer()
             self.updated_filter = True
         except Exception as e:
             print(e)
