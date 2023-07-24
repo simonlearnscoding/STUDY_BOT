@@ -161,16 +161,16 @@ class Leaderboard():
     async def create_private_channel(self):
         member = self.member
         # uncomment this if you want to only make the lb show up to trusted members!
-        allowed_members = [
-            366276958566481920,
-            248433538938961932,
-            476139043768500227,
-            226720984936218624,
-            508711391826280451
-        ]
-        # TODO REMOVE THIS WHEN IM DONE WITH TESTING
-        if member.id not in allowed_members:
-            return
+        # allowed_members = [
+        #     366276958566481920,
+        #     248433538938961932,
+        #     476139043768500227,
+        #     226720984936218624,
+        #     508711391826280451
+        # ]
+        # # TODO REMOVE THIS WHEN IM DONE WITH TESTING
+        # if member.id not in allowed_members:
+        #     return
 
         guild = self.bot.get_guild( 789814373434654731 )  # LATER: I will need to make this scalable if I want to use my bot for multiple servers
         channel_name = f"{member.name}s leaderboard".lower().replace(" ", "-")
