@@ -38,8 +38,8 @@ async def main():
 async def on_ready():
     print(f"Logged in as {bot.user.name}")
     bot.ready = True
-    # await ActivityLog.object.delete_all()
-    # await Session.object.delete_all()
+    await ActivityLog.object.delete_all()
+    await Session.object.delete_all()
     await event_manager.publish("_bot_ready", bot)
     channel = bot.get_channel(int(834144065133740102))
 
