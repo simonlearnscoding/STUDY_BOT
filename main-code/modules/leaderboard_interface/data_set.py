@@ -1,4 +1,5 @@
 from collections import defaultdict
+import pytz
 from copy import deepcopy
 from utils.time import time_difference
 from setup.bot_instance import bot
@@ -32,6 +33,8 @@ class utils:
 
     def get_segment_index(self, joinedAt):
         # Get the hour and minute from the "joinedAt" attribute and convert it to the 15 minute segment index
+        gmt2 = pytz.timezone('Etc/GMT-2')
+        joinedAt = joinedAt.replace(tzinfo=pytz.utc).astimezone(gmt2)
         hour = joinedAt.hour
         minute = joinedAt.minute
         segment_index = hour * 4 + minute // 15
@@ -227,18 +230,25 @@ class Dataset(utils):
     when a user is currently viewing one of the views it will be updated
     every minute
     """
-    async def _one_minute_passed(self, time):
-        if len(self.lb_instances) > 0:
-            await self.update_dataset()
-            print(f'updated {self.key}')
-        else:
-            print('no one here')
-    async def _fifteen_minutes_passed(self, time):
-        if len(self.lb_instances) == 0:
-            await self.update_dataset()
-        else:
-            print('already updated')
+    # async def _one_minute_passed(self, time):
+    #     if len(self.lb_instances) > 0:
+    #         await self.update_dataset()
+    #         print(f'updated {self.key}')
+    #     else:
+    #         print('no one here')
+    # async def _fifteen_minutes_passed(self, time):
+    #     if len(self.lb_instances) == 0:
+    #         await self.update_dataset()
+    #     else:
+    #         print('already updated')
 
+    """
+    UPDATE -
+    Recieving outdated reports feels like a bug I will keep it like this for now """
+
+    async def _one_minute_passed(self, time):
+        await self.update_dataset()
+        print(f'updated {self.key}')
     async def create(self, data):
         await self.update_dataset()
 

@@ -70,6 +70,7 @@ class BaseLogManager(models.Manager):
             for log in logs:
                 await asyncio.sleep(0.1)  # sleep for 500ms because I want to make sure that I won't mess with the db
                 log.status = "COMPLETED"
+                gmt2 = pytz.timezone('Etc/GMT-2')
                 log.left_at = datetime.now(gmt2)
                 log.duration = (log.left_at - log.joined_at).total_seconds()
                 await sync_to_async(log.save, thread_sensitive=True)()
@@ -109,6 +110,7 @@ class ActivityLogManager(BaseLogManager):
         return activity_type
 
     async def create_activity_log(self, member, after, session):
+        gmt2 = pytz.timezone('Etc/GMT-2')
         data = {
             "session": session,
            "activity_type": await self.get_activity_type(after),
@@ -126,6 +128,8 @@ class ActivityLogManager(BaseLogManager):
 
 class SessionManager(BaseLogManager):
     async def create_session_log(self, member, after):
+
+
         data = {
             "activity": act.getActivity(after.channel.id),
             "joined_at": datetime.now(gmt2),
