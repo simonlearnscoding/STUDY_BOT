@@ -1,4 +1,5 @@
 import asyncio
+import math
 import uuid
 import os
 
@@ -209,7 +210,13 @@ class ImageCreator:
         # Get current time
         gmt2_timezone = pytz.timezone("Etc/GMT-2")
         now = datetime.datetime.now(gmt2_timezone)
+        # Round current minutes up to the nearest quarter-hour
+        minutes = math.ceil(now.minute / 15) * 15
+        if minutes >= 60:  # We've rounded up to the next hour
+            minutes = 0
+            now = now + datetime.timedelta(hours=1)
 
+        now = now.replace(minute=minutes, second=0)
         # Convert current time to segments
         current_time_segments = now.hour * 4 + now.minute // (60 // 4)
 
