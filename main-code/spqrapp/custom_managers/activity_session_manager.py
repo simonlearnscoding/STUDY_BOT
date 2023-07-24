@@ -1,10 +1,13 @@
 from datetime import datetime
 from django.apps import apps
+import asyncio
 from django.db import models
 from asgiref.sync import sync_to_async
 import modules.session_tracking.activities as act
 import pytz
 gmt2 = pytz.timezone('Etc/GMT-2')
+import os
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 class BaseLogManager(models.Manager):
 
     async def get_member_ongoing_log(self, user):
@@ -38,14 +41,39 @@ class BaseLogManager(models.Manager):
             print(e)
             return None
 
+    # async def complete_all(self):
+    #     try:
+    #         # await asyncio.sleep(2)
+    #         filter_logs = sync_to_async(self.filter, thread_sensitive=True)
+    #         logs = await filter_logs(status="ONGOING")
+    #
+    #         current_time = datetime.now(gmt2)
+    #         durations = [(current_time - log.joined_at).total_seconds() for log in logs]
+    #         update_logs = sync_to_async(self.filter(status="ONGOING").update)
+    #         await update_logs(
+    #             status="COMPLETED",
+    #             left_at=current_time,
+    #             duration=durations.pop)
+    #         )
+    #         for log in logs:
+    #             print(f'completed log for {log.nick}')
+    #         return logs
+    #     except Exception as e:
+    #         print(e)
+    #         await self.complete_all()
+    #         return None
+
+
     async def complete_all(self):
         try:
-            logs = self.filter(status="ONGOING")
+            logs = await sync_to_async(self.filter)(status="ONGOING")
             for log in logs:
+                await asyncio.sleep(0.1)  # sleep for 500ms because I want to make sure that I won't mess with the db
                 log.status = "COMPLETED"
                 log.left_at = datetime.now(gmt2)
                 log.duration = (log.left_at - log.joined_at).total_seconds()
-                await sync_to_async(log.save)()
+                await sync_to_async(log.save, thread_sensitive=True)()
+                print(f'completed log for {log.nick} : {log.duration}')
             return logs
         except Exception as e:
             print(e)

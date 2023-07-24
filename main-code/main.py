@@ -30,8 +30,6 @@ async def main():
     async with bot:
         for ext in extensions:
             await bot.load_extension(ext)
-        #await db.delete_all_activities()
-        #await db.delete_all_sessions()
         loop = asyncio.get_event_loop()
         await loop.run_until_complete(await bot.start(token))
 

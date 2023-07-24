@@ -50,6 +50,7 @@ class ImageCreator:
                                segments_in_24_hours, timeline_font)
         # Draw a rectangle for every row
         for i, row_data in enumerate(data):
+            print(f"minutes: {row_data['minutes'] }" )
             y_position = i * ROW_HEIGHT + 5 + TIMELINE_HEIGHT  # shift rows down to accommodate timeline
             row_data["y_position"] = y_position
             # Draw a rectangle around the row
