@@ -16,8 +16,10 @@ class DatasetManager(LifeCycleManager):
         self.filter_manager = FilterManager()
 
     async def _bot_ready(self, bot):
-        for pattern in self.filter_manager.filter_patterns:
-            await super().create(key=pattern, data=pattern)
+        pass
+        #TODO: uncomment when Im done here
+        # for pattern in self.filter_manager.filter_patterns:
+        #     await super().create(key=pattern, data=pattern)
 
 
 
@@ -62,63 +64,121 @@ class utils:
         return segment_percentages
 
     async def sum_and_format(self, input_array):
-        # Chek if the data is just for today
-        user_durations = defaultdict(int)
-        user_status = defaultdict(bool)  # dictionary to track user status
-        user_nicknames = {}  # dictionary to store user nicknames
-        user_logs = defaultdict(list)  # New dictionary to store user logs
-        user_segments = defaultdict(self.initialize_user_segments)  # New dictionary to store user segments
+        # Initialize dictionaries to store user-related data
+        user_data = {}
 
+        # First loop: process all logs in the input array
         for log in input_array:
             user_id = log.user_id
             duration = log.duration
-            if log.nick is not None:
-                user_nick = log.nick
-            else:
-                user_nick = f"User {user_id}"
+            user_nick = log.nick if log.nick else f"User {user_id}"
 
-            user_durations[user_id] += duration
-            user_nicknames[user_id] = user_nick  # Store the user_nick
-            if log.status == "ONGOING":
-                user_status[user_id] = True
+            if user_id not in user_data:
+                user_data[user_id] = {
+                    "nick": user_nick,
+                    "durations": 0,
+                    "status": False,
+                    "logs": [],
+                    "segments": self.initialize_user_segments(),
+                    "hours": 0,
+                    "minutes": 0,
+                    "seconds": 0,
+                    "avatar": None,
+                    "online": False
+                }
 
-            # Use the boolean variable for the check
+            user_data[user_id]["durations"] += duration
+            user_data[user_id]["status"] = log.status == "ONGOING"
+            user_data[user_id]["logs"].append({"joinedAt": log.joined_at, "duration": duration})
+
             if self.timeframe == 'today':
                 segment_index = self.get_segment_index(log.joined_at)
-                user_segments[user_id] = self.add_duration_to_segments(user_segments[user_id], segment_index,
-                                                                       log.duration)
-            user_logs[user_id].append({"joinedAt": log.joined_at, "duration": duration})
+                user_data[user_id]["segments"] = self.add_duration_to_segments(user_data[user_id]["segments"],
+                                                                               segment_index, log.duration)
+            print(f'{user_nick} : duration: {user_data[user_id]["durations"]}')
 
-        output_array = []
-        for user_id, duration in user_durations.items():
-            online = user_status[user_id]
-            user_nick = user_nicknames[user_id]
-            avatar_url = await self.get_avatar_url(user_id)
-            # Convert duration to hours, minutes, and seconds
-            hours, remainder = divmod(duration, 3600)
+        # Second loop: compile data for each user
+        for user_id, user_info in user_data.items():
+            user_info["avatar"] = await self.get_avatar_url(user_id)
+            user_info["online"] = user_info["status"]
+            hours, remainder = divmod(user_info["durations"], 3600)
             minutes, seconds = divmod(remainder, 60)
-            segments = self.calculate_segment_percentage(user_segments[user_id]) if self.timeframe == 'today' else []
-            output_array.append(
-                {
-                    "nick": user_nick,
-                    "hours": hours,
-                    "minutes": minutes,
-                    "seconds": seconds,
-                    "online": online,
-                    "avatar": avatar_url,
-                    "user_logs": user_logs[user_id],
-                    "segments": segments
-                }
-            )
+            user_info["hours"] = hours
+            user_info["minutes"] = minutes
+            user_info["seconds"] = seconds
 
-        # Sort the output_array by duration in descending order
+            if self.timeframe == 'today':
+                user_info["segments"] = self.calculate_segment_percentage(user_info["segments"])
+
+        # Sort the user_data dictionary by duration in descending order
         sorted_output_array = sorted(
-            output_array,
+            user_data.values(),
             key=lambda x: (x["hours"], x["minutes"], x["seconds"]),
             reverse=True,
         )[:10]
-
+        for user in sorted_output_array:
+            print(user['nick'], user['minutes'])
         return sorted_output_array
+    # async def sum_and_format(self, input_array):
+    #     # Chek if the data is just for today
+    #     user_durations = defaultdict(int)
+    #     user_status = defaultdict(bool)  # dictionary to track user status
+    #     user_nicknames = {}  # dictionary to store user nicknames
+    #     user_logs = defaultdict(list)  # New dictionary to store user logs
+    #     user_segments = defaultdict(self.initialize_user_segments)  # New dictionary to store user segments
+    #
+    #
+    #     for log in input_array:
+    #         temp_users = {}
+    #         user_id = log.user_id
+    #         duration = log.duration
+    #         if log.nick is not None:
+    #             user_nick = log.nick
+    #         else:
+    #             user_nick = f"User {user_id}"
+    #
+    #         user_durations[user_id] += duration
+    #         user_nicknames[user_id] = user_nick  # Store the user_nick
+    #         if log.status == "ONGOING":
+    #             user_status[user_id] = True
+    #
+    #         # Use the boolean variable for the check
+    #         if self.timeframe == 'today':
+    #             segment_index = self.get_segment_index(log.joined_at)
+    #             user_segments[user_id] = self.add_duration_to_segments(user_segments[user_id], segment_index,
+    #                                                                    log.duration)
+    #         user_logs[user_id].append({"joinedAt": log.joined_at, "duration": duration})
+    #         print(f'{log.nick} : duration: {user_durations[user_id]}')
+    #     output_array = []
+    #     for user in user_durations.keys():
+    #         online = user_status[user_id]
+    #         user_nick = user_nicknames[user_id]
+    #         avatar_url = await self.get_avatar_url(user_id)
+    #         # Convert duration to hours, minutes, and seconds
+    #         hours, remainder = divmod(duration, 3600)
+    #         minutes, seconds = divmod(remainder, 60)
+    #         segments = self.calculate_segment_percentage(user_segments[user_id]) if self.timeframe == 'today' else []
+    #         output_array.append(
+    #             {
+    #                 "nick": user_nick,
+    #                 "hours": hours,
+    #                 "minutes": minutes,
+    #                 "seconds": seconds,
+    #                 "online": online,
+    #                 "avatar": avatar_url,
+    #                 "user_logs": user_logs[user_id],
+    #                 "segments": segments
+    #             }
+    #         )
+    #
+    #     # Sort the output_array by duration in descending order
+    #     sorted_output_array = sorted(
+    #         output_array,
+    #         key=lambda x: (x["hours"], x["minutes"], x["seconds"]),
+    #         reverse=True,
+    #     )[:10]
+    #     print(sorted_output_array)
+    #     return sorted_output_array
 
     async def get_avatar_url(self, member_id):
         guild = bot.get_guild(789814373434654731) #TODO: refactor: guild should probably just be fetched once
@@ -169,13 +229,13 @@ class Dataset(utils):
     """
     async def _one_minute_passed(self, time):
         if len(self.lb_instances) > 0:
-            await self.update_active_entries_timing()
+            await self.update_dataset()
             print(f'updated {self.key}')
         else:
             print('no one here')
     async def _fifteen_minutes_passed(self, time):
         if len(self.lb_instances) == 0:
-            await self.update_active_entries_timing()
+            await self.update_dataset()
         else:
             print('already updated')
 

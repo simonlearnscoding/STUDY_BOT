@@ -100,11 +100,14 @@ class TimeEvents(checkTime):
     def __init__(self):
         super().__init__()
     async def _fifteen_minutes_passed(self, timeStamp):
-        await self.update_if_its_overdue("hour", timeStamp)
+        pass
+        # I AM SKIPPING THE SWITCHES FOR NOW
+        # await self.update_if_its_overdue("hour", timeStamp)
 
     async def _start_of_hour(self, timeStamp):
-        await self.update_if_its_overdue("day", timeStamp)
-        await self.update_if_its_overdue("week", timeStamp)
+        pass
+        # await self.update_if_its_overdue("day", timeStamp)
+        # await self.update_if_its_overdue("week", timeStamp)
 
     async def functions_to_run(self):
         if bot.ready != False:

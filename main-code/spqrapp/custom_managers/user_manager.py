@@ -54,6 +54,6 @@ class UserManager(models.Manager):
         try:
             user = await self.get_or_create_user(member)
             user.filter = filter
-            await sync_to_async(user.save)()
+            await sync_to_async(user.save)() #TODO: I might have to change it here too then
         except Exception as e:
             print(e)

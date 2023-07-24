@@ -57,8 +57,9 @@ class SessionActions:
         crently in a voice channel that is being tracked
         """
         #TODO: Test
-        await Session.object.complete_all()
+
         await ActivityLog.object.complete_all()
+        await Session.object.complete_all()
         # await db.complete_all() # this is from the prisma orm times
         members_in_voice = await self.get_all_voice()
         for member in members_in_voice:
@@ -75,7 +76,7 @@ class SessionEventHandler(SessionActions):
 
     async def _bot_ready(self, bot):
         #TODO: comment this out when you are done
-        await User.object.delete_all()
+        # await User.object.delete_all()
         await self.update_on_restart()
 
     async def _user_changed_type_of_tracking(self, data):
