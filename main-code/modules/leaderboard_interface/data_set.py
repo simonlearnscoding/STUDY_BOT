@@ -18,8 +18,8 @@ class DatasetManager(LifeCycleManager):
     async def _bot_ready(self, bot):
         pass
         #TODO: uncomment when Im done here
-        # for pattern in self.filter_manager.filter_patterns:
-        #     await super().create(key=pattern, data=pattern)
+        for pattern in self.filter_manager.filter_patterns:
+            await super().create(key=pattern, data=pattern)
 
 
 
