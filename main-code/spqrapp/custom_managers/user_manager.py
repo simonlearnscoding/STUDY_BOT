@@ -28,7 +28,7 @@ class UserManager(models.Manager):
             "nick": self.remove_emojis(member.nick) if member.nick else self.remove_emojis(member.name)
         }
         try:
-            user, created = await sync_to_async(User.object.get_or_create, thread_sensitive=True)(**data)
+            user, created = await sync_to_async(User.object.get_or_create, thread_sensitive=True)(id=member.id, defaults=data)
         except Exception as e:
             print(e)
         return user
