@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  web:
+    image: discord-bot
+    build: .
+    command: >
+      bash -c "./wait-for-it.sh db:3306 -- python manage.py migrate &&
+               python main.py"
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db # use db as the hostname
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "3112"
+      MYSQL_DATABASE: "discordjs"
+      MYSQL_USER: "simon"
+      MYSQL_PASSWORD: "3112"
+
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3307:3306"

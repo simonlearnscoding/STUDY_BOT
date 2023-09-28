@@ -1,0 +1,310 @@
+Creating network "study_bot_default" with the default driver
+Building web
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  397.9MB
+Step 1/8 : FROM python:3.10
+ ---> 23e11cf6844c
+Step 2/8 : ENV PYTHONDONTWRITEBYTECODE 1
+ ---> Using cache
+ ---> a41ae1b9bd03
+Step 3/8 : ENV PYTHONUNBUFFERED 1
+ ---> Using cache
+ ---> 8d87f650278a
+Step 4/8 : WORKDIR /app
+ ---> Using cache
+ ---> fd7dde389fa3
+Step 5/8 : COPY requirements.txt /app/
+ ---> Using cache
+ ---> 39e22757b054
+Step 6/8 : RUN pip install --upgrade pip
+ ---> Using cache
+ ---> f28fc682aabe
+Step 7/8 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 125f9db7f1c7
+Step 8/8 : COPY . /app/
+ ---> 466d5bd89f54
+Successfully built 466d5bd89f54
+Successfully tagged discord-bot:latest
+Creating study_bot_db_1 ... 
+Creating study_bot_db_1 ... done
+Creating study_bot_web_1 ... 
+Creating study_bot_web_1 ... done
+Attaching to study_bot_db_1, study_bot_web_1
+[36mdb_1   |[0m 2023-09-28 08:58:16+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 5.7.43-1.el7 started.
+[36mdb_1   |[0m 2023-09-28 08:58:16+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+[36mdb_1   |[0m 2023-09-28 08:58:16+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 5.7.43-1.el7 started.
+[36mdb_1   |[0m 2023-09-28 08:58:16+00:00 [Note] [Entrypoint]: Initializing database files
+[36mdb_1   |[0m 2023-09-28T08:58:16.808577Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+[36mdb_1   |[0m 2023-09-28T08:58:17.000335Z 0 [Warning] InnoDB: New log files created, LSN=45790
+[36mdb_1   |[0m 2023-09-28T08:58:17.035275Z 0 [Warning] InnoDB: Creating foreign key constraint system tables.
+[36mdb_1   |[0m 2023-09-28T08:58:17.090884Z 0 [Warning] No existing UUID has been found, so we assume that this is the first time that this server has been started. Generating a new UUID: 2a1f382b-5ddd-11ee-8d04-0242ac150002.
+[36mdb_1   |[0m 2023-09-28T08:58:17.092179Z 0 [Warning] Gtid table is not ready to be used. Table 'mysql.gtid_executed' cannot be opened.
+[36mdb_1   |[0m 2023-09-28T08:58:17.410170Z 0 [Warning] A deprecated TLS version TLSv1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:17.410188Z 0 [Warning] A deprecated TLS version TLSv1.1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:17.410756Z 0 [Warning] CA certificate ca.pem is self signed.
+[36mdb_1   |[0m 2023-09-28T08:58:17.472787Z 1 [Warning] root@localhost is created with an empty password ! Please consider switching off the --initialize-insecure option.
+[33mweb_1  |[0m /app
+[33mweb_1  |[0m {819680519063207966: 'Study', 834144065133740102: 'Study', 789814373870075931: 'Workout', 790609301911502908: 'Meditation', 793533479476264970: 'Yoga', 820760890093338634: 'Reading', 845241122116075520: 'Chores', 824040394761306192: 'Creative'}
+[33mweb_1  |[0m {'Study': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6ecd150>, 'Workout': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6d15060>, 'Meditation': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6545120>, 'Yoga': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6545450>, 'Reading': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6545420>, 'Chores': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff6545510>, 'Creative': <modules.session_tracking.activities.ActivityCreator object at 0x7f7ff65453f0>}
+[33mweb_1  |[0m Traceback (most recent call last):
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/pymysql/connections.py", line 644, in connect
+[33mweb_1  |[0m     sock = socket.create_connection(
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/socket.py", line 845, in create_connection
+[33mweb_1  |[0m     raise err
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/socket.py", line 833, in create_connection
+[33mweb_1  |[0m     sock.connect(sa)
+[33mweb_1  |[0m ConnectionRefusedError: [Errno 111] Connection refused
+[33mweb_1  |[0m 
+[33mweb_1  |[0m During handling of the above exception, another exception occurred:
+[33mweb_1  |[0m 
+[33mweb_1  |[0m Traceback (most recent call last):
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 282, in ensure_connection
+[33mweb_1  |[0m     self.connect()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 263, in connect
+[33mweb_1  |[0m     self.connection = self.get_new_connection(conn_params)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/base.py", line 247, in get_new_connection
+[33mweb_1  |[0m     connection = Database.connect(**conn_params)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/pymysql/connections.py", line 358, in __init__
+[33mweb_1  |[0m     self.connect()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/pymysql/connections.py", line 711, in connect
+[33mweb_1  |[0m     raise exc
+[33mweb_1  |[0m pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'db' ([Errno 111] Connection refused)")
+[33mweb_1  |[0m 
+[33mweb_1  |[0m The above exception was the direct cause of the following exception:
+[33mweb_1  |[0m 
+[33mweb_1  |[0m Traceback (most recent call last):
+[33mweb_1  |[0m   File "/app/manage.py", line 26, in <module>
+[33mweb_1  |[0m     main()
+[33mweb_1  |[0m   File "/app/manage.py", line 22, in main
+[33mweb_1  |[0m     execute_from_command_line(sys.argv)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/__init__.py", line 446, in execute_from_command_line
+[33mweb_1  |[0m     utility.execute()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/__init__.py", line 440, in execute
+[33mweb_1  |[0m     self.fetch_command(subcommand).run_from_argv(self.argv)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/base.py", line 402, in run_from_argv
+[33mweb_1  |[0m     self.execute(*args, **cmd_options)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/base.py", line 448, in execute
+[33mweb_1  |[0m     output = self.handle(*args, **options)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/base.py", line 96, in wrapped
+[33mweb_1  |[0m     res = handle_func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/commands/migrate.py", line 97, in handle
+[33mweb_1  |[0m     self.check(databases=[database])
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/management/base.py", line 475, in check
+[33mweb_1  |[0m     all_issues = checks.run_checks(
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/checks/registry.py", line 88, in run_checks
+[33mweb_1  |[0m     new_errors = check(app_configs=app_configs, databases=databases)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/core/checks/database.py", line 13, in check_database_backends
+[33mweb_1  |[0m     issues.extend(conn.validation.check(**kwargs))
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/validation.py", line 9, in check
+[33mweb_1  |[0m     issues.extend(self._check_sql_mode(**kwargs))
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/validation.py", line 14, in _check_sql_mode
+[33mweb_1  |[0m     self.connection.sql_mode & {"STRICT_TRANS_TABLES", "STRICT_ALL_TABLES"}
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+[33mweb_1  |[0m     res = instance.__dict__[self.name] = self.func(instance)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/base.py", line 443, in sql_mode
+[33mweb_1  |[0m     sql_mode = self.mysql_server_data["sql_mode"]
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/functional.py", line 57, in __get__
+[33mweb_1  |[0m     res = instance.__dict__[self.name] = self.func(instance)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/base.py", line 399, in mysql_server_data
+[33mweb_1  |[0m     with self.temporary_connection() as cursor:
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/contextlib.py", line 135, in __enter__
+[33mweb_1  |[0m     return next(self.gen)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 694, in temporary_connection
+[33mweb_1  |[0m     with self.cursor() as cursor:
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 323, in cursor
+[33mweb_1  |[0m     return self._cursor()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 299, in _cursor
+[33mweb_1  |[0m     self.ensure_connection()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 281, in ensure_connection
+[33mweb_1  |[0m     with self.wrap_database_errors:
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/utils.py", line 91, in __exit__
+[33mweb_1  |[0m     raise dj_exc_value.with_traceback(traceback) from exc_value
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 282, in ensure_connection
+[33mweb_1  |[0m     self.connect()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/base/base.py", line 263, in connect
+[33mweb_1  |[0m     self.connection = self.get_new_connection(conn_params)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/utils/asyncio.py", line 26, in inner
+[33mweb_1  |[0m     return func(*args, **kwargs)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/django/db/backends/mysql/base.py", line 247, in get_new_connection
+[33mweb_1  |[0m     connection = Database.connect(**conn_params)
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/pymysql/connections.py", line 358, in __init__
+[33mweb_1  |[0m     self.connect()
+[33mweb_1  |[0m   File "/usr/local/lib/python3.10/site-packages/pymysql/connections.py", line 711, in connect
+[33mweb_1  |[0m     raise exc
+[33mweb_1  |[0m django.db.utils.OperationalError: (2003, "Can't connect to MySQL server on 'db' ([Errno 111] Connection refused)")
+[33mstudy_bot_web_1 exited with code 1
+[0m[36mdb_1   |[0m 2023-09-28 08:58:19+00:00 [Note] [Entrypoint]: Database files initialized
+[36mdb_1   |[0m 2023-09-28 08:58:19+00:00 [Note] [Entrypoint]: Starting temporary server
+[36mdb_1   |[0m 2023-09-28 08:58:19+00:00 [Note] [Entrypoint]: Waiting for server startup
+[36mdb_1   |[0m 2023-09-28T08:58:20.098311Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+[36mdb_1   |[0m 2023-09-28T08:58:20.099659Z 0 [Note] mysqld (mysqld 5.7.43) starting as process 125 ...
+[36mdb_1   |[0m 2023-09-28T08:58:20.102680Z 0 [Note] InnoDB: PUNCH HOLE support available
+[36mdb_1   |[0m 2023-09-28T08:58:20.102704Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+[36mdb_1   |[0m 2023-09-28T08:58:20.102707Z 0 [Note] InnoDB: Uses event mutexes
+[36mdb_1   |[0m 2023-09-28T08:58:20.102710Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+[36mdb_1   |[0m 2023-09-28T08:58:20.102712Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.13
+[36mdb_1   |[0m 2023-09-28T08:58:20.102715Z 0 [Note] InnoDB: Using Linux native AIO
+[36mdb_1   |[0m 2023-09-28T08:58:20.102936Z 0 [Note] InnoDB: Number of pools: 1
+[36mdb_1   |[0m 2023-09-28T08:58:20.103015Z 0 [Note] InnoDB: Using CPU crc32 instructions
+[36mdb_1   |[0m 2023-09-28T08:58:20.104712Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+[36mdb_1   |[0m 2023-09-28T08:58:20.112121Z 0 [Note] InnoDB: Completed initialization of buffer pool
+[36mdb_1   |[0m 2023-09-28T08:58:20.113890Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+[36mdb_1   |[0m 2023-09-28T08:58:20.126439Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+[36mdb_1   |[0m 2023-09-28T08:58:20.144792Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+[36mdb_1   |[0m 2023-09-28T08:58:20.144862Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+[36mdb_1   |[0m 2023-09-28T08:58:20.175850Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+[36mdb_1   |[0m 2023-09-28T08:58:20.176631Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+[36mdb_1   |[0m 2023-09-28T08:58:20.176640Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+[36mdb_1   |[0m 2023-09-28T08:58:20.176992Z 0 [Note] InnoDB: Waiting for purge to start
+[36mdb_1   |[0m 2023-09-28T08:58:20.227153Z 0 [Note] InnoDB: 5.7.43 started; log sequence number 2766921
+[36mdb_1   |[0m 2023-09-28T08:58:20.227516Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+[36mdb_1   |[0m 2023-09-28T08:58:20.227578Z 0 [Note] Plugin 'FEDERATED' is disabled.
+[36mdb_1   |[0m 2023-09-28T08:58:20.229677Z 0 [Note] InnoDB: Buffer pool(s) load completed at 230928  8:58:20
+[36mdb_1   |[0m 2023-09-28T08:58:20.233299Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
+[36mdb_1   |[0m 2023-09-28T08:58:20.233316Z 0 [Note] Skipping generation of SSL certificates as certificate files are present in data directory.
+[36mdb_1   |[0m 2023-09-28T08:58:20.233319Z 0 [Warning] A deprecated TLS version TLSv1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:20.233321Z 0 [Warning] A deprecated TLS version TLSv1.1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:20.233864Z 0 [Warning] CA certificate ca.pem is self signed.
+[36mdb_1   |[0m 2023-09-28T08:58:20.233897Z 0 [Note] Skipping generation of RSA key pair as key files are present in data directory.
+[36mdb_1   |[0m 2023-09-28T08:58:20.235172Z 0 [Warning] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+[36mdb_1   |[0m 2023-09-28T08:58:20.242266Z 0 [Note] Event Scheduler: Loaded 0 events
+[36mdb_1   |[0m 2023-09-28T08:58:20.242545Z 0 [Note] mysqld: ready for connections.
+[36mdb_1   |[0m Version: '5.7.43'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server (GPL)
+[36mdb_1   |[0m 2023-09-28 08:58:20+00:00 [Note] [Entrypoint]: Temporary server started.
+[36mdb_1   |[0m '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+[36mdb_1   |[0m 2023-09-28T08:58:20.972555Z 3 [Note] InnoDB: Stopping purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.974847Z 3 [Note] InnoDB: Resuming purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.975494Z 3 [Note] InnoDB: Stopping purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.977071Z 3 [Note] InnoDB: Resuming purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.977625Z 3 [Note] InnoDB: Stopping purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.979440Z 3 [Note] InnoDB: Resuming purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.980348Z 3 [Note] InnoDB: Stopping purge
+[36mdb_1   |[0m 2023-09-28T08:58:20.981944Z 3 [Note] InnoDB: Resuming purge
+[36mdb_1   |[0m Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
+[36mdb_1   |[0m Warning: Unable to load '/usr/share/zoneinfo/leapseconds' as time zone. Skipping it.
+[36mdb_1   |[0m Warning: Unable to load '/usr/share/zoneinfo/tzdata.zi' as time zone. Skipping it.
+[36mdb_1   |[0m Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it.
+[36mdb_1   |[0m Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
+[36mdb_1   |[0m 2023-09-28 08:58:22+00:00 [Note] [Entrypoint]: Creating database discordjs
+[36mdb_1   |[0m 2023-09-28 08:58:22+00:00 [Note] [Entrypoint]: Creating user simon
+[36mdb_1   |[0m 2023-09-28 08:58:22+00:00 [Note] [Entrypoint]: Giving user simon access to schema discordjs
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 2023-09-28 08:58:22+00:00 [Note] [Entrypoint]: /usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/init.sql
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 2023-09-28 08:58:22+00:00 [Note] [Entrypoint]: Stopping temporary server
+[36mdb_1   |[0m 2023-09-28T08:58:22.213509Z 0 [Note] Giving 0 client threads a chance to die gracefully
+[36mdb_1   |[0m 2023-09-28T08:58:22.213545Z 0 [Note] Shutting down slave threads
+[36mdb_1   |[0m 2023-09-28T08:58:22.213551Z 0 [Note] Forcefully disconnecting 0 remaining clients
+[36mdb_1   |[0m 2023-09-28T08:58:22.213559Z 0 [Note] Event Scheduler: Purging the queue. 0 events
+[36mdb_1   |[0m 2023-09-28T08:58:22.213633Z 0 [Note] Binlog end
+[36mdb_1   |[0m 2023-09-28T08:58:22.214264Z 0 [Note] Shutting down plugin 'ngram'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214276Z 0 [Note] Shutting down plugin 'partition'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214278Z 0 [Note] Shutting down plugin 'BLACKHOLE'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214281Z 0 [Note] Shutting down plugin 'ARCHIVE'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214282Z 0 [Note] Shutting down plugin 'PERFORMANCE_SCHEMA'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214321Z 0 [Note] Shutting down plugin 'MRG_MYISAM'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214324Z 0 [Note] Shutting down plugin 'MyISAM'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214337Z 0 [Note] Shutting down plugin 'INNODB_SYS_VIRTUAL'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214344Z 0 [Note] Shutting down plugin 'INNODB_SYS_DATAFILES'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214345Z 0 [Note] Shutting down plugin 'INNODB_SYS_TABLESPACES'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214347Z 0 [Note] Shutting down plugin 'INNODB_SYS_FOREIGN_COLS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214349Z 0 [Note] Shutting down plugin 'INNODB_SYS_FOREIGN'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214351Z 0 [Note] Shutting down plugin 'INNODB_SYS_FIELDS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214352Z 0 [Note] Shutting down plugin 'INNODB_SYS_COLUMNS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214354Z 0 [Note] Shutting down plugin 'INNODB_SYS_INDEXES'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214356Z 0 [Note] Shutting down plugin 'INNODB_SYS_TABLESTATS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214357Z 0 [Note] Shutting down plugin 'INNODB_SYS_TABLES'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214359Z 0 [Note] Shutting down plugin 'INNODB_FT_INDEX_TABLE'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214360Z 0 [Note] Shutting down plugin 'INNODB_FT_INDEX_CACHE'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214362Z 0 [Note] Shutting down plugin 'INNODB_FT_CONFIG'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214363Z 0 [Note] Shutting down plugin 'INNODB_FT_BEING_DELETED'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214365Z 0 [Note] Shutting down plugin 'INNODB_FT_DELETED'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214366Z 0 [Note] Shutting down plugin 'INNODB_FT_DEFAULT_STOPWORD'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214368Z 0 [Note] Shutting down plugin 'INNODB_METRICS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214369Z 0 [Note] Shutting down plugin 'INNODB_TEMP_TABLE_INFO'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214370Z 0 [Note] Shutting down plugin 'INNODB_BUFFER_POOL_STATS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214372Z 0 [Note] Shutting down plugin 'INNODB_BUFFER_PAGE_LRU'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214373Z 0 [Note] Shutting down plugin 'INNODB_BUFFER_PAGE'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214374Z 0 [Note] Shutting down plugin 'INNODB_CMP_PER_INDEX_RESET'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214375Z 0 [Note] Shutting down plugin 'INNODB_CMP_PER_INDEX'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214376Z 0 [Note] Shutting down plugin 'INNODB_CMPMEM_RESET'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214377Z 0 [Note] Shutting down plugin 'INNODB_CMPMEM'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214379Z 0 [Note] Shutting down plugin 'INNODB_CMP_RESET'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214380Z 0 [Note] Shutting down plugin 'INNODB_CMP'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214381Z 0 [Note] Shutting down plugin 'INNODB_LOCK_WAITS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214382Z 0 [Note] Shutting down plugin 'INNODB_LOCKS'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214383Z 0 [Note] Shutting down plugin 'INNODB_TRX'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214384Z 0 [Note] Shutting down plugin 'InnoDB'
+[36mdb_1   |[0m 2023-09-28T08:58:22.214447Z 0 [Note] InnoDB: FTS optimize thread exiting.
+[36mdb_1   |[0m 2023-09-28T08:58:22.214514Z 0 [Note] InnoDB: Starting shutdown...
+[36mdb_1   |[0m 2023-09-28T08:58:22.314670Z 0 [Note] InnoDB: Dumping buffer pool(s) to /var/lib/mysql/ib_buffer_pool
+[36mdb_1   |[0m 2023-09-28T08:58:22.314992Z 0 [Note] InnoDB: Buffer pool(s) dump completed at 230928  8:58:22
+[36mdb_1   |[0m 2023-09-28T08:58:24.033007Z 0 [Note] InnoDB: Shutdown completed; log sequence number 12218033
+[36mdb_1   |[0m 2023-09-28T08:58:24.034882Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+[36mdb_1   |[0m 2023-09-28T08:58:24.034909Z 0 [Note] Shutting down plugin 'MEMORY'
+[36mdb_1   |[0m 2023-09-28T08:58:24.034913Z 0 [Note] Shutting down plugin 'CSV'
+[36mdb_1   |[0m 2023-09-28T08:58:24.034916Z 0 [Note] Shutting down plugin 'sha256_password'
+[36mdb_1   |[0m 2023-09-28T08:58:24.034917Z 0 [Note] Shutting down plugin 'mysql_native_password'
+[36mdb_1   |[0m 2023-09-28T08:58:24.035022Z 0 [Note] Shutting down plugin 'binlog'
+[36mdb_1   |[0m 2023-09-28T08:58:24.036908Z 0 [Note] mysqld: Shutdown complete
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 2023-09-28 08:58:24+00:00 [Note] [Entrypoint]: Temporary server stopped
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 2023-09-28 08:58:24+00:00 [Note] [Entrypoint]: MySQL init process done. Ready for start up.
+[36mdb_1   |[0m 
+[36mdb_1   |[0m 2023-09-28T08:58:24.405038Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+[36mdb_1   |[0m 2023-09-28T08:58:24.406388Z 0 [Note] mysqld (mysqld 5.7.43) starting as process 1 ...
+[36mdb_1   |[0m 2023-09-28T08:58:24.409085Z 0 [Note] InnoDB: PUNCH HOLE support available
+[36mdb_1   |[0m 2023-09-28T08:58:24.409104Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+[36mdb_1   |[0m 2023-09-28T08:58:24.409107Z 0 [Note] InnoDB: Uses event mutexes
+[36mdb_1   |[0m 2023-09-28T08:58:24.409109Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+[36mdb_1   |[0m 2023-09-28T08:58:24.409111Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.13
+[36mdb_1   |[0m 2023-09-28T08:58:24.409113Z 0 [Note] InnoDB: Using Linux native AIO
+[36mdb_1   |[0m 2023-09-28T08:58:24.409347Z 0 [Note] InnoDB: Number of pools: 1
+[36mdb_1   |[0m 2023-09-28T08:58:24.409447Z 0 [Note] InnoDB: Using CPU crc32 instructions
+[36mdb_1   |[0m 2023-09-28T08:58:24.410843Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+[36mdb_1   |[0m 2023-09-28T08:58:24.417506Z 0 [Note] InnoDB: Completed initialization of buffer pool
+[36mdb_1   |[0m 2023-09-28T08:58:24.419465Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+[36mdb_1   |[0m 2023-09-28T08:58:24.431530Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+[36mdb_1   |[0m 2023-09-28T08:58:24.448366Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+[36mdb_1   |[0m 2023-09-28T08:58:24.448458Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+[36mdb_1   |[0m 2023-09-28T08:58:24.469086Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+[36mdb_1   |[0m 2023-09-28T08:58:24.469811Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+[36mdb_1   |[0m 2023-09-28T08:58:24.469824Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+[36mdb_1   |[0m 2023-09-28T08:58:24.470395Z 0 [Note] InnoDB: 5.7.43 started; log sequence number 12218033
+[36mdb_1   |[0m 2023-09-28T08:58:24.470606Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+[36mdb_1   |[0m 2023-09-28T08:58:24.470710Z 0 [Note] Plugin 'FEDERATED' is disabled.
+[36mdb_1   |[0m 2023-09-28T08:58:24.473847Z 0 [Note] InnoDB: Buffer pool(s) load completed at 230928  8:58:24
+[36mdb_1   |[0m 2023-09-28T08:58:24.475724Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
+[36mdb_1   |[0m 2023-09-28T08:58:24.475737Z 0 [Note] Skipping generation of SSL certificates as certificate files are present in data directory.
+[36mdb_1   |[0m 2023-09-28T08:58:24.475741Z 0 [Warning] A deprecated TLS version TLSv1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:24.475742Z 0 [Warning] A deprecated TLS version TLSv1.1 is enabled. Please use TLSv1.2 or higher.
+[36mdb_1   |[0m 2023-09-28T08:58:24.476279Z 0 [Warning] CA certificate ca.pem is self signed.
+[36mdb_1   |[0m 2023-09-28T08:58:24.476312Z 0 [Note] Skipping generation of RSA key pair as key files are present in data directory.
+[36mdb_1   |[0m 2023-09-28T08:58:24.476558Z 0 [Note] Server hostname (bind-address): '*'; port: 3306
+[36mdb_1   |[0m 2023-09-28T08:58:24.476587Z 0 [Note] IPv6 is available.
+[36mdb_1   |[0m 2023-09-28T08:58:24.476595Z 0 [Note]   - '::' resolves to '::';
+[36mdb_1   |[0m 2023-09-28T08:58:24.476608Z 0 [Note] Server socket created on IP: '::'.
+[36mdb_1   |[0m 2023-09-28T08:58:24.477539Z 0 [Warning] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+[36mdb_1   |[0m 2023-09-28T08:58:24.484062Z 0 [Note] Event Scheduler: Loaded 0 events
+[36mdb_1   |[0m 2023-09-28T08:58:24.484352Z 0 [Note] mysqld: ready for connections.
+[36mdb_1   |[0m Version: '5.7.43'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+Stopping study_bot_db_1  ... 
+Killing study_bot_db_1   ... 
+Aborting.
+Gracefully stopping... (press Ctrl+C again to force)
