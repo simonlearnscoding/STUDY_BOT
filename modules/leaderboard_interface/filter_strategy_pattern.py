@@ -46,9 +46,6 @@ class FilterManager:
         self.filter_patterns = self.generate_filters()
 
     def generate_filters(self):
-        # LATER: I think that I am creating an unneccessary layer of
-        # abstraction by calculating the times  in the queryCreator
-        # class just something to consider
         time_periods = {
             "today" : { "date_range" : "today" },
             "this_week" : { "date_range" : "this_week" },
@@ -70,7 +67,14 @@ class FilterManager:
                 for activity_key, activity_value in activities.items():
                     new_filter_name = f"{time_period_key}-{activity_key}-{activity_type_key}"
                     new_filters[new_filter_name] = {**time_period_value, **activity_type_value, **activity_value}
-        return new_filters
+                    
+        """I am just returning one filter because thats all I need for now in the simplified version
+        maybe if I will have this for multiple servers I will change this let's see 
+        """
+        
+        # return new_filters
+        return {"today-study-exclude-no-cam":  { "date_range": "today", "exclude_type": "VC"}}
+        
 
 
 

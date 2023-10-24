@@ -18,7 +18,7 @@ class DatasetManager(LifeCycleManager):
 
     async def _bot_ready(self, bot):
         pass
-        #TODO: uncomment when Im done here
+        
         for pattern in self.filter_manager.filter_patterns:
             await super().create(key=pattern, data=pattern)
 
@@ -258,7 +258,6 @@ class Dataset(utils):
     also fetches the data again
     """
     async def update_dataset(self):
-        print(self.lb_instances)
         await self.get_data()
         self.data = await self.calculate_update()
         self.image_url = await self.image.create_image(self.data, self.timeframe)

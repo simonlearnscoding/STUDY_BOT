@@ -146,9 +146,12 @@ class ImageCreator:
         draw.text(date_position, current_date, fill=(230, 230, 230), font=font)
 
     async def send_temp_message(self, image_filename):
-        temp_channel_id = 1105618200718221424 #LATER: this should get the channel by name instead
+        temp_channel_id = 916484382091513917 #LATER: this should get the channel by name instead
         with open(image_filename, "rb") as file:
+            
             buffer_channel = await bot.fetch_channel(temp_channel_id)
+            
+            await buffer_channel.purge(limit=100)
             image_attachment = discord.File(file, image_filename)
             message = await buffer_channel.send(file=image_attachment)
             #sleep one sec to avoid getting rate limited
