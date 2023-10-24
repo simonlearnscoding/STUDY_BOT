@@ -50,7 +50,7 @@ class Leaderboard():
 
     async def create(self, data):
         print(bot)
-        self.channel = await bot.get_channel("916484382091513917")
+        self.channel = await bot.fetch_channel(916484382091513917)
         print(self.channel)
         self.filter = "today-study-exclude_no_cam"
         self.dataset = self.manager.datasets.instances[self.filter]
@@ -106,8 +106,7 @@ class Leaderboard():
                 print(e)
     async def write_and_get_message(self):
         try:
-            # self.message = await self.channel.send(".")
-            print('before the error')
+            self.message = await self.channel.send(".")
             self.message = await self.channel.send(self.image_url)
 
         except Exception as e:
