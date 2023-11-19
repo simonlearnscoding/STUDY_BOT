@@ -23,8 +23,6 @@ class DatasetManager(LifeCycleManager):
             await super().create(key=pattern, data=pattern)
 
 
-
-
 class utils:
     def initialize_user_segments(self):
         # Initialize a dictionary with 96 keys each corresponding to a 15 minute segment of the day

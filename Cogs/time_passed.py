@@ -30,7 +30,6 @@ class checkTime(EventSubscriber):
         }
 
     async def update_or_create_switch(self, switch_name, timestamp):
-        #TODO: Test
         updated = await sync_to_async(Switches.objects.filter(name=switch_name).update, thread_sensitive=True)( switch=timestamp)
         if updated:
             print(f"Updated {switch_name} to {timestamp}")

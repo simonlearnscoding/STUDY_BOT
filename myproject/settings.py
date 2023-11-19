@@ -83,7 +83,11 @@ DATABASES = {
         'NAME': 'discordjs',
         'USER': 'simon',
         'PASSWORD': '3112',
-        'HOST': 'db', # use db as the hostname
+        #TODO: I have to make sure that this is easily switchable between docker container and 
+        # local host for testing
+        
+        # 'HOST': 'db', # use db as the hostname
+         'HOST': 'localhost', # use db as the hostname
         'PORT': '3306',
     }
 }

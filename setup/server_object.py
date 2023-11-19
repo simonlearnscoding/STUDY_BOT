@@ -11,9 +11,6 @@ class serverFetcher:
         self.bot = bot  # discord bot object
         self.channel_id = {}  # dictionary of channel ids
         self.channel_name = {}
-        # LOAD THE APPROPRIATE JSON FILE BASED ON THE TESTING FLAG
-        # get the cwd
-        cwd = os.path.dirname(os.getcwd())
         with open(f"setup/server_ids/{serverName}.json") as f:
             channel_ids = json.load(f)
 
@@ -22,6 +19,7 @@ class serverFetcher:
             self.channel_id[name] = int(id)
             self.channel_name[id] = name
 
+    # TODO: I feel like this whole function is redundant
     def getChannel(self, name):
         return self.bot.get_channel(self.channel_id[name])
 
