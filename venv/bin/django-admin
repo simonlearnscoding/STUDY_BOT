@@ -1,4 +1,4 @@
-#!/home/simon/code/discord/spqr--bot/Restart/venv/bin/python3
+#!/home/simon/code/STUDY_BOT/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

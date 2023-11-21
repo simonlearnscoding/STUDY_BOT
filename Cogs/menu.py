@@ -1,13 +1,19 @@
-from Cogs.time_passed import TimeEvents
-from discord.ext import commands
-import discord
-async def setup(bot):
-    # RENAME MYCOG TO THE NAME OF THE MODULE
-    await bot.add_cog(menu(bot))
 
-class menu(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
+"""I dont remember wtf this is I should probably
+give it a look sometime"""
+# from Cogs.time_passed import TimeEvents
+# from discord.ext import commands
+# import discord
+
+
+# async def setup(bot):
+#     # RENAME MYCOG TO THE NAME OF THE MODULE
+#     await bot.add_cog(menu(bot))
+
+
+# class menu(commands.Cog):
+#     def __init__(self, bot):
+#         self.bot = bot
 #     @commands.command()
 #     async def Menu(self):
 #         view = menu()

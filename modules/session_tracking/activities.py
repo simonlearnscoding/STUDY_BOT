@@ -1,4 +1,5 @@
 from setup.server_object import server
+from discord import VoiceState
 
 PILLARS = {
     "PHYSICAL_WORK": "Physical Work",
@@ -22,11 +23,11 @@ def calculate_xp():
     pass  # LATER: make the function that calculates xp
 
 
-def getActivity(id):
+# TODO: its not very clean that I take int as input here actually
+def getActivity(voicestate):
     try:
-        return VC_to_Activity[id]
+        return VC_to_Activity[voicestate.channel.id]
     except Exception as e:
-        print(e)
         return None
 
 #TODO: this should probably be made into DB models
@@ -85,5 +86,3 @@ Activities = {
         "Creative", defaultRewards, ["VC_CREATIVE"]
     ),  # LATER: Add producing vc here
 }
-print(VC_to_Activity)
-print(Activities)
