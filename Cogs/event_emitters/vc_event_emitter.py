@@ -4,8 +4,6 @@ from Cogs.VC_events import VCEventType, VCEvent
 """
 ALL OF THE THINGS THAT HAPPEN AS A RESULT OF VC EVENTS WILL HAPPEN HERE!
 """
-
-
 # I can use bot dispatch
 # @bot.event
 # async def on_my_event(a, b, c):
