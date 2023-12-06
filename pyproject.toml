@@ -1,0 +1,7 @@
+[tool.aerich]
+tortoise_orm = "tortoise_db.settings.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+
+[tool.mypy]
+python_executable="/usr/bin/python3.10"

@@ -1,10 +1,12 @@
 import datetime
 
-""" 
-This is a Pub Sub / Eventmanager design pattern.
-many objects subscribe themselves to this eventmanager and trigger 
-specific functions when 
 """
+This is a Pub Sub / Eventmanager design pattern.
+many objects subscribe themselves to this eventmanager and trigger
+specific functions when
+"""
+
+
 class EventManager:
     def __init__(self):
         self.subscribers = []
@@ -25,7 +27,8 @@ class EventManager:
         try:
 
             # Get a list of subscribers that have the event_name attribute
-            filtered_subscribers = [subscriber for subscriber in self.subscribers if hasattr(subscriber, event_name)]
+            filtered_subscribers = [
+                subscriber for subscriber in self.subscribers if hasattr(subscriber, event_name)]
 
             # Call the method on each subscriber
             for subscriber in filtered_subscribers:
@@ -36,6 +39,7 @@ class EventManager:
         except Exception as e:
             print(e)
         return
+
 
 """
 I create one instance of this 

@@ -1,6 +1,6 @@
 from discord import VoiceState
 import modules.session_tracking.activities as act
-from Cogs.VC_events import VCEvent
+from types.VC_events import VCEvent
 
 
 def user_changed_type_of_tracking(VCEvent):

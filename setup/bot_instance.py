@@ -22,6 +22,8 @@ intents.message_content = True
 application_id = os.getenv('APPLICATION_ID')
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-bot.ready = False
 
+@bot.event
+async def async_on_ready():
+    print('We have logged in as {0.user}'.format(bot))
 token = os.getenv('TOKEN')

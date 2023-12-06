@@ -1,8 +1,9 @@
-
+from utils.error_handler import error_handler
 from Cogs.VC_events import VCEvent
 
 
-def ensure_user_exists(func):
+@error_handler
+async def ensure_user_exists(func):
     def wrapper(vc_event: VCEvent, *args, **kwargs):
         # Assuming this is an async function
         # await create_user_if_not_exists(vc_event.member)
@@ -12,7 +13,8 @@ def ensure_user_exists(func):
     return wrapper
 
 
-def ensure_user_has_active_session(func):
+@error_handler
+async def ensure_user_has_active_session(func):
     def wrapper(vc_event: VCEvent, *args, **kwargs):
         # Assuming this is an async function
         # await create_user_if_not_exists(vc_event.member)

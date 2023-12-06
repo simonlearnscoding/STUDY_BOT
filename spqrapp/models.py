@@ -3,10 +3,24 @@ from spqrapp.custom_managers.activity_session_manager import ActivityLogManager,
 from spqrapp.custom_managers.user_manager import UserManager
 from django.utils import timezone
 from django.db import models
-import os
+
+class Role(models.Model):
+    name = models.CharField(max_length=255)
+    min_level = models.IntegerField()
+    pillar = models.ForeignKey('Pillar', on_delete=models.CASCADE)
 
 
-class Role(models.Modal):
+class RoleName(models.TextChoices):
+    INERTUS = 'INERTUS'
+    GLADIATOR = 'GLADIATOR'
+    LEGIONARY = 'LEGIONARY'
+    PHILOSOPHER = 'PHILOSOPHER'
+    SENATOR = 'SENATOR'
+    CENTURION = 'CENTURION'
+    ATHENAEUM = 'ATHENAEUM'
+    IMPERATOR = 'IMPERATOR'
+
+class Role(models.Model):
     name = models.CharField(max_length=30)
     level_to_reach_it = models.IntegerField()
     description = models.TextField(blank=True, null=True)
@@ -15,7 +29,7 @@ class Role(models.Modal):
 
 class User(models.Model):
     discord_id = models.CharField(max_length=100, blank=True, null=True)
-    display_name = models.CharField(max_length=30)
+    display_name = models.CharField(max_length=30, null=True)
     timezone = models.IntegerField(blank=True, null=True, default=2)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     object = UserManager()
@@ -140,7 +154,7 @@ class Pillar(models.Model):
 class Server(models.Model):
     discord_id = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    admins = models.ManyToManyField('User', reladed_name='admin_servers')
+    admin = models.ForeignKey('User', null=True, related_name='admin_servers', on_delete=models.SET_NULL)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -174,7 +188,7 @@ class ActivityRewards(models.Model):
     streak_reward = models.IntegerField()
     reward_treshold = models.IntegerField()
     reward_per_minute = models.IntegerField()
-    reward_after_treshold = models.integerField()
+    reward_after_treshold = models.IntegerField()
 
 
 class ActivityHabit(models.Model):
@@ -203,26 +217,11 @@ class UserServer(models.Model):
 class UserLevel(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='user_levels')
-    pillar = models.CharField(max_length=255, choices=Pillar.choices)
+    pillar = models.ForeignKey('Pillar', on_delete=models.CASCADE)
     level = models.IntegerField(default=1)
     xp = models.IntegerField(default=0)
 
 
-class Role(models.Model):
-    name = models.CharField(max_length=255)
-    min_level = models.IntegerField()
-    pillar = models.CharField(max_length=255, choices=Pillar.choices)
-
-
-class RoleName(models.TextChoices):
-    INERTUS = 'INERTUS'
-    GLADIATOR = 'GLADIATOR'
-    LEGIONARY = 'LEGIONARY'
-    PHILOSOPHER = 'PHILOSOPHER'
-    SENATOR = 'SENATOR'
-    CENTURION = 'CENTURION'
-    ATHENAEUM = 'ATHENAEUM'
-    IMPERATOR = 'IMPERATOR'
 # Create your models here.
 
 
