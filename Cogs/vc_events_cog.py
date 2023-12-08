@@ -1,5 +1,5 @@
 from discord.ext import commands
-from types.VC_events import VCEvent
+# from types.VC_events import VCEvent
 from event_handlers import vc_event_handler
 from event_emitters import vc_event_emitter
 from bases.event_manager_base import event_manager_baseclass
@@ -24,6 +24,6 @@ class vc_events_cog(commands.Cog):
 
     @commands.Cog.listener()
     @error_handler
-    async def on_voice_state_update(self,  member, before, after):
+    async def on_voice_state_update(self, member, before, after):
         vc_event = VCEvent(member, before, after)
         await self.event_manager.handle(vc_event)

@@ -2,6 +2,7 @@
 This is the main file for python
 """
 import asyncio
+
 from setup.bot_instance import bot, token
 extensions = [
     "Cogs.on_ready_cog",

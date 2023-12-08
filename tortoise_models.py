@@ -184,10 +184,11 @@ class Activity(Model):
 
 
 class TextChannelEnum(Enum):
-    LEADERBOARD = 'LEADERBOARD'
-    TASKS = 'TASKS'
-    VOICE = 'VOICE'
-    TEXT = 'TEXT'
+    LEADERBOARD = 'Leaderboard'
+    TASKS = 'Tasks'
+    VOICE = 'Voice'
+    TEXT = 'Text'
+    CATEGORY = 'Category'
 
 
 class Channel(Model):

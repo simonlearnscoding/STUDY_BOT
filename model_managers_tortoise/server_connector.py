@@ -1,21 +1,29 @@
 
 from tortoise.transactions import in_transaction
-from tortoise_db.models import Server, User
+from tortoise_models import Server, User, TextChannelEnum
 from setup.bot_instance import bot
-
+from model_managers_tortoise.server_manager import server_class
 import discord
 
 
-class server_manager_class():
+class server_manager(server_class):
     def __init__(self, bot):
         self.bot = bot
+        # self.server = server_class(bot)
 
+    async def sync_all_servers(self):
+        discord_servers = {guild.id for guild in self.bot.guilds}
+        db_servers = {server.id for server in await Server.all()}
+        for server_id in discord_servers:
+            server = server_class(bot, server_id)
+            await server.sync_with_database()
 
     async def remove_servers_not_on_discord(self):
         discord_servers = {guild.id for guild in self.bot.guilds}
         db_servers = {server.id for server in await Server.all()}
         await self.remove_servers_from_set(db_servers - discord_servers)
 
+    # TODO: Test
     async def remove_servers_from_set(self, servers_to_remove):
         """
         Removes servers from the database that the bot is no longer a part of
@@ -36,4 +44,4 @@ class server_manager_class():
                         f"Removed server with ID {server_id} from the database.")
 
 
-server_manager = server_manager_class(bot)
+server_manager = server_manager(bot)

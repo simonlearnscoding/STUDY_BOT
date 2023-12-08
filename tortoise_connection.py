@@ -7,9 +7,9 @@ async def init_db_connection():
 
     await Tortoise.init(
         db_url='mysql://simon:3112@localhost:3306/discordjs',
-        modules={'models': ['tortoise_db.models', 'aerich.models']}
+        modules={'models': ['tortoise_models', 'aerich.models']}
     )
-    await Tortoise.generate_schemas(safe=True)
+    await Tortoise.generate_schemas()
 
 
 @error_handler
