@@ -3,9 +3,6 @@ from tortoise.models import Model
 from enum import Enum
 from datetime import datetime
 import pytz
-# from django.utils import timezone
-
-# Create a timezone object for GMT+2
 
 
 def get_current_time_in_tz():
@@ -20,10 +17,17 @@ class Role(Model):
     color = fields.CharField(max_length=10, default='#000000')
 
 
+class RoleLevel(Model):
+    role: fields.ForeignKeyRelation[Role] = fields.ForeignKeyField(
+        model_name='models.Role')
+    pillar: fields.ForeignKeyRelation[Pillar] = fields.ForeignKeyField(
+        model_name='models.Role')
+
+
 class User(Model):
     discord_id = fields.CharField(max_length=100, blank=True, null=True)
     display_name = fields.CharField(max_length=30, null=True)
-    timezone = fields.IntField(blank=True, null=True, default=2)
+    timezone = fields.IntField(blank=True, default=2)
     role: fields.ForeignKeyRelation[Role] = fields.ForeignKeyField(
         model_name="models.Role", default=1)
     # object = UserManager()
@@ -145,6 +149,7 @@ class Pillar(Model):
     color = fields.CharField(max_length=10, default='#000000')
 
 
+    
 class UserPillar(Model):
     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
         model_name="models.User", on_delete=fields.CASCADE)
@@ -223,10 +228,3 @@ class UserServer(Model):
     joined_at = fields.DatetimeField(default=get_current_time_in_tz)
 
 
-class UserLevel(Model):
-    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
-        model_name="models.User", on_delete=fields.CASCADE, related_name='user_levels')
-    pillar: fields.ForeignKeyRelation[Pillar] = fields.ForeignKeyField(
-        model_name="models.Pillar", on_delete=fields.CASCADE)
-    level = fields.IntField(default=1)
-    xp = fields.IntField(default=0)

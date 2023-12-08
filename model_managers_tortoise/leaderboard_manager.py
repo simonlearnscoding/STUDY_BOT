@@ -1,7 +1,5 @@
-
-
 from tortoise.transactions import in_transaction
-from tortoise_db.models import Server, User
+from tortoise_models import Server, User
 from setup.bot_instance import bot
 
 import discord

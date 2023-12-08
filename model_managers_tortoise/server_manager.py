@@ -1,5 +1,4 @@
 from enum import Enum
-
 from tortoise.transactions import in_transaction
 from tortoise_models import Server, User, Channel, TextChannelEnum
 from setup.bot_instance import bot
@@ -24,6 +23,7 @@ class server_state():
             self.guild = self.bot.get_guild(self.id)
         return self.guild
 
+    #TODO: I could probably use the other method I made here
     async def get_or_create_server(self):
         if self.server_db:
             return self.server_db
@@ -31,16 +31,19 @@ class server_state():
         server, created = await Server.get_or_none(id=self.id), False
 
         # If the server does not exist, create a new one
-
         if server is None:
+            await create_server()
+
+        # Return the server and a boolean indicating whether it was created or not
+            self.server_db = server
+            
+        def create_server():
             guild = await self.get_guild()
             servers = await Server.all()
             server = await Server.create(id=self.id, name=self.guild.name)
             created = True
             await server.save()
-
-        # Return the server and a boolean indicating whether it was created or not
-            self.server_db = server
+            
         return server, created
 
 
