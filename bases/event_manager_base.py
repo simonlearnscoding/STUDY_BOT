@@ -1,4 +1,4 @@
-from utils.error_handler import error_handler
+from utils.error_handler import class_error_handler
 """
 Example use
 
@@ -12,6 +12,7 @@ client.on(vcevent):
 """
 
 
+@class_error_handler
 class event_manager_baseclass():
     def __init__(self, event_handler=None, event_emitter=None, bot=None):
         if bot is None:
@@ -26,7 +27,6 @@ class event_manager_baseclass():
      it will run self.emit(event_triggered_str, event)
      """
 
-    @error_handler
     async def handle(self, event=None, event_triggered_str=None):
 
         if event_triggered_str:
@@ -36,6 +36,8 @@ class event_manager_baseclass():
             return RuntimeError('No handler defined')
 
         event_triggered_str = await self.handler.handle(event)
+        if event_triggered_str == 'pass_event':
+            return
         await self.emit(event_triggered_str, event)
 
     """
@@ -46,21 +48,18 @@ class event_manager_baseclass():
     throw an Error
     """
 
-    @error_handler
     async def emit(self, event_triggered_str, event):
-        if self.emitter is None:
-            raise RuntimeError('No emitter defined')
-
-        # Check if the emitter has a method with the name event_triggered_str
-        #TODO: refactor!
-        method = getattr(self.emitter, event_triggered_str, None)
-        if method is not None and callable(method):
-            # Call the method
-            return await method() if event is None else method(event)
-
-            # Dispatch a custom event to the bot
-
+        method = self.lookup_method(event_triggered_str)
+        if method:
+            return await self.invoke_method(method, event)
         else:
-            # No method found with the name event_triggered_str
-            raise AttributeError(
-                f"Method '{event_triggered_str}' not found in emitter")
+            raise AttributeError(f"Method '{event_triggered_str}' not found in emitter")
+
+    def lookup_method(self, method_name):
+        return getattr(self.emitter, method_name, None)
+
+    async def invoke_method(self, method, event):
+        if event is None:
+            return await method()
+        else:
+            return await method(event)

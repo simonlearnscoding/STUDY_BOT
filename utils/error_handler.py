@@ -1,7 +1,6 @@
 import asyncio
-
-# import asyncio
 import functools
+import traceback
 
 def error_handler(func):
     @functools.wraps(func)
@@ -9,11 +8,11 @@ def error_handler(func):
         try:
             return await func(*args, **kwargs)
         except Exception as e:
-            print(f"An error occurred in {func.__name__}: {e}")
+            exc_info = traceback.format_exc()  # Get the traceback information
+            print(f"An error occurred in {func.__name__}: {e}\n{exc_info}")
             # Optionally re-raise the exception
             raise
     return wrapper
-
 
 def class_error_handler(cls):
     for name, method in cls.__dict__.items():

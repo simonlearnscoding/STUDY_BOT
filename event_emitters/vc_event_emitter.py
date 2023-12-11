@@ -2,6 +2,7 @@
 # from event_emitter_wrappers import ensure_user_exists, ensure_user_has_active_session
 # from Types.VC_events import VCEventType, VCEvent
 from utils.error_handler import class_error_handler
+from event_emitters import base_event_emitter
 """
 ALL OF THE THINGS THAT HAPPEN AS A RESULT OF VC EVENTS WILL HAPPEN HERE!
 """
@@ -12,9 +13,9 @@ ALL OF THE THINGS THAT HAPPEN AS A RESULT OF VC EVENTS WILL HAPPEN HERE!
 
 
 @class_error_handler
-class vc_event_manager():
+class vc_event_manager(base_event_emitter):
     def __init__(self, bot):
-        self.bot = bot
+        super().__init__(bot)
 
     @staticmethod
     @ensure_user_exists

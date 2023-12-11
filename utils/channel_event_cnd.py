@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 from setup.bot_instance import bot
+
+from tortoise_models import Channel
 # from types.VC_events import VCEvent
 
 
@@ -42,37 +44,15 @@ def excluding_condition_is_met(ChannelEvent):
         return True
     return False
 
-# TODO
+
+async def get_channel_type_from_db(channel):
+    channel = await Channel.get_or_none(discord_id=channel.id)
+    if channel is None:
+        return 'pass'
+
+    channel_type = str(channel.channel_type.value).lower()
+    return channel_type
 
 
-def is_task_channel_deleted(ChannelEvent):
-    if ChannelEvent.event_str != 'on_guild_channel_delete':
-        return False
-    # leaderboard_id =
-    return True
-
-# TODO
-
-
-def is_leaderboard_deleted(ChannelEvent):
-    if ChannelEvent.event_str != 'on_guild_channel_delete':
-        return False
-    # leaderboard_id =
-    return True
-
-
-def is_relevant_channel(ChannelEvent):
-    # TODO
-    return True
-
-
-def task_channel_deleted(ChannelEvent):
-    return True
-
-
-def voice_channel_created(ChannelEvent):
-    return True
-
-
-def changed_privacy_settings(ChannelEvent):
-    return True
+async def get_channel_type_from_discord(channel):
+    return str(channel.type.name).lower()

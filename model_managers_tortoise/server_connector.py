@@ -44,4 +44,4 @@ class server_manager(server_class):
                         f"Removed server with ID {server_id} from the database.")
 
 
-server_manager = server_manager(bot)
+# server_manager = server_manager(bot)

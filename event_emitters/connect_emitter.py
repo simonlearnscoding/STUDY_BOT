@@ -2,25 +2,25 @@
 ALL OF THE THINGS THAT HAPPEN AS A RESULT OF VC EVENTS WILL HAPPEN HERE!
 """
 
+from event_emitters.base_event_emitter import base_event_emitter
 from tortoise_connection import init_db_connection
-from model_managers_tortoise.server_connector import server_manager
-
+# from model_managers_tortoise.server_connector import server_manager
+# from model_managers_tortoise.pillars_and_roles import pillar_manager, role_manager
 from utils.error_handler import error_handler
 # from pydispatch import dispatcher
 # from spqrapp.models import Server
+from model_managers_tortoise.discord_entity import server_manager
 
 
-class connect_emitter():
+class connect_emitter(base_event_emitter):
     def __init__(self, bot):
-        self.bot = bot
+        super().__init__(bot)
 
     @error_handler
     async def on_ready(self):
-        # self.sync_servers_with_database()
-        await init_db_connection()
-
-        # Find servers that are in the database but not on Discord
-        # await server_manager.remove_servers_not_on_discord
         print('bot ready')
-        await server_manager.sync_all_servers()
-        # await server_manager.print_all_channels()
+        await init_db_connection()
+        servers = server_manager(self.bot)
+        await servers.sync_table_with_data()
+        # await pillar_manager.sync_table()
+        # await role_manager.sync_table()

@@ -5,7 +5,6 @@ from utils.error_handler import error_handler
 
 
 async def setup(bot):
-
     event_manager = event_manager_baseclass(
         event_emitter=connect_emitter(bot),
         bot=bot

@@ -10,6 +10,12 @@ def get_current_time_in_tz():
     return datetime.now(tz)
 
 
+class Pillar(Model):
+    name = fields.CharField(max_length=10)
+    description = fields.TextField(blank=True, null=True)
+    color = fields.CharField(max_length=10, default='#000000')
+
+
 class Role(Model):
     name = fields.CharField(max_length=30)
     level_to_reach_it = fields.IntField(default=999)
@@ -21,7 +27,7 @@ class RoleLevel(Model):
     role: fields.ForeignKeyRelation[Role] = fields.ForeignKeyField(
         model_name='models.Role')
     pillar: fields.ForeignKeyRelation[Pillar] = fields.ForeignKeyField(
-        model_name='models.Role')
+        model_name='models.Pillar')
 
 
 class User(Model):
@@ -143,13 +149,6 @@ class TaskTag(Model):
         model_name="models.Tag", on_delete=fields.CASCADE)
 
 
-class Pillar(Model):
-    name = fields.CharField(max_length=10)
-    description = fields.TextField(blank=True, null=True)
-    color = fields.CharField(max_length=10, default='#000000')
-
-
-    
 class UserPillar(Model):
     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
         model_name="models.User", on_delete=fields.CASCADE)
@@ -226,5 +225,3 @@ class UserServer(Model):
     server: fields.ForeignKeyRelation[Server] = fields.OneToOneField(
         model_name='models.Server', on_delete=fields.CASCADE)
     joined_at = fields.DatetimeField(default=get_current_time_in_tz)
-
-

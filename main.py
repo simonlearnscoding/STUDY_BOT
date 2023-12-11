@@ -4,10 +4,10 @@ This is the main file for python
 import asyncio
 
 from setup.bot_instance import bot, token
+# TODO: reactivate that cog
 extensions = [
     "Cogs.on_ready_cog",
-    "Cogs.channel_cog",
-    # "Cogs.menu"
+    # "Cogs.channel_cog",
 ]
 
 

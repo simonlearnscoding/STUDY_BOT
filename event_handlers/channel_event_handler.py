@@ -14,31 +14,31 @@ class VoiceChannelCreated:
     async def handle(ChannelEvent):
         if await cnd.was_channel_created_by_my_bot(ChannelEvent):
             return ('channel_created_by_me')
-        # return 'voice_channel_created'
-
-
-class VoiceChannelRenamed:
-    # TODO: Test
-    @staticmethod
-    async def handle(ChannelEvent):
-        if cnd.channel_renamed(ChannelEvent):
-            return 'channel_renamed'
-        # if cnd.excluding_condition_is_met(ChannelEvent):
-        #     pass
-
+        channel_type = await cnd.get_channel_type_from_discord(ChannelEvent.after)
+        string = f'{channel_type}_channel_created'
+        return string
 
 class VoiceChannelDeleted:
     # TODO: Test
     @staticmethod
     async def handle(ChannelEvent):
         # logic for when a voice channel is renamed
-        if cnd.is_leaderboard_deleted(ChannelEvent):
-            return 'leaderboard_deleted'
+        channel_type = await cnd.get_channel_type_from_db(ChannelEvent.before)
+        string = f'{channel_type}_channel_deleted'
+        return string
 
-        if cnd.is_task_channel_deleted(ChannelEvent):
-            return 'task_channel_deleted'
+class VoiceChannelRenamed:
+    @staticmethod
+    async def handle(ChannelEvent):
+        if cnd.channel_renamed(ChannelEvent):
+        # TODO: Test if the handler points to the correct emitter
+            return 'channel_renamed'
+        # if cnd.excluding_condition_is_met(ChannelEvent):
+        # TODO: Test this
+        return 'pass_event'
+        #     pass
 
-        return 'channel_deleted'
+
 
 
 class channel_event_handler:
