@@ -15,6 +15,9 @@ class table_manager():
         self.child_class = child_class
         self.children = []
 
+    def get_child_data(self):
+        pass
+
 
 class server_manager(table_manager):
     def __init__(self, bot):

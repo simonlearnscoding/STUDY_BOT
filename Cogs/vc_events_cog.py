@@ -7,8 +7,6 @@ from utils.error_handler import error_handler
 
 
 async def setup(bot):
-    # RENAME MYCOG TO THE NAME OF THE MODULE
-
     event_manager = event_manager_baseclass(
         vc_event_handler, vc_event_emitter(bot),
 
