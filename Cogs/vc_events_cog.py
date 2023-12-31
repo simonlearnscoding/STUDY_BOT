@@ -1,5 +1,5 @@
 from discord.ext import commands
-# from types.VC_events import VCEvent
+from my_types import VCEvent
 from event_handlers import vc_event_handler
 from event_emitters import vc_event_emitter
 from bases.event_manager_base import event_manager_baseclass

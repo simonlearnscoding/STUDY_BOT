@@ -1,4 +1,5 @@
 
+from tortoise_models import Pillar, Role
 from dataclasses import dataclass
 from typing import Optional, Callable, Any
 from bases.update_table import UpdateContext, update_table
@@ -58,53 +59,67 @@ class server_state():
         return server, created
 
 
-
 class server_sync(server_state):
     def __init__(self, bot, id):
         super().__init__(bot, id)
-        self.db_ops = database_update_methods(Channel)
+        self.bot = bot
 
     async def get_or_create_channel(self, textChannel, channel_type=None):
         if channel_type is None:
             channel_type = self.get_channel_type(textChannel)
-        server, _ = await self.get_or_create_server()
-
-        channel_data = {
-            'discord_id': textChannel.id,
-            'server': server,
-            'name': textChannel.name,
-            'channel_type': channel_type
-        }
-        return await self.db_ops.db_base.get_or_create('discord_id', channel_data)
+        server, created = await self.get_or_create_server()
+        channel = await Channel.get_or_none(discord_id=textChannel.id, server=server)
+        if channel is None:
+            channel = await Channel.create(discord_id=textChannel.id, server=server, name=textChannel.name, channel_type=channel_type)
+            created = True
+            await channel.save()
+        return channel, created
 
     async def sync_all_channels(self):
         discord_channels = await self.get_discord_channels()
-        channel_data_list = [{'discord_id': ch.id, 'name': ch.name, 'channel_type': self.get_channel_type(ch), 'server': self.server_db} for ch in discord_channels.values()]
-        await self.db_ops.update_table_with_data(channel_data_list, 'discord_id')
+        await self.sync_database_channels_with_discord(discord_channels)
+        await self.remove_stale_channels_from_database(discord_channels)
+
+    async def sync_database_channels_with_discord(self, discord_channels):
+        for channel_id, channel in discord_channels.items():
+            await self.get_or_create_channel(channel)
 
     def get_channel_type(self, channel):
         if channel.type.name == 'text':
             return TextChannelEnum.TEXT
-        elif channel.type.name == 'voice':
+        if channel.type.name == 'voice':
             return TextChannelEnum.VOICE
-        elif channel.type.name == 'category':
+        if channel.type.name == 'category':
             return TextChannelEnum.CATEGORY
         else:
-            print('Unknown channel type:', channel.type.name)
-            return None
+            print('whats going on here')
 
     async def get_discord_channels(self):
         guild = await self.get_guild()
-        return {channel.id: channel for channel in guild.channels}
+        return {str(channel.id): channel for channel in guild.channels}
+
+    # TODO: this funciton is not being implemented right now
+    async def update_channel_if_needed(self, channel_entry, discord_channel):
+        if channel_entry.name != discord_channel.name:
+            channel_entry.name = discord_channel.name
+            await channel_entry.save()
+
+    async def remove_stale_channels_from_database(self, discord_channels):
+        db_channels = await Channel.filter(server_id=self.id)
+        for channel_entry in db_channels:
+            if channel_entry.discord_id not in discord_channels:
+                await channel_entry.delete()
+
+    async def delete_channel(self, channel):
+        server = await Server.get_or_none(id=self.id)
+        channel_db = await Channel.get_or_none(discord_id=channel.id, server=server)
+        if channel_db:
+            await channel_db.delete()
 
     async def rename_channel(self, discord_channel):
-        channel_data = {
-            'discord_id': discord_channel.id,
-            'name': discord_channel.name,
-            # Add other necessary fields here
-        }
-        return await self.db_ops.db_base.update_or_create('discord_id', channel_data)
-
+        channel, created = await self.get_or_create_channel(discord_channel)
+        channel.name = discord_channel.name
+        await channel.save()
 
 
 class bot_owned_channels(server_state):
@@ -146,7 +161,7 @@ class user_class(update_table):
         # super().__init__()
         self.update_methods = update_table()
 
-    async def create(self, user_data):
+    async def create_user(self, user_data):
         # Custom create function for User
         pillars = await Pillar.all()
         user = await user_class.create(**user_data)
@@ -160,7 +175,7 @@ class user_class(update_table):
             table=User,
             filter_key='discord_id',
             data=self.create_user_object(discord_user),
-            custom_create=self.create()
+            custom_create=self.create_user
         )
         await self.update_methods.get_or_create(context)
 

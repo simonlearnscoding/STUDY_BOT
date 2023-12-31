@@ -22,5 +22,6 @@ class connect_emitter(base_event_emitter):
         await init_db_connection()
         servers = server_manager(self.bot)
         await servers.sync_table_with_data()
+
         # await pillar_manager.sync_table()
         # await role_manager.sync_table()
