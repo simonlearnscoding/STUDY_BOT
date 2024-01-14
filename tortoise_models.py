@@ -18,9 +18,15 @@ class Pillar(Model):
 
 class Role(Model):
     name = fields.CharField(max_length=30)
-    level_to_reach_it = fields.IntField(default=999)
     description = fields.TextField(blank=True, null=True)
     color = fields.CharField(max_length=10, default='#000000')
+    prestige = fields.IntField(default=0)
+
+
+class RolePillar(Model):
+    pillar = fields.ForeignKeyField(model_name='models.Pillar', on_delete=fields.CASCADE)
+    role = fields.ForeignKeyField(model_name='models.Role', on_delete=fields.CASCADE)
+    level = fields.IntField(default=0)
 
 
 class RoleLevel(Model):

@@ -2,6 +2,8 @@
 from tortoise_models import Channel, TextChannelEnum
 from utils.error_handler import class_error_handler
 # from model_managers_tortoise.server_manager import server_class
+from model_managers_tortoise.server_instance import server
+from model_managers_tortoise.channel_db_manager import channel_class, bot_owned_channel_creator
 
 from event_emitters.base_event_emitter import base_event_emitter
 """
@@ -30,10 +32,12 @@ class channel_event_emitter(base_event_emitter):
         await self.wrapper.handle_channel_created(channel_event)
 
     async def leaderboard_channel_deleted(self, channel_event):
-        await self.wrapper.handle_delete_bot_channel(channel_event, TextChannelEnum.LEADERBOARD)
+        channel_man = bot_owned_channel_creator(self.bot, channel_event.before.guild)
+        await channel_man.create_if_not_exist(channel_type=TextChannelEnum.LEADERBOARD)
 
     async def tasks_channel_deleted(self, channel_event):
-        await self.wrapper.handle_delete_bot_channel(channel_event, TextChannelEnum.TASKS)
+        channel_man = bot_owned_channel_creator(self.bot, channel_event.before.guild)
+        await channel_man.create_if_not_exist(channel_type=TextChannelEnum.TASKS)
 
     async def voice_channel_deleted(self, channel_event):
         await self.wrapper.handle_channel_deleted(channel_event)
@@ -45,25 +49,28 @@ class channel_event_emitter(base_event_emitter):
         await self.wrapper.handle_channel_deleted(channel_event)
 
     async def channel_renamed(self, channel_event):
-        server = server_class(self.bot, channel_event.after.guild.id)
-        await server.rename_channel(channel_event.after)
-        pass
+        await self.wrapper.handle_channel_renamed(channel_event)
 
 
 class wrapper_functions():
     def __init__(self, bot):
         self.bot = bot
 
-    async def handle_delete_bot_channel(self, channel_event, channel_type):
-        server = await self.handle_channel_deleted(channel_event)
-        await server.create_or_return_channel(channel_type)
+    async def handle_channel_renamed(self, channel_event):
+        entity = channel_event.after
+        channel = channel_class(self.bot, entity)
+        await channel.create_or_update()
 
     async def handle_channel_created(self, channel_event):
-        server = server_class(self.bot, channel_event.after.guild.id)
-        await server.get_or_create_channel(channel_event.after)
-        return server
+        # TODO: Test
+        entity = channel_event.after
+        channel = channel_class(self.bot, entity)
+        await channel.get_or_create()
 
+    # TODO: you are here
     async def handle_channel_deleted(self, channel_event):
-        server = server_class(self.bot, channel_event.before.guild.id)
-        await server.delete_channel(channel_event.before)
-        return server
+        # TODO: Test
+        entity = channel_event.before
+        channel = channel_class(self.bot, entity)
+        await channel.delete_channel()
+

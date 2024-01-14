@@ -15,6 +15,7 @@ class GetChildEntitiesStrategy(StrategyBase):
         pass
 
 
+# TODO: Refactor! delete method should be in instance class itself
 class DeleteStrategy(StrategyBase):
     @abstractmethod
     async def delete(self, db_entry):
@@ -49,16 +50,15 @@ class table_manager(ABC):
     async def sync_table_with_data(self):
         await self.create_new_db_entries()
         await self.remove_redundant_db_entries()
-        
+
     async def remove_redundant_db_entries(self):
         db_entries = await self.get_all_db_entries()
         valid_ids = self.create_id_array_from_children()
         await async_apply_to_each(self.check_and_delete_if_redundant, db_entries, valid_ids)
 
-    @abstractmethod
     async def get_all_db_entries(self):
-        pass
-        
+        return await self.table.filter()
+
     async def create_new_db_entries(self):
         children_entities = self.get_child_entities(self)
         self.create_child_instances_from_array(children_entities)
@@ -82,11 +82,10 @@ class table_manager(ABC):
         for child in self.children_instances:
             await child.create_db_entry_if_not_exist()
 
-
     def create_id_array_from_children(self):
         array = []
         for child in self.children_instances:
-            array.append(child.id)
+            array.append(int(child.id))
         return array
 
     async def check_and_delete_if_redundant(self, db_entry, valid_ids):

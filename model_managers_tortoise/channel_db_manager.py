@@ -124,10 +124,7 @@ class ChannelFilterStrategy(FilterStrategy):
     async def filter(self):
         await self.set_server()
         # get the server from the database
-        # entry = await self.table.filter(id=str(self.entity.id), server=self.server_db).first()
         entry = await self.table.filter(discord_id=str(self.entity.id), server=self.server_db).first()
-        channel_entry = await self.table.filter(discord_id=str(self.entity.id))
-        server_entry = await self.table.filter(server=self.server_db)
         return entry
 
     @staticmethod
@@ -138,9 +135,6 @@ class ChannelFilterStrategy(FilterStrategy):
         return array
 
 
-# Channel 1195748187953188864
-
-# server id 917547601539264623
 class ChannelGetDataStrategy(GetDataStrategy):
     async def get_data(self):
         await self.set_server()
@@ -184,12 +178,13 @@ class channel_class(database_base_class, ServerSetterMixin):
         )
         self.guild = entity.guild
 
-    async def delete_channel(self, channel):
+    async def delete_channel(self ):
         await self.set_server()
         channel_db = await Channel.get_or_none(
-            discord_id=str(channel.id), server=self.server_db)
+            discord_id=str(self.id), server=self.server_db)
 
         if channel_db:
+            print(f'deleting {self.entity.name}')
             await channel_db.delete()
 
 

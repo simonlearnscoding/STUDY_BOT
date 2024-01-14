@@ -27,6 +27,3 @@ class server_manager(table_manager):
             child_entities_strategy=ServerEntitiesStrategy,
             child_class=server)
 
-    async def get_all_db_entries(self):
-        entries = await self.table.filter()
-        return entries

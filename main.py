@@ -7,7 +7,8 @@ from setup.bot_instance import bot, token
 # TODO: reactivate that cod
 extensions = [
     "Cogs.on_ready_cog",
-    # "Cogs.channel_cog",
+    "Cogs.channel_cog",
+    "event_emitters.server_event_emitter",
 ]
 
 
