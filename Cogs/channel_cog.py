@@ -5,6 +5,7 @@ from event_handlers.channel_event_handler import channel_event_handler
 from event_emitters.channel_event_emitter import channel_event_emitter
 # from types import ChannelEvent
 
+
 @class_error_handler
 class ChannelEvent:
     def __init__(self, event_str, before=None, after=None):
@@ -20,6 +21,7 @@ async def setup(bot):
     )
 
     await bot.add_cog(channel_events_cog(bot, event_manager))
+
 
 @class_error_handler
 class channel_events_cog(commands.Cog):
