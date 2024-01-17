@@ -18,7 +18,7 @@ class ServerEntitiesStrategy(GetChildEntitiesStrategy):
 def event_handler(sender):
     print(f"Event received from {sender}")
 
-
+@class_error_handler
 class server_manager(table_manager):
     def __init__(self, bot):
         super().__init__(
@@ -26,4 +26,3 @@ class server_manager(table_manager):
             bot=bot,
             child_entities_strategy=ServerEntitiesStrategy,
             child_class=server)
-

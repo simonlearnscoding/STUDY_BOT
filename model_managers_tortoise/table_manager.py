@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Set
 from model_managers_tortoise.functional_methods import async_apply_to_each
 from model_managers_tortoise.database_managers import StrategyBase
+from utils.error_handler import class_error_handler
 
 
 # Strategy Interface for get_child_entities
@@ -28,10 +29,28 @@ class DeleteStrategy(StrategyBase):
 
 class DefaultDeleteStrategy(DeleteStrategy):
     async def delete(self, db_entry):
-        print(f'deleting ${db_entry.name}')
+        print(f'deleting ${db_entry}')
         await db_entry.delete()
 
 
+class ServerSetterMixin:
+    async def set_server(self):
+        if hasattr(self, "server") and hasattr(self, "server_db"):
+            return
+        from model_managers_tortoise.server_instance import server
+        self.server = server(bot=self.bot, entity=self.guild)
+        self.server_db, created = await self.server.create_or_nothing()
+
+
+class UserSetterMixin:
+    async def set_user(self):
+        if hasattr(self, "user_db"):
+            return
+        from model_managers_tortoise.user import user_class
+        self.user = user_class(bot=self.bot, entity=self.user)
+        self.user_db, created = await self.user.create_or_nothing()
+
+@class_error_handler
 class table_manager(ABC):
     def __init__(self,
                  table,

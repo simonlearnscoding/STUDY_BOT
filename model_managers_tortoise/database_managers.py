@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any
 from discord import Guild
 
+from utils.error_handler import class_error_handler
+
 
 # from model_managers_tortoise.functional_methods import async_apply_to_each
 # from tortoise_models import Server
@@ -17,7 +19,7 @@ class StrategyBase(ABC):
 
 
 class CreateStrategy(StrategyBase):
-    async def create(self, data: dict) -> Any:
+    async def create(self) -> Any:
         """ No operation, do nothing """
         pass
 
@@ -106,10 +108,10 @@ class DeleteStrategy(StrategyBase):
 class DefaultDeleteStrategy(DeleteStrategy):
     async def delete(self):
         await self.create_or_nothing()
-        print(f'deleting ${self.db_entry.name}')
+        print(f'deleting ${self.db_entry}')
         await self.db_entry.delete()
 
-
+@class_error_handler
 class database_base_class():
     def __init__(self, bot, table, filter_strategy, get_data_strategy,
                  entity,
@@ -168,7 +170,7 @@ class database_base_class():
     async def create_new_db_entry(self):
         data = await self.get_data_strategy.get_data(self)
         db_entry = await self.table.create(**data)
-        print(f'created {db_entry.name}')
+        print(f'created {db_entry}')
         return db_entry
 
     def has_method(self, method_name):

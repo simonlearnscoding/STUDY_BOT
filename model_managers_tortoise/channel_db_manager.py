@@ -22,16 +22,6 @@ class GetChannelEntitiesStrategy(GetChildEntitiesStrategy):
         return channels
 
 
-class ServerSetterMixin:
-    async def set_server(self):
-        if hasattr(self, "server") and hasattr(self, "server_db"):
-            return
-        from model_managers_tortoise.server_instance import server
-
-        
-        self.server = server(bot=self.bot, entity=self.guild)
-        self.server_db, created = await self.server.create_or_nothing()
-
         
 
 class channel_manager(table_manager, ServerSetterMixin):
@@ -188,22 +178,3 @@ class channel_class(database_base_class, ServerSetterMixin):
             await channel_db.delete()
 
 
-class user_manager(table_manager):
-    def __init__(self, bot):
-        super().__init__(table=User, bot=bot, child_class=user_class)
-
-
-class user_class(database_base_class):
-    def __init__(self, bot, id):
-        super().__init__(
-            User,
-            bot,
-            id,
-        )
-
-    def fetch_entity(self):
-        return self.bot.get_member(self.id)
-
-    async def get_data(self):
-        self.entity = self.fetch_entity()
-        return {"discord_id": self.entity.id, "display_name": self.entity.name}

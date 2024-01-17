@@ -1,6 +1,6 @@
 from tortoise import fields
 from tortoise.models import Model
-from enum import Enum
+from enum import Enum, unique
 from datetime import datetime
 import pytz
 
@@ -29,11 +29,11 @@ class RolePillar(Model):
     level = fields.IntField(default=0)
 
 
-class RoleLevel(Model):
-    role: fields.ForeignKeyRelation[Role] = fields.ForeignKeyField(
-        model_name='models.Role')
-    pillar: fields.ForeignKeyRelation[Pillar] = fields.ForeignKeyField(
-        model_name='models.Pillar')
+# class RoleLevel(Model):
+#     role: fields.ForeignKeyRelation[Role] = fields.ForeignKeyField(
+#         model_name='models.Role')
+#     pillar: fields.ForeignKeyRelation[Pillar] = fields.ForeignKeyField(
+#         model_name='models.Pillar')
 
 
 class User(Model):
@@ -164,33 +164,27 @@ class UserPillar(Model):
     level = fields.IntField(default=0)
 
 
-class ActivityHabit(Model):
-    name = fields.CharField(max_length=100)
-    min_time = fields.IntField()
-    suggested_weekly_times = fields.IntField()
-    suggested_level = fields.IntField()
+# class ActivityHabit(Model):
+#     name = fields.CharField(max_length=100)
+#     min_time = fields.IntField()
+#     suggested_weekly_times = fields.IntField()
+#     suggested_level = fields.IntField()
 
 
 class ActivityRewards(Model):
-    name = fields.CharField(max_length=100)
     done_reward = fields.IntField()
-    habit_win_reward = fields.IntField()
-    streak_reward = fields.IntField()
-    reward_treshold = fields.IntField()
+    reward_treshold_minutes = fields.IntField()
+    reward_total_treshold = fields.IntField()
     reward_per_minute = fields.IntField()
     reward_after_treshold = fields.IntField()
+    reward_while_cam_on = fields.IntField()
 
 
 class Activity(Model):
     name = fields.CharField(max_length=100)
-    pillar: fields.ForeignKeyRelation[Pillar] | None = fields.ForeignKeyField(
-        model_name="models.Pillar", on_delete=fields.SET_NULL, null=True)
+    pillar: fields.ForeignKeyRelation[Pillar] | None = fields.ForeignKeyField( model_name="models.Pillar", on_delete=fields.SET_NULL, null=True)
     description = fields.TextField(blank=True, null=True)
-    activity_habit: fields.ForeignKeyRelation[ActivityHabit] = fields.OneToOneField(
-        model_name="models.ActivityHabit", on_delete=fields.RESTRICT)
-    creation_date = fields.DatetimeField(default=get_current_time_in_tz)
-    activity_rewards: fields.ForeignKeyRelation[ActivityRewards] = fields.OneToOneField(
-        model_name="models.ActivityRewards", on_delete=fields.RESTRICT)
+    activity_rewards: fields.ForeignKeyRelation[ActivityRewards] = fields.OneToOneField( model_name="models.ActivityRewards", on_delete=fields.RESTRICT)
 
 
 class TextChannelEnum(Enum):
@@ -214,20 +208,20 @@ class Channel(Model):
         model_name="models.Activity", on_delete=fields.SET_NULL, default=None, null=True)
 
 
-class UserHabits(Model):
-    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
-        model_name="models.User", on_delete=fields.CASCADE)
-    activity_habit: fields.ForeignKeyRelation[ActivityHabit] = fields.ForeignKeyField(
-        model_name="models.ActivityHabit", on_delete=fields.CASCADE)
-    start_date = fields.DatetimeField()
-    stopped_date = fields.DatetimeField()
-    frequency = fields.IntField()
-    completed = fields.BooleanField()
+# class UserHabits(Model):
+#     user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
+#         model_name="models.User", on_delete=fields.CASCADE)
+#     activity_habit: fields.ForeignKeyRelation[ActivityHabit] = fields.ForeignKeyField(
+#         model_name="models.ActivityHabit", on_delete=fields.CASCADE)
+#     start_date = fields.DatetimeField()
+#     stopped_date = fields.DatetimeField()
+#     frequency = fields.IntField()
+#     completed = fields.BooleanField()
 
 
 class UserServer(Model):
-    user: fields.ForeignKeyRelation[User] = fields.OneToOneField(
+    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
         model_name='models.User', on_delete=fields.CASCADE)
-    server: fields.ForeignKeyRelation[Server] = fields.OneToOneField(
+    server: fields.ForeignKeyRelation[Server] = fields.ForeignKeyField(
         model_name='models.Server', on_delete=fields.CASCADE)
     joined_at = fields.DatetimeField(default=get_current_time_in_tz)

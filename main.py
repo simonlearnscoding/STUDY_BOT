@@ -9,6 +9,7 @@ extensions = [
     "Cogs.on_ready_cog",
     "Cogs.channel_cog",
     "event_emitters.server_event_emitter",
+    "slash_commands.associate_activity"
 ]
 
 

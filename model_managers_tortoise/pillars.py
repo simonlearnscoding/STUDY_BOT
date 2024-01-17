@@ -54,7 +54,6 @@ class DictToClass:
 class GetPillarEntitiesStrategy(GetChildEntitiesStrategy):
     def get_child_entities(self, data_list=data_list):
 
-
         # Instantiate PillarEntity objects
         pillar_entities = [DictToClass(data) for data in data_list]
         return pillar_entities

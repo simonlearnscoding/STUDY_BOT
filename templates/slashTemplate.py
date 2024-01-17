@@ -8,8 +8,8 @@ class GreetCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(description="Shows the server rules")  # "**_server rules_**" ** = bold, _=italicized
-    async def rules(self, interaction: discord.Interaction) -> None:
+    @app_commands.command(description="associate a VC with an activity")  # "**_server rules_**" ** = bold, _=italicized
+    async def associate(self, interaction: discord.Interaction) -> None:
         ...  # Here can be the same code that the slash command outside cog
         rules = (
             "1. Don't say bad words",
@@ -19,7 +19,6 @@ class GreetCog(commands.Cog):
         rules_str = "\n".join(rules)  # Combine the rules into a single string with a new line character separating them
         await interaction.response.send_message(f"**Here are the rules:**\n{rules_str}")
 
-#     @slash.slash#
 
 
 async def setup(bot):
