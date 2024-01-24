@@ -1,6 +1,117 @@
 from discord import VoiceState
+from tortoise_models import Server, User, Channel, TextChannelEnum
 import modules.session_tracking.activities as act
-from types.VC_events import VCEvent
+from model_managers_tortoise.vc_events import VCEvent
+
+from abc import ABC, abstractmethod
+
+
+class EmitEventNode(ABC):
+    def __init__(self, bot=None, event=None):
+        self.bot = bot
+        self.event = event
+
+    @abstractmethod
+    async def handle_case(self):
+        pass
+
+
+class EmitUserChangedActivityRecordType(EmitEventNode):
+    async def handle_case(self):
+        pass
+
+
+class HandleTreeNode(ABC):
+    validated_conditions = {}  # Shared across all instances
+
+    def __init__(self, bot=None, event=None, handle_if=None, handle_else=None):
+        self.bot = bot
+        self.event = event
+        self.handle_if = handle_if
+        self.handle_else = handle_else
+
+    @abstractmethod
+    async def handle(self):
+        pass
+
+    async def get_or_validate(self, condition_name):
+        if condition_name in HandleTreeNode.validated_conditions:
+            return HandleTreeNode.validated_conditions[condition_name]
+        
+        result = await self.handle()
+        HandleTreeNode.validated_conditions[condition_name] = result
+        return result
+
+    async def handle_case(self):
+        condition_result = await self.get_or_validate(self.__class__.__name__)
+        if condition_result:
+            if self.handle_if:
+                await self.handle_if.set_context(self.bot, self.event)
+                await self.handle_if.handle_case()
+        else:
+            if self.handle_else:
+                await self.handle_else.set_context(self.bot, self.event)
+                await self.handle_else.handle_case()
+
+    def set_context(self, bot, event):
+        self.bot = bot
+        self.event = event
+
+
+class did_user_change_activity_record_type(HandleTreeNode):
+    async def handle(self, event):
+        return self.did_user_change_activity_record_type_met()
+
+    def did_user_change_activity_record_type_met(self):
+        pass
+
+
+class is_user_after_activity_none(HandleTreeNode):
+    async def handle(self, event):
+        return self.is_user_after_activity_none_met()
+
+    def is_user_after_activity_none_met(self):
+        pass
+
+
+class is_user_after_activity_same_as_user_current_activity(HandleTreeNode):
+    async def handle(self, event):
+        return self.is_user_after_activity_same_as_user_current_activity_met()
+
+    def is_user_after_activity_same_as_user_current_activity_met(self):
+        pass
+
+
+class is_after_channel_activity(HandleTreeNode):
+    async def handle(self, event):
+        return self.is_after_channel_activity_met()
+
+    def is_after_channel_activity_met(self):
+        pass
+
+
+class is_user_activity_same_server_as_event(HandleTreeNode):
+    async def handle(self, event):
+        return self.is_user_activity_same_server_as_event_met()
+
+    def is_user_activity_same_server_as_event_met(self):
+        pass
+
+
+class has_user_active_session(HandleTreeNode):
+    async def handle(self, event):
+        return self.has_user_active_session_met()
+
+    def has_user_active_session_met(self):
+        pass
+
+
+class is_ignore_case_met(HandleTreeNode):
+    async def handle(self, event):
+        return self.is_ignore_case_met()
+
+    def is_ignore_case_met(self):
+        pass
 
 
 def user_changed_type_of_tracking(VCEvent):
@@ -68,9 +179,9 @@ def from_untracked_to_untracked(VCEvent: VCEvent):
 
 
 def excluding_condition_is_met(VCEvent):
-    if is_mute_or_deafen_update(VCEvent):
-        return True
     if VCEvent.member.bot:
+        return True
+    if is_mute_or_deafen_update(VCEvent):
         return True
     if from_untracked_to_untracked(VCEvent):
         return True

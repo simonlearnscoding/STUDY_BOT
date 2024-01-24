@@ -1,5 +1,5 @@
 #TODO: fix imports
-from event_emitters.event_emitter_wrappers import ensure_user_exists, ensure_user_has_active_session
+# from event_emitters.event_emitter_wrappers import ensure_user_exists, ensure_user_has_active_session
 # from Types.VC_events import VCEventType, VCEvent
 from utils.error_handler import class_error_handler
 from event_emitters import base_event_emitter

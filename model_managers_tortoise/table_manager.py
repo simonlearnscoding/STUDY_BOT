@@ -33,23 +33,37 @@ class DefaultDeleteStrategy(DeleteStrategy):
         await db_entry.delete()
 
 
-class ServerSetterMixin:
+class SetterMixin:
+    async def set_attribute(self, attribute_name, model_manager_module, class_name, entity):
+        if hasattr(self, attribute_name):
+            return
+        model_manager = __import__(model_manager_module, fromlist=[class_name])
+        model_class = getattr(model_manager, class_name)
+        instance = model_class(bot=self.bot, entity=entity)
+        setattr(self, attribute_name.split("_")[0], instance)
+        db_instance, created = await instance.create_or_nothing()
+        setattr(self, attribute_name, db_instance)
+        return db_instance
+
+
+class ServerSetterMixin(SetterMixin):
     async def set_server(self):
-        if hasattr(self, "server") and hasattr(self, "server_db"):
-            return
-        from model_managers_tortoise.server_instance import server
-        self.server = server(bot=self.bot, entity=self.guild)
-        self.server_db, created = await self.server.create_or_nothing()
+        await self.set_attribute("server_db", "model_managers_tortoise.server_instance", "server", self.guild)
 
 
-class UserSetterMixin:
+class UserSetterMixin(SetterMixin):
     async def set_user(self):
-        if hasattr(self, "user_db"):
-            return
-        from model_managers_tortoise.user import user_class
-        self.user = user_class(bot=self.bot, entity=self.user)
-        self.user_db, created = await self.user.create_or_nothing()
+        await self.set_attribute("user_db", "model_managers_tortoise.user", "user_class", self.user)
 
+
+class ChannelSetterMixin(SetterMixin):
+    async def set_user(self):
+        await self.set_attribute("channel_db", "model_managers_tortoise.channel", "channel_class", self.channel)
+
+
+# class ActivitySetterMixin(SetterMixin):
+#     async def set_user(self):
+#         await self.set_attribute("activity_db", "model_managers_tortoise.channel", "channel_class", self.channel)
 @class_error_handler
 class table_manager(ABC):
     def __init__(self,

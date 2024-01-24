@@ -2,7 +2,9 @@ import asyncio
 from discord import Message, TextChannel
 from typing import Optional
 import asyncio
+from model_managers_tortoise.table_manager import ServerSetterMixin
 
+from tortoise_models import Channel, Activity
 from discord import TextChannel
 import discord
 from discord import app_commands
@@ -21,15 +23,20 @@ class AssociateActivity(commands.Cog):
         print(f'{self.__class__.__name__} cog has been loaded')
 
         # Register the slash command
+        await self.bot.register_command(self.associations)
         await self.bot.register_command(self.associate)
 
-    @app_commands.command(description="associate a VC with an activity", name="associatorree")  # "**_server rules_**" ** = bold, _=italicized
+    @app_commands.command(description="associate a VC with an activity", name="associate")  # "**_server rules_**" ** = bold, _=italicized
     async def associate(self, interaction: discord.Interaction) -> None:
         if not interaction.permissions.administrator:
             await interaction.response.send_message('sorry only admins can use this command for now')
-        await interaction.response.send_message('hi there whats up')
         interaction_class = AssociateAnActivity(self.bot, interaction)
         await interaction_class.associate_activity()
+
+    @app_commands.command(description="Show the associations", name="associations")  # "**_server rules_**" ** = bold, _=italicized
+    async def associations(self, interaction: discord.Interaction) -> None:
+        interaction_class = AssociateAnActivity(self.bot, interaction)
+        await interaction_class.show_associations()
 
 
 async def setup(bot):
@@ -48,73 +55,96 @@ class StringFormatting():
         return f"```{formatted_list}```"
 
 
-class AssociateAnActivity(StringFormatting):
+class AssociateAnActivity(StringFormatting, ServerSetterMixin):
     def __init__(self, bot, interaction):
         self.bot = bot
         self.interaction = interaction
+        self.guild = self.interaction.guild
 
-    @error_handler
+    async def get_db_entries(self):
+        await self.set_server()
+        self.activities = await Activity.all()
+        self.channels = await Channel.filter(server=self.server_db, channel_type="Voice").all()
+
+    async def show_associations(self):
+        # TODO: Test
+        await self.get_db_entries()
+        channels_with_activity = [channel for channel in self.channels if channel.activity_id is not None]
+        string = await self.format_channel_activity_string(channels_with_activity)
+        await self.interaction.response.send_message(string)
+
+    async def format_channel_activity_string(self, channels):
+        string = "List of channels with associated activities:\n"
+        for channel in channels:
+            activity = await channel.activity.filter().first()
+            string += f"{channel.name} - {activity.name}\n"
+        return string
+
+    def get_list_activity_names(self, db_list):
+        # TODO: Test
+        names = [db_item.activity.name for db_item in db_list]
+        return names
+        pass
+
     async def associate_activity(self):
+        await self.get_db_entries()
         [user_respone_1, user_response_2, user_response_3] = await self.user_bot_interaction()
         print('user entered something wrong so nevermind')
         if user_response_3 != "y":
             return
 
         print('alright lets go')
-        # now I need to well create activities first
-        # then I need to fix the get_activity function
+        await self.associate(user_respone_1, user_response_2)
+
+    async def associate(self, user_respone_1, user_response_2):
+        # TODO: Test
+        channel = await self.channels[int(user_respone_1) - 1]
+        activity = await self.activities[int(user_response_2) - 1]
+        channel.activity = activity
+        await self.interaction.channel.send(f"associated {channel.name} with {activity.name}")
+        await channel.save()
+
+    async def get_channel_by_name(self, channel_name):
+        # TODO: Test
+        discord_channel = discord.utils.get(self.interaction.guild.channels, name=channel_name)
+        return await Channel.filter(discord_id=discord_channel.id).first()
+
+    async def get_activity_by_name(self, target_name):
+        # TODO: Test
+        matching_activity = next((activity for activity in self.activities if activity.name == target_name), None)
+        return matching_activity
+
         # then I need to make a function that
         # deletes any association the vc has then
         # creates a db entry that links the vc to the activity
 
+    async def format_message(self, first_message, db_array):
+        list = self.get_list(db_array)
+        list_str = self.format_string_list(list)
+        return self.format_two_strings(first_message, list_str)
+
+    def get_list(self, db_list):
+        # TODO: Test
+        names = [db_item.name for db_item in db_list]
+        return names
+
     async def user_bot_interaction(self):
-        message = self.create_vc_list_message()
-        vc_list = self.get_vc_list()
-        activities_list = await self.get_activities_list()
-        channel = self.interaction.channel
+        message_channels = await self.format_message("What VC would you like to link to an activity?", self.channels)
+        message_activities = await self.format_message("What activity would you like to link to this VC?", self.activities)
+        message_3 = "Are you sure you want to create this connection? y/n"
         # await self.interaction.defer()
 
+        channel = self.interaction.channel
         try:
-            user_respone_1 = await self.send_message_and_wait_for_reply(message_content=message, channel=channel)
-            user_response_vc = vc_list[int(user_respone_1.content) - 1]
-            await channel.send(f"VC: {user_response_vc}")
-
-            message_2 = await self.create_activities_message()
-            user_response_2 = await self.send_message_and_wait_for_reply(message_content=message_2, channel=channel)
-            user_response_activity = activities_list[int(user_response_2.content) - 1]
-            await channel.send(f"activity: {user_response_activity}")
-
-            message_3 = "Are you sure you want to create this connection? y/n"
-            ur_3 = await self.send_message_and_wait_for_reply(message_content=message_3, channel=channel)
-            user_response_3 = ur_3.content
-            return [user_respone_1, user_response_2, user_response_3]
+            user_respone_1 = await self.send_message_and_wait_for_reply(message_content=message_channels, channel=channel)
+            user_response_2 = await self.send_message_and_wait_for_reply(message_content=message_activities, channel=channel)
+            user_response_3 = await self.send_message_and_wait_for_reply(message_content=message_3, channel=channel)
+            return [user_respone_1.content, user_response_2.content, user_response_3.content]
 
         except IndexError:
             await channel.send("Invalid option. Please select a valid option from the list.")
             return [None, None, None]
-            # You can choose to handle this error in other ways, like asking the user to retry.
-
-    # Rest of your code...
-
-    async def create_activities_message(self):
-        activities_list = await self.get_activities_list()
-        activities_list_str = self.format_string_list(activities_list)
-        return self.format_two_strings("What activity would you like to link to this VC?", activities_list_str)
-
-    def create_vc_list_message(self):
-        vc_list = self.get_vc_list()
-        vc_list_str = self.format_string_list(vc_list)
-        return self.format_two_strings("What VC would you like to link to an activity?", vc_list_str)
-
-    async def get_activities_list(self):
-        # TODO: I have to do the activities
-        return ['mock activity', 'another mock activity']
-
-    def get_vc_list(self):
-        # Assuming interaction.guild is a Guild object
-        guild = self.interaction.guild
-        vc_list = [channel.name for channel in guild.voice_channels]
-        return vc_list
+            # I can choose to handle this error in other ways, like asking the user to retry.
 
     async def send_message_and_wait_for_reply(self, channel: TextChannel, message_content: str, timeout: Optional[float] = 60.0) -> Optional[Message]:
         try:

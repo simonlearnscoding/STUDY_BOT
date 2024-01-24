@@ -8,6 +8,8 @@ from setup.bot_instance import bot, token
 extensions = [
     "Cogs.on_ready_cog",
     "Cogs.channel_cog",
+    "Cogs.on_minute_passed_cog",
+    "Cogs.vc_events_cog",
     "event_emitters.server_event_emitter",
     "slash_commands.associate_activity"
 ]

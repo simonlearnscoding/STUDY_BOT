@@ -1,4 +1,4 @@
-from tortoise imp
+from tortoise import BaseDBAsyncClient
 
 
 async def upgrade(db: BaseDBAsyncClient) -> str:
@@ -9,22 +9,14 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     `app` VARCHAR(100) NOT NULL,
     `content` JSON NOT NULL
 ) CHARACTER SET utf8mb4;
-CREATE TABLE IF NOT EXISTS `activityhabit` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
-    `min_time` INT NOT NULL,
-    `suggested_weekly_times` INT NOT NULL,
-    `suggested_level` INT NOT NULL
-) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `activityrewards` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` VARCHAR(100) NOT NULL,
     `done_reward` INT NOT NULL,
-    `habit_win_reward` INT NOT NULL,
-    `streak_reward` INT NOT NULL,
-    `reward_treshold` INT NOT NULL,
+    `reward_treshold_minutes` INT NOT NULL,
+    `reward_total_treshold` INT NOT NULL,
     `reward_per_minute` INT NOT NULL,
-    `reward_after_treshold` INT NOT NULL
+    `reward_after_treshold` INT NOT NULL,
+    `reward_while_cam_on` INT NOT NULL
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `pillar` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -36,12 +28,9 @@ CREATE TABLE IF NOT EXISTS `activity` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `description` LONGTEXT,
-    `creation_date` DATETIME(6) NOT NULL,
     `pillar_id` INT,
-    `activity_habit_id` INT NOT NULL UNIQUE,
     `activity_rewards_id` INT NOT NULL UNIQUE,
     CONSTRAINT `fk_activity_pillar_d292e0c6` FOREIGN KEY (`pillar_id`) REFERENCES `pillar` (`id`) ON DELETE SET NULL,
-    CONSTRAINT `fk_activity_activity_a1b01f7b` FOREIGN KEY (`activity_habit_id`) REFERENCES `activityhabit` (`id`) ON DELETE RESTRICT,
     CONSTRAINT `fk_activity_activity_cf6a11be` FOREIGN KEY (`activity_rewards_id`) REFERENCES `activityrewards` (`id`) ON DELETE RESTRICT
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `role` (
@@ -50,13 +39,6 @@ CREATE TABLE IF NOT EXISTS `role` (
     `description` LONGTEXT,
     `color` VARCHAR(10) NOT NULL  DEFAULT '#000000',
     `prestige` INT NOT NULL  DEFAULT 0
-) CHARACTER SET utf8mb4;
-CREATE TABLE IF NOT EXISTS `rolelevel` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `pillar_id` INT NOT NULL,
-    `role_id` INT NOT NULL,
-    CONSTRAINT `fk_roleleve_pillar_04aaeba4` FOREIGN KEY (`pillar_id`) REFERENCES `pillar` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `fk_roleleve_role_05f5c836` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `rolepillar` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -105,28 +87,32 @@ CREATE TABLE IF NOT EXISTS `project` (
 CREATE TABLE IF NOT EXISTS `session` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `joined_at` DATETIME(6) NOT NULL,
+    `left_at` DATETIME(6) NOT NULL,
+    `is_active` BOOL NOT NULL  DEFAULT 1,
+    `activity_id` INT NOT NULL,
     `server_id` VARCHAR(100),
     `user_id` INT NOT NULL,
+    CONSTRAINT `fk_session_activity_4bd82af4` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_session_server_a36c29b5` FOREIGN KEY (`server_id`) REFERENCES `server` (`id`) ON DELETE SET NULL,
     CONSTRAINT `fk_session_user_4e399dc8` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `sessiondata` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `activity_record_type` VARCHAR(50) NOT NULL  COMMENT 'CAM: CAM\nSS: SS\nBOTH: BOTH\nVOICE: VOICE\nNONE: NONE\nLOG: LOG',
-    `total_record_seconds` INT NOT NULL,
-    `percentage_of_total` INT NOT NULL,
+    `activity_record_type` VARCHAR(50) NOT NULL  COMMENT 'VC: VC\nSS: SS\nBOTH: BOTH\nVOICE: VOICE\nNONE: NONE\nLOG: LOG',
+    `total_record_seconds` INT NOT NULL  DEFAULT 0,
+    `partials_amount` INT NOT NULL  DEFAULT 0,
     `session_id` INT NOT NULL,
     CONSTRAINT `fk_sessiond_session_a23b48b6` FOREIGN KEY (`session_id`) REFERENCES `session` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `sessionpartial` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `start_time` DATETIME(6) NOT NULL,
-    `end_time` DATETIME(6) NOT NULL,
-    `is_active` BOOL NOT NULL,
-    `total_record_seconds` INT NOT NULL,
-    `activity_record_type` VARCHAR(50) NOT NULL  COMMENT 'CAM: CAM\nSS: SS\nBOTH: BOTH\nVOICE: VOICE\nNONE: NONE\nLOG: LOG',
+    `joined_at` DATETIME(6) NOT NULL,
+    `left_at` DATETIME(6) NOT NULL,
+    `activity_record_type` VARCHAR(50) NOT NULL  COMMENT 'VC: VC\nSS: SS\nBOTH: BOTH\nVOICE: VOICE\nNONE: NONE\nLOG: LOG',
     `session_id` INT NOT NULL,
-    CONSTRAINT `fk_sessionp_session_9989a94a` FOREIGN KEY (`session_id`) REFERENCES `session` (`id`) ON DELETE CASCADE
+    `user_id` INT NOT NULL,
+    CONSTRAINT `fk_sessionp_session_9989a94a` FOREIGN KEY (`session_id`) REFERENCES `session` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_sessionp_user_1a865f2f` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `task` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -148,17 +134,6 @@ CREATE TABLE IF NOT EXISTS `tasktag` (
     CONSTRAINT `fk_tasktag_tag_a05104bc` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_tasktag_task_55d804a9` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;
-CREATE TABLE IF NOT EXISTS `userhabits` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `start_date` DATETIME(6) NOT NULL,
-    `stopped_date` DATETIME(6) NOT NULL,
-    `frequency` INT NOT NULL,
-    `completed` BOOL NOT NULL,
-    `activity_habit_id` INT NOT NULL,
-    `user_id` INT NOT NULL,
-    CONSTRAINT `fk_userhabi_activity_9e69acb5` FOREIGN KEY (`activity_habit_id`) REFERENCES `activityhabit` (`id`) ON DELETE CASCADE,
-    CONSTRAINT `fk_userhabi_user_078d1b38` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS `userpillar` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `xp` INT NOT NULL  DEFAULT 0,
@@ -171,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `userpillar` (
 CREATE TABLE IF NOT EXISTS `userserver` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `joined_at` DATETIME(6) NOT NULL,
-    `server_id` VARCHAR(100) NOT NULL UNIQUE,
-    `user_id` INT NOT NULL UNIQUE,
+    `server_id` VARCHAR(100) NOT NULL,
+    `user_id` INT NOT NULL,
     CONSTRAINT `fk_userserv_server_45cf603b` FOREIGN KEY (`server_id`) REFERENCES `server` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_userserv_user_d09f7fdd` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) CHARACTER SET utf8mb4;"""

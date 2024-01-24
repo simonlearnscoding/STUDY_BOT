@@ -2,7 +2,7 @@
 ALL OF THE THINGS THAT HAPPEN AS A RESULT OF VC EVENTS WILL HAPPEN HERE!
 """
 
-from tortoise_models import Role, Server, Pillar, User, Channel, RolePillar, TextChannelEnum, UserServer
+from tortoise_models import *
 from event_emitters.base_event_emitter import base_event_emitter
 from tortoise_connection import init_db_connection
 from model_managers_tortoise.user import user_manager
@@ -22,13 +22,16 @@ class connect_emitter(base_event_emitter):
     async def on_ready(self):
 
         print('bot ready')
-        # await self.sync_slash_commands()
+        await self.sync_slash_commands()
         await init_db_connection()
         await self.delete_tables()
         await self.sync_global_tables()
 
     async def delete_tables(self):
         # await Server.all().delete()
+        await Session.all().delete()
+        await SessionData.all().delete()
+        await SessionPartial.all().delete()
         # await Channel.all().delete()
         # await Pillar.all().delete()
         # await Role.all().delete()
@@ -43,7 +46,6 @@ class connect_emitter(base_event_emitter):
 
     async def sync_global_tables(self):
         managers = [
-
             pillar_manager(self.bot),
             role_manager(self.bot),
             server_manager(self.bot),

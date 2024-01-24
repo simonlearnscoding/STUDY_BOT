@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from model_managers_tortoise.database_managers import *
-from tortoise_models import Server, User, Channel, TextChannelEnum
-from abc import ABC, abstractmethod
-from typing import Optional, Callable, Any
+from tortoise_models import  Channel, TextChannelEnum
 from model_managers_tortoise.database_managers import database_base_class
 from model_managers_tortoise.table_manager import *
 
